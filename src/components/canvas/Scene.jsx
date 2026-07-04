@@ -21,15 +21,14 @@ const keyboardMap = [
   { name: 'run', keys: ['Shift'] },
 ];
 
-// CLEAN WAWA SENSEI & ECCTRL ARCHITECTURE (ANTI-LOOPING & ANTI-JUMPING FIX):
-// 1. ELIMINATED manual cameraControlsRef.current.moveTo(...) inside useFrame!
-//    Calling moveTo every frame conflicted with Ecctrl's native physics camera follower, causing camera jitter
-//    and physics feedback loops that made the character jump/bounce uncontrollably when clicking Start!
-// 2. RESTORED floatHeight={0.3} (Ecctrl default):
-//    Setting floatHeight=0 caused the capsule collider to scrape directly against floor meshes, snagging and launching
-//    the character into the air. floatHeight=0.3 enables Ecctrl's spring suspension for smooth gliding!
-// 3. NATIVE POV 1st vs 3rd Person Toggle:
-//    Controlled cleanly via minDistance / maxDistance on EcctrlCameraControls without hacking useFrame!
+// CLEAN WAWA SENSEI & ECCTRL ARCHITECTURE (CAMERA FOLLOW FIX):
+// 1. ELIMINATED setLookAt inside useEffect when cameraMode === 'rpg' or when povMode changes!
+//    Calling setLookAt in RPG mode turned the camera into a STATIC LOOK-AT CAMERA, breaking Ecctrl's internal follower
+//    and causing the camera to freeze in place while the character walked away!
+// 2. NATIVE POV 1st vs 3rd Person Toggle:
+//    By only changing minDistance / maxDistance on EcctrlCameraControls (without calling setLookAt),
+//    Ecctrl automatically zooms between 1st Person (0.01m) and 3rd Person (1.5m - 12m) while keeping
+//    continuous camera following 100% active!
 function RpgSceneController() {
   const { cameraMode, activePortalId, povMode, togglePov, mobileJump } = useAppStore();
   const ecctrlRef = useRef();
@@ -50,7 +49,8 @@ function RpgSceneController() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [togglePov]);
 
-  // Handle camera transitions ONLY when cameraMode or activePortalId changes (NEVER inside useFrame!)
+  // Handle camera transitions ONLY when entering portal inspection mode!
+  // NEVER call setLookAt when in RPG mode, otherwise it overrides and breaks Ecctrl's continuous camera follower!
   useEffect(() => {
     if (!cameraControlsRef.current) return;
 
@@ -72,20 +72,10 @@ function RpgSceneController() {
         
         cameraControlsRef.current.setLookAt(camPos.x, camPos.y, camPos.z, lookPos.x, lookPos.y, lookPos.z, true);
       }
-    } else if (cameraMode === 'rpg') {
-      // When entering RPG mode, smoothly snap camera back to character!
-      if (ecctrlRef.current) {
-        const pos = ecctrlRef.current.currPos;
-        if (pos && typeof pos.x === 'number') {
-          const eyeHeight = is1stPerson ? pos.y + 1.45 : pos.y + 2.0;
-          const distZ = is1stPerson ? pos.z + 0.01 : pos.z + 5.0;
-          cameraControlsRef.current.setLookAt(pos.x, eyeHeight, distZ, pos.x, pos.y + 1, pos.z, true);
-        }
-      }
     }
-  }, [cameraMode, activePortalId, is1stPerson]);
+  }, [cameraMode, activePortalId]);
 
-  // In useFrame: ONLY send movement inputs to Ecctrl! NEVER touch cameraControlsRef.current.moveTo!
+  // In useFrame: ONLY send movement inputs to Ecctrl! NEVER touch cameraControlsRef.current!
   useFrame(() => {
     if (!ecctrlRef.current) return;
 
@@ -132,7 +122,7 @@ function RpgSceneController() {
 
       {/* 
           EcctrlCameraControls automatically follows Ecctrl!
-          minDistance/maxDistance handle 1st vs 3rd Person POV cleanly!
+          minDistance/maxDistance handle 1st vs 3rd Person POV cleanly without freezing camera!
       */}
       <EcctrlCameraControls
         ref={cameraControlsRef}
