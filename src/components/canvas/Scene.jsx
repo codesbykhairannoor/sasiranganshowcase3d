@@ -69,14 +69,18 @@ function RpgSceneController({ setNearbyMotif }) {
   useEffect(() => {
     if (!cameraControlsRef.current) return;
     if (povMode === '1st') {
-      // Dolly camera right into the character's eye socket!
+      // Dolly camera right into the character's eye socket and allow full vertical looking ("mendongkak keatas")!
       cameraControlsRef.current.minDistance = 0.01;
       cameraControlsRef.current.maxDistance = 0.01;
+      cameraControlsRef.current.minPolarAngle = 0.15;
+      cameraControlsRef.current.maxPolarAngle = Math.PI - 0.15;
       cameraControlsRef.current.dollyTo(0.01, true);
     } else if (povMode === '3rd') {
-      // Dolly camera back out to over-the-shoulder 3rd person!
+      // Dolly camera back out to over-the-shoulder 3rd person and allow full vertical looking!
       cameraControlsRef.current.minDistance = 1.0;
       cameraControlsRef.current.maxDistance = 2.0;
+      cameraControlsRef.current.minPolarAngle = 0.15;
+      cameraControlsRef.current.maxPolarAngle = Math.PI - 0.15;
       cameraControlsRef.current.dollyTo(2.0, true);
     }
   }, [povMode]);
@@ -231,8 +235,9 @@ function RpgSceneController({ setNearbyMotif }) {
       </Ecctrl>
 
       {/* 
-          SUPER CLOSE IMMERSIVE OVER-THE-SHOULDER POV ("deketin dikit lagi dong"):
+          SUPER CLOSE IMMERSIVE OVER-THE-SHOULDER POV & FULL VERTICAL LOOKING ("mendongkak keatas"):
           minDistance=1.0, maxDistance=2.0 keeps the 3rd person camera right over the shoulders like God of War / RE4!
+          minPolarAngle=0.15, maxPolarAngle=Math.PI-0.15 allows looking straight up at chandeliers and down at floor!
       */}
       <EcctrlCameraControls
         ref={cameraControlsRef}
@@ -240,7 +245,8 @@ function RpgSceneController({ setNearbyMotif }) {
         smoothTime={0.1}
         minDistance={is1stPerson ? 0.01 : 1.0}
         maxDistance={is1stPerson ? 0.01 : 2.0}
-        maxPolarAngle={Math.PI / 2 - 0.05}
+        minPolarAngle={0.15}
+        maxPolarAngle={Math.PI - 0.15}
       />
     </>
   );
