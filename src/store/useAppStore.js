@@ -38,6 +38,7 @@ export const useAppStore = create((set, get) => ({
   setMobileJump: (val) => set({ mobileJump: val }),
 
   setView: (view) => {
+    if (document.pointerLockElement) document.exitPointerLock();
     set({ currentView: view });
     if (view === 'museum') {
       set({ cameraMode: 'rpg', activePortalId: null, selectedMotif: null });
@@ -47,6 +48,7 @@ export const useAppStore = create((set, get) => ({
   },
 
   enterPortal: (motifId) => {
+    if (document.pointerLockElement) document.exitPointerLock();
     const motif = MOTIFS_DATA.find((m) => m.id === motifId);
     if (!motif) return;
 
@@ -86,10 +88,15 @@ export const useAppStore = create((set, get) => ({
     });
   },
 
-  openSdgModal: () => set({ currentView: 'sdg-info' }),
+  openSdgModal: () => {
+    if (document.pointerLockElement) document.exitPointerLock();
+    set({ currentView: 'sdg-info' });
+  },
+  
   closeSdgModal: () => set({ currentView: 'museum' }),
 
   openRewardModal: () => {
+    if (document.pointerLockElement) document.exitPointerLock();
     if (get().isAllDiscovered) {
       set({ showRewardModal: true });
       confetti({
@@ -106,6 +113,7 @@ export const useAppStore = create((set, get) => ({
   toggleAudio: () => set((state) => ({ isAudioMuted: !state.isAudioMuted })),
 
   resetProgress: () => {
+    if (document.pointerLockElement) document.exitPointerLock();
     set({
       currentView: 'hero',
       cameraMode: 'cinematic',

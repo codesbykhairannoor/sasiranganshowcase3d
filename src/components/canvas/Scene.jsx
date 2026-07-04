@@ -22,16 +22,14 @@ const keyboardMap = [
   { name: 'interact', keys: ['KeyE', 'Enter'] },
 ];
 
-// CLEAN WAWA SENSEI & FREE MOUSE POINTER ARCHITECTURE:
-// 1. MANDATORY FOLLOWER TARGET IN useFrame:
-//    As documented in Ecctrl README line 238, we MUST call cameraControlsRef.current.moveTo(...)
-//    in useFrame to guarantee camera tracking when walking or refreshing!
-// 2. FREE MOUSE POINTER ("mirip kayak mouse bro sebenarnya"):
-//    Removed Pointer Lock and static center crosshair so the mouse cursor moves freely across the screen!
-//    Moving the mouse smoothly rotates the camera without holding click, while allowing the player to
-//    freely point and click on any painting or UI button!
-// 3. KEYBOARD [E] & CLICK INTERACTION:
-//    When standing near any of the 5 paintings or pointing at it, pressing E or Left Click inspects!
+// AUTHENTIC MINECRAFT POINTER LOCK & STUCK CENTER CROSSHAIR ARCHITECTURE:
+// 1. CENTER STUCK CROSSHAIR (+) ("memang harus ttp stuck aja ditengah"):
+//    A fixed gaming + crosshair is rendered in the exact center of the screen!
+// 2. POINTER LOCK ON CLICK ("ketika kita mainin mouse pointer nya ttp ngikut dalam keadaan stuck versis kayak minecraft"):
+//    Clicking on the game window engages Pointer Lock, trapping the invisible pointer in the center!
+//    Moving your physical mouse smoothly rotates the camera AND turns the character's head!
+// 3. LEFT CLICK INTERACTION:
+//    Aiming the center crosshair at any painting and left-clicking (or pressing E) inspects it!
 function RpgSceneController({ setNearbyMotif }) {
   const { cameraMode, activePortalId, povMode, togglePov, mobileJump, enterPortal } = useAppStore();
   const ecctrlRef = useRef();
@@ -58,11 +56,17 @@ function RpgSceneController({ setNearbyMotif }) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [togglePov, cameraMode, enterPortal]);
 
-  // FREE MOUSE POINTER CAMERA ROTATION (No holding click, pointer moves freely like a real mouse!):
+  // MINECRAFT POINTER LOCK CAMERA ROTATION & HEAD TRACKING FEED:
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (cameraControlsRef.current && cameraMode === 'rpg') {
+        // Rotate camera smoothly whether in Pointer Lock or Free Mouse!
         cameraControlsRef.current.rotate(-e.movementX * 0.003, -e.movementY * 0.003, false);
+
+        // Feed mouse movement into window.__mouseLook for character head tracking!
+        if (!window.__mouseLook) window.__mouseLook = { x: 0, y: 0 };
+        window.__mouseLook.x = THREE.MathUtils.clamp(window.__mouseLook.x + e.movementX * 0.005, -1, 1);
+        window.__mouseLook.y = THREE.MathUtils.clamp(window.__mouseLook.y - e.movementY * 0.005, -1, 1);
       }
     };
 
@@ -184,13 +188,43 @@ export default function Scene() {
   const { cameraMode, enterPortal } = useAppStore();
   const [nearbyMotif, setNearbyMotif] = useState(null);
 
+  // MINECRAFT POINTER LOCK ON CLICK:
+  const handleSceneClick = (e) => {
+    if (cameraMode === 'rpg') {
+      if (!document.pointerLockElement) {
+        document.body.requestPointerLock();
+      } else if (e.button === 0 && nearbyMotif) {
+        // Aiming center + crosshair at painting and left-clicking!
+        enterPortal(nearbyMotif.id);
+      }
+    }
+  };
+
   return (
-    <div className="w-full h-screen fixed inset-0 z-10 bg-[#06080f]">
+    <div 
+      onClick={handleSceneClick}
+      className="w-full h-screen fixed inset-0 z-10 bg-[#06080f] cursor-pointer"
+    >
+      {/* AUTHENTIC MINECRAFT CENTER STUCK CROSSHAIR (+) ("memang harus ttp stuck aja ditengah") */}
+      {cameraMode === 'rpg' && (
+        <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 pointer-events-none select-none flex items-center justify-center">
+          <div className="relative flex items-center justify-center">
+            {/* Horizontal Bar */}
+            <div className="w-6 h-0.5 bg-amber-400 shadow-[0_0_8px_rgba(0,0,0,0.9)] rounded-full" />
+            {/* Vertical Bar */}
+            <div className="h-6 w-0.5 bg-amber-400 shadow-[0_0_8px_rgba(0,0,0,0.9)] rounded-full absolute" />
+            {/* Center Aim Dot */}
+            <div className="w-1.5 h-1.5 bg-white rounded-full absolute shadow-[0_0_5px_rgba(245,158,11,1)] animate-pulse" />
+          </div>
+        </div>
+      )}
+
       {/* MINECRAFT INTERACTIVE PROMPT WHEN NEAR A PAINTING (Title Case Formatting) */}
       {cameraMode === 'rpg' && nearbyMotif && (
         <div className="fixed bottom-32 left-1/2 -translate-x-1/2 z-50 pointer-events-auto animate-bounce">
           <button
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               enterPortal(nearbyMotif.id);
             }}
             className="px-6 py-3 bg-slate-900/95 hover:bg-slate-800 text-amber-400 font-bold rounded-xl border-2 border-amber-500/80 shadow-[0_0_25px_rgba(245,158,11,0.5)] flex items-center gap-3 transition-all transform hover:scale-105 cursor-pointer backdrop-blur-md"

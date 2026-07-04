@@ -6,9 +6,9 @@ import * as THREE from 'three';
 import { useAppStore } from '../../store/useAppStore';
 
 // SUPER RESEARCH & DEITY-LEVEL SOFTWARE ENGINEERING:
-// 1. POINTER = CHARACTER HEAD MOVEMENT ("bahkan pointer ini = gerakan kepala karakter"):
-//    In 3rd person mode, the character's head/helmet smoothly rotates and tilts to track the player's
-//    mouse pointer across the screen! Moving the pointer left/right turns the head yaw, moving up/down tilts pitch!
+// 1. MINECRAFT POINTER LOCK HEAD TRACKING ("pointernya ttp ngikut dalam keadaan stuck versis kayak minecraft"):
+//    When Pointer Lock is active, mouse movements accumulate in window.__mouseLook!
+//    The character's helmet/head smoothly turns left/right and tilts up/down to track where you are looking!
 // 2. Dynamic Walking & Running Stride Animation (Eliminates stiff walking!)
 // 3. 1st Person POV Support: Automatically hides helmet/torso in 1st Person so camera doesn't clip!
 export default function CharacterDroid() {
@@ -23,7 +23,7 @@ export default function CharacterDroid() {
 
   const is1stPerson = povMode === '1st';
 
-  // Dynamic animation based on player movement velocity & mouse pointer tracking
+  // Dynamic animation based on player movement velocity & Minecraft mouse look tracking
   useFrame((state) => {
     const keys = getKeys();
     const joystick = useJoystickStore.getState().joystick;
@@ -38,18 +38,27 @@ export default function CharacterDroid() {
       visorRef.current.emissiveIntensity = 1.5 + Math.sin(time * 4) * 0.5;
     }
 
-    // HEAD TRACKING TOWARDS MOUSE POINTER ("ketika gw mainin pointer kepala juga gerak gerak"):
+    // HEAD TRACKING TOWARDS MINECRAFT CAMERA LOOK / MOUSE POINTER:
     if (headRef.current && !is1stPerson) {
-      // state.pointer gives normalized screen coordinates (-1 to +1)
-      // As the player moves their gold + crosshair across the screen, the head turns and tilts!
-      const targetYaw = -state.pointer.x * 0.85;   // Turns head left/right up to ~50 degrees
-      const targetPitch = state.pointer.y * 0.55;  // Tilts head up/down up to ~30 degrees
-      const targetRoll = -state.pointer.x * 0.15;  // Subtle lifelike head tilt/roll
+      // In Minecraft Pointer Lock mode, window.__mouseLook stores accumulated mouse movements!
+      // In free mouse mode, state.pointer stores normalized screen coordinates!
+      const lookX = window.__mouseLook ? window.__mouseLook.x : state.pointer.x;
+      const lookY = window.__mouseLook ? window.__mouseLook.y : state.pointer.y;
 
-      // Smooth buttery slerp/lerp towards mouse pointer position
+      const targetYaw = -lookX * 0.85;   // Turns head left/right up to ~50 degrees
+      const targetPitch = lookY * 0.55;  // Tilts head up/down up to ~30 degrees
+      const targetRoll = -lookX * 0.15;  // Miring kepala natural (head tilt)
+
+      // Smooth buttery slerp/lerp towards look direction
       headRef.current.rotation.y = THREE.MathUtils.lerp(headRef.current.rotation.y, targetYaw, 0.15);
       headRef.current.rotation.x = THREE.MathUtils.lerp(headRef.current.rotation.x, targetPitch, 0.15);
       headRef.current.rotation.z = THREE.MathUtils.lerp(headRef.current.rotation.z, targetRoll, 0.15);
+
+      // Gently decay mouseLook back towards center when walking or idle so head doesn't stay permanently twisted!
+      if (window.__mouseLook) {
+        window.__mouseLook.x = THREE.MathUtils.lerp(window.__mouseLook.x, 0, 0.03);
+        window.__mouseLook.y = THREE.MathUtils.lerp(window.__mouseLook.y, 0, 0.03);
+      }
     }
 
     // Lively Stride vs Gentle Idle
@@ -94,7 +103,7 @@ export default function CharacterDroid() {
         <meshStandardMaterial color="#f59e0b" emissive="#f59e0b" emissiveIntensity={2} />
       </mesh>
 
-      {/* 2. HEAD / HELMET (Rotates & tilts dynamically towards mouse pointer!) */}
+      {/* 2. HEAD / HELMET (Rotates & tilts dynamically towards Minecraft mouse look!) */}
       <group ref={headRef} position={[0, 1.45, 0]} visible={!is1stPerson}>
         {/* Helmet base */}
         <mesh castShadow receiveShadow>
