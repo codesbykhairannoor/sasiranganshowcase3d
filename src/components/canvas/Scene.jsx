@@ -21,12 +21,15 @@ const keyboardMap = [
   { name: 'run', keys: ['Shift'] },
 ];
 
-// SUPER RESEARCH & ZERO-GLITCH ARCHITECTURE:
-// 1. ALWAYS mount EcctrlCameraControls! Never unmount or switch cameras between cinematic and RPG mode!
-//    This eliminates 100% of camera race conditions, NaN matrix black screens, and character freeze bugs!
-// 2. Grand Corridor Alignment (Lorong Panjang): Character spawns at Z = 24 looking north down the 60m gallery!
-// 3. Minecraft F5 Style POV 1 (1st Person) vs POV 3 (3rd Person) Toggle!
-// 4. High-strength autoBalanceSpringK=12 prevents character from flipping over (salto)!
+// CLEAN WAWA SENSEI & ECCTRL ARCHITECTURE (ANTI-LOOPING & ANTI-JUMPING FIX):
+// 1. ELIMINATED manual cameraControlsRef.current.moveTo(...) inside useFrame!
+//    Calling moveTo every frame conflicted with Ecctrl's native physics camera follower, causing camera jitter
+//    and physics feedback loops that made the character jump/bounce uncontrollably when clicking Start!
+// 2. RESTORED floatHeight={0.3} (Ecctrl default):
+//    Setting floatHeight=0 caused the capsule collider to scrape directly against floor meshes, snagging and launching
+//    the character into the air. floatHeight=0.3 enables Ecctrl's spring suspension for smooth gliding!
+// 3. NATIVE POV 1st vs 3rd Person Toggle:
+//    Controlled cleanly via minDistance / maxDistance on EcctrlCameraControls without hacking useFrame!
 function RpgSceneController() {
   const { cameraMode, activePortalId, povMode, togglePov, mobileJump } = useAppStore();
   const ecctrlRef = useRef();
@@ -47,119 +50,96 @@ function RpgSceneController() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [togglePov]);
 
-  // TRIGGER PAINTING INSPECTION CAMERA ZOOM ONCE IN USEEFFECT (NEVER IN USEFRAME!)
-  // Calling setLookAt continuously inside useFrame causes animation loop overflows & black screen bugs!
+  // Handle camera transitions ONLY when cameraMode or activePortalId changes (NEVER inside useFrame!)
   useEffect(() => {
-    if (cameraMode === 'portal' && activePortalId && cameraControlsRef.current) {
+    if (!cameraControlsRef.current) return;
+
+    if (cameraMode === 'portal' && activePortalId) {
       const motif = MOTIFS_DATA.find((m) => m.id === activePortalId);
       if (motif) {
         let camPos = new THREE.Vector3();
         let lookPos = new THREE.Vector3(motif.position[0], motif.position[1], motif.position[2]);
         
         if (motif.id === 'bayam-raja') {
-          // North End Wall: stand 4.5m south looking at end wall
           camPos.set(0, 5.0, -17.5);
         } else if (motif.id === 'gigi-haruan') {
-          // Left Wall: stand 4.5m east looking at left wall
           camPos.set(-3.3, 5.0, 6);
         } else if (motif.id === 'kambang-kacang') {
-          // Right Wall: stand 4.5m west looking at right wall
           camPos.set(3.3, 5.0, -6);
         } else {
           camPos.set(motif.position[0], motif.position[1], motif.position[2] + 4.5);
         }
         
-        // Smooth cinematic transition over 1 second!
         cameraControlsRef.current.setLookAt(camPos.x, camPos.y, camPos.z, lookPos.x, lookPos.y, lookPos.z, true);
       }
-    }
-  }, [cameraMode, activePortalId]);
-
-  useFrame(() => {
-    if (cameraMode === 'cinematic') {
-      // Freeze character movement while on title screen, but keep EcctrlCameraControls mounted and ready!
-      if (ecctrlRef.current) {
-        ecctrlRef.current.setMovement({
-          forward: false, backward: false, leftward: false, rightward: false, jump: false, run: false
-        });
-      }
-      // Keep camera smoothly looking down the Grand Corridor!
-      if (cameraControlsRef.current && ecctrlRef.current) {
-        const target = ecctrlRef.current.currPos;
-        if (target && typeof target.x === 'number') {
-          cameraControlsRef.current.moveTo(target.x, target.y + 1.5, target.z, true);
-        }
-      }
-    } else if (cameraMode === 'portal' && activePortalId) {
-      // Freeze character movement so player stays exactly where they stand in front of painting!
-      if (ecctrlRef.current) {
-        ecctrlRef.current.setMovement({
-          forward: false, backward: false, leftward: false, rightward: false, jump: false, run: false
-        });
-      }
     } else if (cameraMode === 'rpg') {
-      // 1. Feed keyboard, joystick, and mobile jump input into Ecctrl v2.0.0 on every frame!
+      // When entering RPG mode, smoothly snap camera back to character!
       if (ecctrlRef.current) {
-        const keys = getKeys();
-        const joystick = useJoystickStore.getState().joystick;
-        
-        ecctrlRef.current.setMovement({
-          forward: keys.forward,
-          backward: keys.backward,
-          leftward: keys.leftward,
-          rightward: keys.rightward,
-          jump: keys.jump || mobileJump,
-          run: keys.run,
-          joystick: joystick ? { x: joystick.x, y: joystick.y } : undefined
-        });
-
-        // 2. Drive Minecraft-style camera follow (1st vs 3rd Person)!
-        if (cameraControlsRef.current) {
-          const target = ecctrlRef.current.currPos;
-          if (target && typeof target.x === 'number') {
-            const eyeHeight = is1stPerson ? target.y + 1.45 : target.y + 1.2;
-            cameraControlsRef.current.moveTo(target.x, eyeHeight, target.z, true);
-          }
+        const pos = ecctrlRef.current.currPos;
+        if (pos && typeof pos.x === 'number') {
+          const eyeHeight = is1stPerson ? pos.y + 1.45 : pos.y + 2.0;
+          const distZ = is1stPerson ? pos.z + 0.01 : pos.z + 5.0;
+          cameraControlsRef.current.setLookAt(pos.x, eyeHeight, distZ, pos.x, pos.y + 1, pos.z, true);
         }
       }
+    }
+  }, [cameraMode, activePortalId, is1stPerson]);
+
+  // In useFrame: ONLY send movement inputs to Ecctrl! NEVER touch cameraControlsRef.current.moveTo!
+  useFrame(() => {
+    if (!ecctrlRef.current) return;
+
+    if (cameraMode === 'cinematic' || (cameraMode === 'portal' && activePortalId)) {
+      // Freeze character movement while on title screen or inspecting painting
+      ecctrlRef.current.setMovement({
+        forward: false, backward: false, leftward: false, rightward: false, jump: false, run: false
+      });
+    } else if (cameraMode === 'rpg') {
+      const keys = getKeys();
+      const joystick = useJoystickStore.getState().joystick;
+      
+      ecctrlRef.current.setMovement({
+        forward: keys.forward,
+        backward: keys.backward,
+        leftward: keys.leftward,
+        rightward: keys.rightward,
+        jump: keys.jump || mobileJump,
+        run: keys.run,
+        joystick: joystick ? { x: joystick.x, y: joystick.y } : undefined
+      });
     }
   });
 
   return (
     <>
       {/* 
-          MINECRAFT SPAWN PERFECTION & SALTO PREVENTION FIX:
-          1. Position Y = 1.12 with floatHeight = 0 places feet firmly on the carpet at Y = 0.02! ZERO FALLING!
-          2. High autoBalanceSpringK=12 prevents character from flipping over (salto)!
-          3. Spawns at Z = 24 looking north down the 60m Grand Gallery Corridor!
+          CLEAN WAWA SENSEI / ECCTRL ARCHITECTURE:
+          1. Default floatHeight=0.3 prevents capsule from scraping floor and bouncing/jumping!
+          2. Position Y=2.0 drops character cleanly onto carpet at Z=24.
       */}
       <Ecctrl
         ref={ecctrlRef}
         maxWalkVel={4}
         maxRunVel={8}
         jumpVel={6}
-        position={[0, 1.12, 24]}
+        position={[0, 2.0, 24]}
         capsuleRadius={0.4}
         capsuleHalfHeight={0.5}
-        floatHeight={0}
-        autoBalance={true}
-        autoBalanceSpringK={12}
-        autoBalanceDampingC={0.6}
-        autoBalanceDampingOnY={0.5}
+        floatHeight={0.3}
       >
         <CharacterDroid />
       </Ecctrl>
 
       {/* 
-          ALWAYS MOUNTED EcctrlCameraControls guarantees ZERO camera switching race conditions!
-          No more black screens, no more stuck controls, no more glitches when clicking Mulai Bermain!
+          EcctrlCameraControls automatically follows Ecctrl!
+          minDistance/maxDistance handle 1st vs 3rd Person POV cleanly!
       */}
       <EcctrlCameraControls
         ref={cameraControlsRef}
         makeDefault
         smoothTime={0.1}
-        minDistance={is1stPerson ? 0.1 : 2.5}
-        maxDistance={is1stPerson ? 0.1 : 14}
+        minDistance={is1stPerson ? 0.01 : 1.5}
+        maxDistance={is1stPerson ? 0.01 : 12}
         maxPolarAngle={Math.PI / 2 - 0.05}
       />
     </>
