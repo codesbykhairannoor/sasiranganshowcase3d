@@ -5,11 +5,15 @@ import { useJoystickStore } from 'ecctrl/input';
 import * as THREE from 'three';
 import { useAppStore } from '../../store/useAppStore';
 
-// SUPER QA & DEITY-LEVEL SOFTWARE ENGINEERING:
-// 1. Dynamic Walking & Running Stride Animation (Eliminates stiff walking!)
-// 2. 1st Person POV Support: Automatically hides helmet/torso in 1st Person so camera doesn't clip!
+// SUPER RESEARCH & DEITY-LEVEL SOFTWARE ENGINEERING:
+// 1. POINTER = CHARACTER HEAD MOVEMENT ("bahkan pointer ini = gerakan kepala karakter"):
+//    In 3rd person mode, the character's head/helmet smoothly rotates and tilts to track the player's
+//    mouse pointer across the screen! Moving the pointer left/right turns the head yaw, moving up/down tilts pitch!
+// 2. Dynamic Walking & Running Stride Animation (Eliminates stiff walking!)
+// 3. 1st Person POV Support: Automatically hides helmet/torso in 1st Person so camera doesn't clip!
 export default function CharacterDroid() {
   const { povMode } = useAppStore();
+  const headRef = useRef();
   const visorRef = useRef();
   const leftArmRef = useRef();
   const rightArmRef = useRef();
@@ -19,7 +23,7 @@ export default function CharacterDroid() {
 
   const is1stPerson = povMode === '1st';
 
-  // Dynamic animation based on player movement velocity
+  // Dynamic animation based on player movement velocity & mouse pointer tracking
   useFrame((state) => {
     const keys = getKeys();
     const joystick = useJoystickStore.getState().joystick;
@@ -32,6 +36,20 @@ export default function CharacterDroid() {
     // Pulse visor glow
     if (visorRef.current) {
       visorRef.current.emissiveIntensity = 1.5 + Math.sin(time * 4) * 0.5;
+    }
+
+    // HEAD TRACKING TOWARDS MOUSE POINTER ("ketika gw mainin pointer kepala juga gerak gerak"):
+    if (headRef.current && !is1stPerson) {
+      // state.pointer gives normalized screen coordinates (-1 to +1)
+      // As the player moves their gold + crosshair across the screen, the head turns and tilts!
+      const targetYaw = -state.pointer.x * 0.85;   // Turns head left/right up to ~50 degrees
+      const targetPitch = state.pointer.y * 0.55;  // Tilts head up/down up to ~30 degrees
+      const targetRoll = -state.pointer.x * 0.15;  // Subtle lifelike head tilt/roll
+
+      // Smooth buttery slerp/lerp towards mouse pointer position
+      headRef.current.rotation.y = THREE.MathUtils.lerp(headRef.current.rotation.y, targetYaw, 0.15);
+      headRef.current.rotation.x = THREE.MathUtils.lerp(headRef.current.rotation.x, targetPitch, 0.15);
+      headRef.current.rotation.z = THREE.MathUtils.lerp(headRef.current.rotation.z, targetRoll, 0.15);
     }
 
     // Lively Stride vs Gentle Idle
@@ -76,8 +94,8 @@ export default function CharacterDroid() {
         <meshStandardMaterial color="#f59e0b" emissive="#f59e0b" emissiveIntensity={2} />
       </mesh>
 
-      {/* 2. HEAD / HELMET (Hidden in 1st person!) */}
-      <group position={[0, 1.45, 0]} visible={!is1stPerson}>
+      {/* 2. HEAD / HELMET (Rotates & tilts dynamically towards mouse pointer!) */}
+      <group ref={headRef} position={[0, 1.45, 0]} visible={!is1stPerson}>
         {/* Helmet base */}
         <mesh castShadow receiveShadow>
           <boxGeometry args={[0.42, 0.42, 0.45]} />
@@ -101,8 +119,7 @@ export default function CharacterDroid() {
         </mesh>
       </group>
 
-      {/* 3. ARMS (Can stay visible in 1st person or hide! Let's keep visible so you see arms when looking down!) */}
-      {/* Left Arm */}
+      {/* 3. ARMS */}
       <group ref={leftArmRef} position={[-0.38, 1.15, 0]}>
         <mesh position={[0, -0.3, 0]} castShadow>
           <boxGeometry args={[0.18, 0.6, 0.18]} />
@@ -114,7 +131,6 @@ export default function CharacterDroid() {
         </mesh>
       </group>
 
-      {/* Right Arm */}
       <group ref={rightArmRef} position={[0.38, 1.15, 0]}>
         <mesh position={[0, -0.3, 0]} castShadow>
           <boxGeometry args={[0.18, 0.6, 0.18]} />
@@ -127,7 +143,6 @@ export default function CharacterDroid() {
       </group>
 
       {/* 4. LEGS */}
-      {/* Left Leg */}
       <group ref={leftLegRef} position={[-0.16, 0.5, 0]}>
         <mesh position={[0, -0.35, 0]} castShadow>
           <boxGeometry args={[0.2, 0.7, 0.22]} />
@@ -135,7 +150,6 @@ export default function CharacterDroid() {
         </mesh>
       </group>
 
-      {/* Right Leg */}
       <group ref={rightLegRef} position={[0.16, 0.5, 0]}>
         <mesh position={[0, -0.35, 0]} castShadow>
           <boxGeometry args={[0.2, 0.7, 0.22]} />
