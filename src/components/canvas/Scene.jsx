@@ -214,15 +214,15 @@ function RpgSceneController({ setNearbyMotif }) {
       </Ecctrl>
 
       {/* 
-          CLOSE IMMERSIVE POV ("bikin deket kaya tadi aja"):
-          minDistance=1.5, maxDistance=3.5 keeps the 3rd person camera compact, intimate, and cinematic!
+          SUPER CLOSE IMMERSIVE OVER-THE-SHOULDER POV ("deketin dikit lagi dong"):
+          minDistance=1.0, maxDistance=2.0 keeps the 3rd person camera right over the shoulders like God of War / RE4!
       */}
       <EcctrlCameraControls
         ref={cameraControlsRef}
         makeDefault
         smoothTime={0.1}
-        minDistance={is1stPerson ? 0.01 : 1.5}
-        maxDistance={is1stPerson ? 0.01 : 3.5}
+        minDistance={is1stPerson ? 0.01 : 1.0}
+        maxDistance={is1stPerson ? 0.01 : 2.0}
         maxPolarAngle={Math.PI / 2 - 0.05}
       />
     </>
