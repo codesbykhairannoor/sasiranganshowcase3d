@@ -31,6 +31,9 @@ const keyboardMap = [
 // 3. PRESS ESC TO UNLOCK ("kalau mau keluar harus pencet ESC bro"):
 //    Pressing ESC releases Pointer Lock so you get your normal system mouse cursor to click UI buttons!
 //    While unlocked (ESC pressed), moving the mouse will NOT spin the camera, keeping the angle perfect!
+// 4. INSTANT RE-LOCK & GENEROUS CENTER AIMING ("gak perlu klik dua kali, posisi pas ketengah"):
+//    Returning from inspection modal auto re-locks pointer immediately!
+//    Proximity detection covers the entire corridor width so you can stand comfortably centered!
 function RpgSceneController({ setNearbyMotif }) {
   const { cameraMode, activePortalId, povMode, togglePov, mobileJump, enterPortal } = useAppStore();
   const ecctrlRef = useRef();
@@ -77,6 +80,20 @@ function RpgSceneController({ setNearbyMotif }) {
       window.removeEventListener('mousemove', handleMouseMove);
     };
   }, [cameraMode]);
+
+  // DIRECT WINDOW CLICK LISTENER FOR CROSSHAIR AIMING ("bisa dipake buat klik inspeksi lukisan"):
+  // Guaranteed to fire reliably during Pointer Lock mode without being swallowed by DOM!
+  useEffect(() => {
+    const handleWindowMouseDown = (e) => {
+      if (cameraMode === 'rpg' && document.pointerLockElement && e.button === 0) {
+        if (nearbyMotifRef.current) {
+          enterPortal(nearbyMotifRef.current.id);
+        }
+      }
+    };
+    window.addEventListener('mousedown', handleWindowMouseDown);
+    return () => window.removeEventListener('mousedown', handleWindowMouseDown);
+  }, [cameraMode, enterPortal]);
 
   // Handle camera transitions ONLY when entering portal inspection mode!
   useEffect(() => {
@@ -136,18 +153,27 @@ function RpgSceneController({ setNearbyMotif }) {
         cameraControlsRef.current.moveTo(target.x, eyeHeight, target.z, true);
       }
 
-      // PROXIMITY DETECTION TO ALL 5 SHOWCASE PAINTINGS
+      // SUPER GENEROUS PROXIMITY DETECTION ACROSS ENTIRE CORRIDOR WIDTH ("kurang ketengah & gak kedeketan"):
       if (target && typeof target.z === 'number') {
         let found = null;
-        if (target.z < -22 && Math.abs(target.x) < 6) {
+        // Bayam Raja (North Wall at z = -27.5): Anyone standing at Z < -18 is in range!
+        if (target.z < -18) {
           found = MOTIFS_DATA[0]; // Bayam Raja
-        } else if (target.z > 0 && target.z < 12 && target.x < -3) {
+        } 
+        // Gigi Haruan (Left Wall Front at z = 6): Anyone standing between Z = 0 and Z = 14 on left half (X < 2.5)
+        else if (target.z >= 0 && target.z <= 14 && target.x < 2.5) {
           found = MOTIFS_DATA[1]; // Gigi Haruan
-        } else if (target.z > -10 && target.z < 0 && target.x > 3) {
+        } 
+        // Kambang Kacang (Right Wall Front at z = -6): Anyone standing between Z = -11 and Z = 0 on right half (X > -2.5)
+        else if (target.z >= -11 && target.z < 0 && target.x > -2.5) {
           found = MOTIFS_DATA[2]; // Kambang Kacang
-        } else if (target.z < -10 && target.z > -22 && target.x < -3) {
+        } 
+        // Kain Sarigading (Left Wall Back at z = -16): Anyone standing between Z = -20 and Z = -11 on left half (X < 2.5)
+        else if (target.z >= -20 && target.z < -11 && target.x < 2.5) {
           found = MOTIFS_DATA[3]; // Kain Sarigading
-        } else if (target.z < -12 && target.z > -24 && target.x > 3) {
+        } 
+        // Naga Balimbur (Right Wall Back at z = -18): Anyone standing between Z = -22 and Z = -11 on right half (X > -2.5)
+        else if (target.z >= -22 && target.z < -11 && target.x > -2.5) {
           found = MOTIFS_DATA[4]; // Naga Balimbur
         }
         
@@ -212,11 +238,11 @@ export default function Scene() {
         <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 pointer-events-none select-none flex items-center justify-center">
           <div className="relative flex items-center justify-center">
             {/* Horizontal Bar */}
-            <div className="w-6 h-0.5 bg-amber-400 shadow-[0_0_8px_rgba(0,0,0,0.9)] rounded-full" />
+            <div className="w-7 h-0.5 bg-amber-400 shadow-[0_0_8px_rgba(0,0,0,0.9)] rounded-full" />
             {/* Vertical Bar */}
-            <div className="h-6 w-0.5 bg-amber-400 shadow-[0_0_8px_rgba(0,0,0,0.9)] rounded-full absolute" />
+            <div className="h-7 w-0.5 bg-amber-400 shadow-[0_0_8px_rgba(0,0,0,0.9)] rounded-full absolute" />
             {/* Center Aim Dot */}
-            <div className="w-1.5 h-1.5 bg-white rounded-full absolute shadow-[0_0_5px_rgba(245,158,11,1)] animate-pulse" />
+            <div className="w-2 h-2 bg-white rounded-full absolute shadow-[0_0_6px_rgba(245,158,11,1)] animate-pulse" />
           </div>
         </div>
       )}

@@ -6,6 +6,17 @@ import confetti from 'canvas-confetti';
 // Purely In-Memory Client-Side State Management using Zustand.
 // NO localStorage, NO sessionStorage, NO database connection!
 
+// Helper: Automatically re-engage Pointer Lock upon returning to 3D RPG mode!
+const engagePointerLock = () => {
+  try {
+    if (!document.pointerLockElement && document.body && document.body.requestPointerLock) {
+      document.body.requestPointerLock();
+    }
+  } catch (err) {
+    console.log('Pointer lock auto-engage info:', err);
+  }
+};
+
 export const useAppStore = create((set, get) => ({
   // Navigation & View State
   currentView: 'hero', // 'hero' | 'museum' | 'sdg-info' | 'reward' | 'portal-inspect'
@@ -38,12 +49,16 @@ export const useAppStore = create((set, get) => ({
   setMobileJump: (val) => set({ mobileJump: val }),
 
   setView: (view) => {
-    if (document.pointerLockElement) document.exitPointerLock();
-    set({ currentView: view });
     if (view === 'museum') {
-      set({ cameraMode: 'rpg', activePortalId: null, selectedMotif: null });
+      set({ currentView: 'museum', cameraMode: 'rpg', activePortalId: null, selectedMotif: null });
+      // Instantly lock pointer when clicking Mulai Bermain!
+      setTimeout(() => { engagePointerLock(); }, 60);
     } else if (view === 'hero') {
-      set({ cameraMode: 'cinematic', activePortalId: null, selectedMotif: null });
+      if (document.pointerLockElement) document.exitPointerLock();
+      set({ currentView: 'hero', cameraMode: 'cinematic', activePortalId: null, selectedMotif: null });
+    } else {
+      if (document.pointerLockElement) document.exitPointerLock();
+      set({ currentView: view });
     }
   },
 
@@ -86,6 +101,10 @@ export const useAppStore = create((set, get) => ({
       currentView: 'museum',
       cameraMode: 'rpg',
     });
+    // Instantly re-engage Pointer Lock upon clicking Kembali Ke Galeri 3D!
+    setTimeout(() => {
+      engagePointerLock();
+    }, 60);
   },
 
   openSdgModal: () => {
@@ -93,7 +112,10 @@ export const useAppStore = create((set, get) => ({
     set({ currentView: 'sdg-info' });
   },
   
-  closeSdgModal: () => set({ currentView: 'museum' }),
+  closeSdgModal: () => {
+    set({ currentView: 'museum', cameraMode: 'rpg' });
+    setTimeout(() => { engagePointerLock(); }, 60);
+  },
 
   openRewardModal: () => {
     if (document.pointerLockElement) document.exitPointerLock();
@@ -108,7 +130,10 @@ export const useAppStore = create((set, get) => ({
     }
   },
 
-  closeRewardModal: () => set({ showRewardModal: false }),
+  closeRewardModal: () => {
+    set({ showRewardModal: false, currentView: 'museum', cameraMode: 'rpg' });
+    setTimeout(() => { engagePointerLock(); }, 60);
+  },
 
   toggleAudio: () => set((state) => ({ isAudioMuted: !state.isAudioMuted })),
 
