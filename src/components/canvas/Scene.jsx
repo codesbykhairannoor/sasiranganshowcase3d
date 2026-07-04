@@ -21,14 +21,16 @@ const keyboardMap = [
   { name: 'run', keys: ['Shift'] },
 ];
 
-// CLEAN WAWA SENSEI & ECCTRL ARCHITECTURE (CAMERA FOLLOW FIX):
-// 1. ELIMINATED setLookAt inside useEffect when cameraMode === 'rpg' or when povMode changes!
-//    Calling setLookAt in RPG mode turned the camera into a STATIC LOOK-AT CAMERA, breaking Ecctrl's internal follower
-//    and causing the camera to freeze in place while the character walked away!
-// 2. NATIVE POV 1st vs 3rd Person Toggle:
-//    By only changing minDistance / maxDistance on EcctrlCameraControls (without calling setLookAt),
-//    Ecctrl automatically zooms between 1st Person (0.01m) and 3rd Person (1.5m - 12m) while keeping
-//    continuous camera following 100% active!
+// CLEAN WAWA SENSEI & MINECRAFT POINTER LOCK ARCHITECTURE:
+// 1. MANDATORY FOLLOWER TARGET IN useFrame:
+//    As documented in Ecctrl README line 238 ("EcctrlCameraControls does not automatically follow a character
+//    by itself; you still drive the follow target from your controller ref"), we MUST call
+//    cameraControlsRef.current.moveTo(target.x, eyeHeight, target.z, true) in useFrame! This guarantees
+//    the camera 1000% follows the character when walking or refreshing!
+// 2. AUTHENTIC MINECRAFT POINTER LOCK (NO HOLDING CLICK REQUIRED):
+//    When in RPG mode, clicking the canvas locks the mouse pointer (cursor disappears like Minecraft).
+//    Moving the physical mouse fires mousemove events that directly call cameraControlsRef.current.rotate(...),
+//    letting the player look around effortlessly without holding down any mouse button!
 function RpgSceneController() {
   const { cameraMode, activePortalId, povMode, togglePov, mobileJump } = useAppStore();
   const ecctrlRef = useRef();
@@ -49,8 +51,39 @@ function RpgSceneController() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [togglePov]);
 
+  // MINECRAFT POINTER LOCK MOUSE LOOK (No holding click required!):
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      // When mouse pointer is locked in RPG mode, mouse movement rotates camera smoothly!
+      if (document.pointerLockElement && cameraControlsRef.current && cameraMode === 'rpg') {
+        cameraControlsRef.current.rotate(-e.movementX * 0.003, -e.movementY * 0.003, false);
+      }
+    };
+
+    const handleClick = () => {
+      // When in RPG mode and clicking the game canvas, lock the pointer like Minecraft!
+      if (cameraMode === 'rpg' && !document.pointerLockElement && typeof document.body.requestPointerLock === 'function') {
+        document.body.requestPointerLock();
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('click', handleClick);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('click', handleClick);
+    };
+  }, [cameraMode]);
+
+  // Automatically unlock mouse pointer when leaving RPG mode (e.g. opening modal or returning to menu)
+  useEffect(() => {
+    if (cameraMode !== 'rpg' && document.pointerLockElement && typeof document.exitPointerLock === 'function') {
+      document.exitPointerLock();
+    }
+  }, [cameraMode]);
+
   // Handle camera transitions ONLY when entering portal inspection mode!
-  // NEVER call setLookAt when in RPG mode, otherwise it overrides and breaks Ecctrl's continuous camera follower!
   useEffect(() => {
     if (!cameraControlsRef.current) return;
 
@@ -75,7 +108,7 @@ function RpgSceneController() {
     }
   }, [cameraMode, activePortalId]);
 
-  // In useFrame: ONLY send movement inputs to Ecctrl! NEVER touch cameraControlsRef.current!
+  // In useFrame: Drive character movement AND camera follow target!
   useFrame(() => {
     if (!ecctrlRef.current) return;
 
@@ -97,6 +130,16 @@ function RpgSceneController() {
         run: keys.run,
         joystick: joystick ? { x: joystick.x, y: joystick.y } : undefined
       });
+
+      // DRIVE THE CAMERA FOLLOW TARGET EVERY FRAME (Required by EcctrlCameraControls docs line 238!)
+      if (cameraControlsRef.current) {
+        const target = ecctrlRef.current.currPos;
+        if (target && typeof target.x === 'number') {
+          // In 1st person, camera is inside visor (Y + 1.45). In 3rd person, orbit target is chest (Y + 1.2)
+          const eyeHeight = is1stPerson ? target.y + 1.45 : target.y + 1.2;
+          cameraControlsRef.current.moveTo(target.x, eyeHeight, target.z, true);
+        }
+      }
     }
   });
 
@@ -121,8 +164,8 @@ function RpgSceneController() {
       </Ecctrl>
 
       {/* 
-          EcctrlCameraControls automatically follows Ecctrl!
-          minDistance/maxDistance handle 1st vs 3rd Person POV cleanly without freezing camera!
+          EcctrlCameraControls follows the target driven in useFrame!
+          minDistance/maxDistance handle 1st vs 3rd Person POV cleanly!
       */}
       <EcctrlCameraControls
         ref={cameraControlsRef}
