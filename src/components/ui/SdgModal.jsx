@@ -26,16 +26,16 @@ export default function SdgModal() {
 
         <div className="space-y-6 relative z-10">
           
-          {/* Header */}
+          {/* Header (Title Case Formatting - No ALL CAPS!) */}
           <div className="space-y-2 font-game">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold tracking-wide capitalize">
               <Globe className="w-3.5 h-3.5" />
               <span>SDGs Creative Web Competition</span>
             </div>
-            <h2 className="text-2xl md:text-3xl font-title font-black text-white uppercase tracking-wide">
+            <h2 className="text-2xl md:text-3xl font-title font-black text-white capitalize tracking-wide">
               {SDG_INFO.title}
             </h2>
-            <h3 className="text-sm md:text-base font-bold text-rose-400 tracking-wider uppercase">
+            <h3 className="text-sm md:text-base font-bold text-rose-400 tracking-wide capitalize">
               {SDG_INFO.subTheme}
             </h3>
           </div>
@@ -51,7 +51,7 @@ export default function SdgModal() {
               <ShieldCheck className="w-6 h-6" />
             </div>
             <div>
-              <h4 className="text-sm font-game font-extrabold text-white uppercase tracking-wider">
+              <h4 className="text-sm font-game font-extrabold text-white capitalize tracking-wide">
                 {SDG_INFO.target}
               </h4>
               <p className="text-xs text-slate-300 mt-1">
@@ -67,7 +67,7 @@ export default function SdgModal() {
                 <span className="text-xl md:text-2xl font-black bg-gradient-to-r from-amber-400 to-rose-400 bg-clip-text text-transparent">
                   {stat.value}
                 </span>
-                <p className="text-[11px] text-slate-400 font-bold leading-tight uppercase tracking-wider">
+                <p className="text-[11px] text-slate-400 font-bold leading-tight capitalize tracking-wide">
                   {stat.label}
                 </p>
               </div>
@@ -76,7 +76,7 @@ export default function SdgModal() {
 
           {/* Why 3D & No-DB Static Web? */}
           <div className="space-y-3 pt-2">
-            <h4 className="text-xs font-game font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+            <h4 className="text-xs font-game font-bold text-slate-300 capitalize tracking-wide flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-amber-400" /> Keunggulan Inovasi Proyek Ini
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300 font-semibold">
@@ -95,9 +95,9 @@ export default function SdgModal() {
           <div className="pt-4 flex justify-end font-game font-bold">
             <button
               onClick={closeSdgModal}
-              className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-rose-600 to-purple-600 hover:from-rose-500 hover:to-purple-500 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-rose-600/30 transition-all cursor-pointer"
+              className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-rose-600 to-purple-600 hover:from-rose-500 hover:to-purple-500 text-white font-bold text-xs capitalize tracking-wide shadow-lg shadow-rose-600/30 transition-all cursor-pointer"
             >
-              Kembali ke Galeri 3D
+              Kembali Ke Galeri 3D
             </button>
           </div>
 

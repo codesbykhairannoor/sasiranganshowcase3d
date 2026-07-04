@@ -31,9 +31,9 @@ const keyboardMap = [
 //    Moving the mouse smoothly rotates the camera without holding click, while allowing the player to
 //    freely point and click on any painting or UI button!
 // 3. KEYBOARD [E] & CLICK INTERACTION:
-//    When standing near a painting or pointing at it, pressing E or Left Click inspects the artwork!
+//    When standing near any of the 5 paintings or pointing at it, pressing E or Left Click inspects!
 function RpgSceneController({ setNearbyMotif }) {
-  const { cameraMode, activePortalId, povMode, togglePov, mobileJump, enterPortal, discoverMotif } = useAppStore();
+  const { cameraMode, activePortalId, povMode, togglePov, mobileJump, enterPortal } = useAppStore();
   const ecctrlRef = useRef();
   const cameraControlsRef = useRef();
   const [, getKeys] = useKeyboardControls();
@@ -50,19 +50,17 @@ function RpgSceneController({ setNearbyMotif }) {
       } else if ((e.key === 'e' || e.key === 'E' || e.key === 'Enter') && cameraMode === 'rpg') {
         if (nearbyMotifRef.current) {
           e.preventDefault();
-          discoverMotif(nearbyMotifRef.current.id);
           enterPortal(nearbyMotifRef.current.id);
         }
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [togglePov, cameraMode, discoverMotif, enterPortal]);
+  }, [togglePov, cameraMode, enterPortal]);
 
   // FREE MOUSE POINTER CAMERA ROTATION (No holding click, pointer moves freely like a real mouse!):
   useEffect(() => {
     const handleMouseMove = (e) => {
-      // In RPG mode, moving the mouse smoothly rotates the camera without locking the pointer!
       if (cameraControlsRef.current && cameraMode === 'rpg') {
         cameraControlsRef.current.rotate(-e.movementX * 0.003, -e.movementY * 0.003, false);
       }
@@ -90,6 +88,10 @@ function RpgSceneController({ setNearbyMotif }) {
           camPos.set(-3.3, 5.0, 6);
         } else if (motif.id === 'kambang-kacang') {
           camPos.set(3.3, 5.0, -6);
+        } else if (motif.id === 'kain-sarigading') {
+          camPos.set(-3.3, 5.0, -16);
+        } else if (motif.id === 'naga-balimbur') {
+          camPos.set(3.3, 5.0, -18);
         } else {
           camPos.set(motif.position[0], motif.position[1], motif.position[2] + 4.5);
         }
@@ -128,15 +130,19 @@ function RpgSceneController({ setNearbyMotif }) {
         cameraControlsRef.current.moveTo(target.x, eyeHeight, target.z, true);
       }
 
-      // PROXIMITY DETECTION TO PAINTINGS (For Minecraft-style prompt & interaction)
+      // PROXIMITY DETECTION TO ALL 5 SHOWCASE PAINTINGS
       if (target && typeof target.z === 'number') {
         let found = null;
-        if (target.z < -20 && Math.abs(target.x) < 6) {
+        if (target.z < -22 && Math.abs(target.x) < 6) {
           found = MOTIFS_DATA[0]; // Bayam Raja
         } else if (target.z > 0 && target.z < 12 && target.x < -3) {
           found = MOTIFS_DATA[1]; // Gigi Haruan
-        } else if (target.z > -12 && target.z < 0 && target.x > 3) {
+        } else if (target.z > -10 && target.z < 0 && target.x > 3) {
           found = MOTIFS_DATA[2]; // Kambang Kacang
+        } else if (target.z < -10 && target.z > -22 && target.x < -3) {
+          found = MOTIFS_DATA[3]; // Kain Sarigading
+        } else if (target.z < -12 && target.z > -24 && target.x > 3) {
+          found = MOTIFS_DATA[4]; // Naga Balimbur
         }
         
         if (nearbyMotifRef.current?.id !== found?.id) {
@@ -175,23 +181,22 @@ function RpgSceneController({ setNearbyMotif }) {
 }
 
 export default function Scene() {
-  const { cameraMode, enterPortal, discoverMotif } = useAppStore();
+  const { cameraMode, enterPortal } = useAppStore();
   const [nearbyMotif, setNearbyMotif] = useState(null);
 
   return (
     <div className="w-full h-screen fixed inset-0 z-10 bg-[#06080f]">
-      {/* MINECRAFT INTERACTIVE PROMPT WHEN NEAR A PAINTING */}
+      {/* MINECRAFT INTERACTIVE PROMPT WHEN NEAR A PAINTING (Title Case Formatting) */}
       {cameraMode === 'rpg' && nearbyMotif && (
         <div className="fixed bottom-32 left-1/2 -translate-x-1/2 z-50 pointer-events-auto animate-bounce">
           <button
             onClick={() => {
-              discoverMotif(nearbyMotif.id);
               enterPortal(nearbyMotif.id);
             }}
             className="px-6 py-3 bg-slate-900/95 hover:bg-slate-800 text-amber-400 font-bold rounded-xl border-2 border-amber-500/80 shadow-[0_0_25px_rgba(245,158,11,0.5)] flex items-center gap-3 transition-all transform hover:scale-105 cursor-pointer backdrop-blur-md"
           >
             <span className="px-2.5 py-1 bg-amber-500 text-slate-950 rounded-lg text-sm font-black shadow-inner">E</span>
-            <span className="text-base tracking-wide">KLIK / TEKAN E : Inspeksi {nearbyMotif.name}</span>
+            <span className="text-base tracking-wide">Klik / Tekan E : Inspeksi {nearbyMotif.title}</span>
           </button>
         </div>
       )}
@@ -230,7 +235,7 @@ export default function Scene() {
           />
           <directionalLight position={[-15, 20, -15]} intensity={0.6} color="#38bdf8" />
 
-          {/* BRIGHT STUDIO ENVIRONMENT REFLECTION */}
+          {/* BRIGHT STUDIO ENVIRONMENT REFLECTION ("pakai env kayak tadi pas mau keluar") */}
           <Environment preset="apartment" />
 
           {/* SOFT CONTACT SHADOWS ON POLISHED SLATE FLOOR */}

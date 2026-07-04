@@ -21,25 +21,25 @@ export default function MotifDetailModal() {
         <div className="flex items-center justify-between pb-3 border-b border-white/10 font-game font-bold">
           <button
             onClick={exitPortal}
-            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white transition-all text-xs border border-white/10 group cursor-pointer uppercase tracking-wider"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white transition-all text-xs border border-white/10 group cursor-pointer tracking-wide"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            <span>Kembali ke Galeri 3D</span>
+            <span>Kembali Ke Galeri 3D</span>
           </button>
 
-          <span className="text-[10px] md:text-[11px] uppercase px-3 py-1 rounded-full bg-white/10 text-slate-300 tracking-wider">
+          <span className="text-[10px] md:text-[11px] px-3 py-1 rounded-full bg-white/10 text-slate-300 tracking-wide font-medium">
             3D Room View • Inspeksi
           </span>
         </div>
 
-        {/* Title & Badge */}
+        {/* Title & Badge (Title Case Formatting - No ALL CAPS!) */}
         <div className="space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-game font-bold tracking-wider uppercase" style={{ backgroundColor: `${selectedMotif.color}25`, color: selectedMotif.color, border: `1px solid ${selectedMotif.color}50` }}>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-game font-bold tracking-wide" style={{ backgroundColor: `${selectedMotif.color}25`, color: selectedMotif.color, border: `1px solid ${selectedMotif.color}50` }}>
             <Sparkles className="w-3.5 h-3.5" />
             <span>Motif Terverifikasi • Warisan Budaya</span>
           </div>
           
-          <h2 className="text-2xl md:text-3xl font-title font-black tracking-tight text-white uppercase">
+          <h2 className="text-2xl md:text-3xl font-title font-black tracking-tight text-white capitalize">
             {selectedMotif.title}
           </h2>
           <h3 className="text-xs md:text-sm font-game font-bold text-slate-300 italic tracking-wide">
@@ -49,7 +49,7 @@ export default function MotifDetailModal() {
 
         {/* Philosophy */}
         <div className="space-y-2">
-          <h4 className="text-xs font-game font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+          <h4 className="text-xs font-game font-bold tracking-wide text-amber-400 flex items-center gap-1.5">
             <Info className="w-3.5 h-3.5" /> Filosofi & Makna Leluhur
           </h4>
           <p className="text-slate-200 text-sm md:text-base leading-relaxed p-4 rounded-2xl bg-slate-900/80 border border-white/15 font-semibold">
@@ -59,7 +59,7 @@ export default function MotifDetailModal() {
 
         {/* SDG Impact */}
         <div className="space-y-2">
-          <h4 className="text-xs font-game font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+          <h4 className="text-xs font-game font-bold tracking-wide text-emerald-400 flex items-center gap-1.5">
             <Shield className="w-3.5 h-3.5" /> Kontribusi SDG 11 (Culture Verse)
           </h4>
           <div className="p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/40 text-emerald-200 text-xs md:text-sm leading-relaxed font-semibold">
@@ -69,8 +69,8 @@ export default function MotifDetailModal() {
 
         {/* Key Facts */}
         <div className="space-y-2">
-          <h4 className="text-xs font-game font-bold uppercase tracking-wider text-slate-400">
-            Fakta Menarik Kain Sasirangan:
+          <h4 className="text-xs font-game font-bold tracking-wide text-slate-400">
+            Fakta Menarik Kain Sasirangan :
           </h4>
           <div className="space-y-2">
             {selectedMotif.facts.map((fact, idx) => (
@@ -86,10 +86,10 @@ export default function MotifDetailModal() {
         <div className="pt-2">
           <button
             onClick={exitPortal}
-            className="w-full py-4 rounded-2xl font-game font-bold text-xs md:text-sm text-white shadow-lg transition-all hover:scale-102 active:scale-98 flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider"
+            className="w-full py-4 rounded-2xl font-game font-bold text-xs md:text-sm text-white shadow-lg transition-all hover:scale-102 active:scale-98 flex items-center justify-center gap-2 cursor-pointer tracking-wide"
             style={{ backgroundColor: selectedMotif.color, boxShadow: `0 0 20px ${selectedMotif.color}50` }}
           >
-            <span>Selesai Eksplorasi & Kembali ke Karpet Merah</span>
+            <span>Selesai Eksplorasi & Kembali Ke Karpet Merah</span>
             <ArrowLeft className="w-4 h-4 rotate-180" />
           </button>
         </div>

@@ -6,25 +6,30 @@ import { useAppStore } from '../../store/useAppStore';
 import { MOTIFS_DATA } from '../../data/motifsData';
 
 // SUPER RESEARCH & DEITY-LEVEL AAA MUSEUM ARCHITECTURE:
-// 1. AUTHENTIC SASIRANGAN TEXTURE MAPS ("BISA LU LIAT LUKISAN NYA KOSONG"):
-//    Loaded actual 1.5 MB high-resolution Sasirangan fabric batik patterns (/textures/bayam_raja.png,
-//    gigi_haruan.png, kambang_kacang.png) via useTexture! They are NO LONGER blank or empty red boxes!
-// 2. PHYSICAL CEILING LAMPS & CHANDELIERS:
-//    6 glowing architectural lamp rings along the ceiling with high-intensity downward spotlights!
-// 3. STATIC, HIGH-RESOLUTION FRAMED CANVAS ART ("STATIS AJA"):
-//    Solid, majestic, static museum framed canvases with dedicated gallery spotlights pointing down!
+// 1. GENIUS COLUMNS & AESTHETIC INTERIOR ("ADA JUGA TUH GAMBAR YG KETUTUPAN TIANG"):
+//    Removed bulky obstructive cylindrical columns! Designed recessed rectangular wall pilasters
+//    placed strategically away from paintings so NO artwork is ever blocked! Added luxury viewing benches!
+// 2. NEW WEBP SASIRANGAN MASTERPIECES & BANJARMASIN LOGO:
+//    Loaded all 5 pristine WebP motif textures and the Banjarmasin logo!
+// 3. REMOVED WEIRD FLOOR BLOCKS ("DIBAGIAN AWAL ADA BALOK BERTULISKAN SASIRANGAN ITU JUJUR ANEH"):
+//    Removed knockdown letters and built a Grand Exhibition Reception Monument with the Banjarmasin Logo!
+// 4. TITLE CASE TYPOGRAPHY ("CUKUP TIAP HURUF KATA PERTAMA YG BESAR"):
+//    Replaced all ALL CAPS text with elegant Title Case formatting!
+// 5. FIXED INSPECTION CLICK: Directly calls enterPortal(motif.id) without errors!
 export default function MuseumGallery() {
-  const { enterPortal, discoverMotif } = useAppStore();
+  const { enterPortal } = useAppStore();
 
-  // Load authentic high-resolution Sasirangan fabric batik textures!
-  const [bayamTex, gigiTex, kambangTex] = useTexture([
-    '/textures/bayam_raja.png',
-    '/textures/gigi_haruan.png',
-    '/textures/kambang_kacang.png'
+  // Load authentic high-resolution WebP Sasirangan textures & Banjarmasin Logo!
+  const [bayamTex, gigiTex, kambangTex, sarigadingTex, nagaTex, logoTex] = useTexture([
+    '/motif bayam raj.webp',
+    '/motif_gigi_haruan.webp',
+    '/motif kembang kacang.webp',
+    '/kain_sarigading.webp',
+    '/naga-balimbur-salah-satu-motif-b.webp',
+    '/LOGO KOTA BANJARMASIN - 328 KB.webp'
   ]);
 
   const handleInspect = (motif) => {
-    discoverMotif(motif.id);
     enterPortal(motif.id);
   };
 
@@ -57,7 +62,7 @@ export default function MuseumGallery() {
       </mesh>
 
       {/* ==========================================
-          2. ROYAL NAVY SLATE WALLS & OBSIDIAN TRIM (16m wide x 60m long x 14m high)
+          2. ROYAL NAVY SLATE WALLS & OBSIDIAN TRIM
          ========================================== */}
       <RigidBody type="fixed" colliders={false} position={[0, 7, -29]}>
         <CuboidCollider args={[8.5, 7, 0.5]} />
@@ -129,8 +134,7 @@ export default function MuseumGallery() {
       </mesh>
 
       {/* ==========================================
-          3. PHYSICAL CEILING LAMPS & CHANDELIERS ("GA ADA LAMPU DIATASNYA")
-          6 Architectural Lamp Rings shining warm spotlights down onto the red carpet!
+          3. PHYSICAL CEILING LAMPS & CHANDELIERS
          ========================================== */}
       {[22, 12, 2, -8, -18, -26].map((z, idx) => (
         <group key={`lamp-${idx}`} position={[0, 13.5, z]}>
@@ -155,47 +159,94 @@ export default function MuseumGallery() {
       ))}
 
       {/* ==========================================
-          4. OBSIDIAN MARBLE COLUMNS & GOLD TRIM
+          4. GENIUS WALL PILASTERS & AESTHETIC INTERIOR
+          Recessed against side walls at Z = 22, 14, 0, -10, -24
+          NO column is ever placed at Z = 6, -6, -16, -18, -27.5!
          ========================================== */}
-      {[22, 14, 6, -2, -10, -18, -26].map((z, idx) => (
-        <React.Fragment key={`col-${idx}`}>
-          <RigidBody type="fixed" colliders={false} position={[-6.5, 6.5, z]}>
-            <CuboidCollider args={[0.6, 6.5, 0.6]} />
+      {[22, 14, 0, -10, -24].map((z, idx) => (
+        <React.Fragment key={`pilaster-${idx}`}>
+          {/* Left Wall Pilaster */}
+          <RigidBody type="fixed" colliders={false} position={[-7.6, 6.5, z]}>
+            <CuboidCollider args={[0.3, 6.5, 0.5]} />
             <mesh receiveShadow castShadow>
-              <cylinderGeometry args={[0.6, 0.65, 13, 32]} />
-              <meshStandardMaterial color="#0f172a" roughness={0.15} metalness={0.5} />
+              <boxGeometry args={[0.6, 13, 1.0]} />
+              <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.6} />
             </mesh>
-            <mesh position={[0, 6.2, 0]}>
-              <boxGeometry args={[1.5, 0.6, 1.5]} />
-              <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.9} />
-            </mesh>
-            <mesh position={[0, -6.2, 0]}>
-              <boxGeometry args={[1.6, 0.8, 1.6]} />
+            <mesh position={[0.2, 0, 0]}>
+              <boxGeometry args={[0.1, 13, 0.4]} />
               <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.9} />
             </mesh>
           </RigidBody>
 
-          <RigidBody type="fixed" colliders={false} position={[6.5, 6.5, z]}>
-            <CuboidCollider args={[0.6, 6.5, 0.6]} />
+          {/* Right Wall Pilaster */}
+          <RigidBody type="fixed" colliders={false} position={[7.6, 6.5, z]}>
+            <CuboidCollider args={[0.3, 6.5, 0.5]} />
             <mesh receiveShadow castShadow>
-              <cylinderGeometry args={[0.6, 0.65, 13, 32]} />
-              <meshStandardMaterial color="#0f172a" roughness={0.15} metalness={0.5} />
+              <boxGeometry args={[0.6, 13, 1.0]} />
+              <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.6} />
             </mesh>
-            <mesh position={[0, 6.2, 0]}>
-              <boxGeometry args={[1.5, 0.6, 1.5]} />
-              <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.9} />
-            </mesh>
-            <mesh position={[0, -6.2, 0]}>
-              <boxGeometry args={[1.6, 0.8, 1.6]} />
+            <mesh position={[-0.2, 0, 0]}>
+              <boxGeometry args={[0.1, 13, 0.4]} />
               <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.9} />
             </mesh>
           </RigidBody>
         </React.Fragment>
       ))}
 
+      {/* Luxury Velvet Viewing Benches in Center Corridor */}
+      {[-3, -14].map((z, idx) => (
+        <RigidBody key={`bench-${idx}`} type="fixed" colliders={false} position={[0, 0.5, z]}>
+          <CuboidCollider args={[0.8, 0.5, 1.5]} />
+          {/* Gold Base */}
+          <mesh position={[0, -0.4, 0]} castShadow receiveShadow>
+            <boxGeometry args={[1.6, 0.2, 3.0]} />
+            <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.9} />
+          </mesh>
+          {/* Obsidian Cushion */}
+          <RoundedBox args={[1.5, 0.6, 2.8]} radius={0.1} smoothness={4} position={[0, 0, 0]} castShadow receiveShadow>
+            <meshStandardMaterial color="#0f172a" roughness={0.4} />
+          </RoundedBox>
+        </RigidBody>
+      ))}
+
       {/* ==========================================
-          5. AUTHENTIC SASIRANGAN TEXTURED CANVAS PAINTINGS
-          Loaded actual batik texture maps so they are NEVER blank or empty again!
+          5. GRAND ENTRANCE RECEPTION MONUMENT WITH BANJARMASIN LOGO
+          Replaced weird floor blocks ("jujur aneh") with an aesthetic welcome desk!
+         ========================================== */}
+      <group position={[0, 1.8, 16]}>
+        <RigidBody type="fixed" colliders={false}>
+          <CuboidCollider args={[2.5, 1.8, 0.6]} />
+          {/* Obsidian Marble Monument Pedestal */}
+          <mesh castShadow receiveShadow>
+            <boxGeometry args={[5.0, 3.6, 1.2]} />
+            <meshStandardMaterial color="#0f172a" roughness={0.15} metalness={0.7} />
+          </mesh>
+          {/* Gold Trim Border */}
+          <mesh position={[0, 1.85, 0]}>
+            <boxGeometry args={[5.2, 0.1, 1.4]} />
+            <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.9} />
+          </mesh>
+        </RigidBody>
+
+        {/* Banjarmasin Logo Displayed Prominently on Front */}
+        <mesh position={[0, 0.4, 0.62]} castShadow>
+          <planeGeometry args={[2.2, 2.2]} />
+          <meshStandardMaterial map={logoTex} transparent roughness={0.2} />
+        </mesh>
+
+        {/* Title Case Welcome Typography */}
+        <group position={[0, -1.1, 0.62]}>
+          <Text position={[0, 0, 0]} fontSize={0.28} color="#f59e0b" anchorX="center" anchorY="middle" fontWeight="bold">
+            Kota Banjarmasin • Culture Verse
+          </Text>
+          <Text position={[0, -0.32, 0]} fontSize={0.2} color="#ffffff" anchorX="center" anchorY="middle" fontWeight="medium">
+            Pameran Metaverse Kain Sasirangan
+          </Text>
+        </group>
+      </group>
+
+      {/* ==========================================
+          6. AUTHENTIC WEBP SASIRANGAN SHOWCASE PAINTINGS (5 MASTERPIECES)
          ========================================== */}
 
       {/* --- SHOWCASE 1: BAYAM RAJA (North End Wall, Z = -27.5) --- */}
@@ -212,7 +263,6 @@ export default function MuseumGallery() {
           </mesh>
         </RigidBody>
 
-        {/* STATIC Textured Canvas Painting (With Authentic Bayam Raja Batik Pattern!) */}
         <group position={[0, 0, 0.35]}>
           <mesh 
             castShadow 
@@ -233,7 +283,6 @@ export default function MuseumGallery() {
           </mesh>
         </group>
 
-        {/* Dedicated Gallery Wall Spotlight pointing down onto Painting */}
         <group position={[0, 4.2, 1.2]}>
           <mesh>
             <boxGeometry args={[1.5, 0.3, 0.8]} />
@@ -246,14 +295,13 @@ export default function MuseumGallery() {
           <spotLight position={[0, 0, 0.2]} angle={0.6} penumbra={0.5} intensity={25} distance={12} color="#fffbeb" target-position={[0, -4.5, -1.2]} />
         </group>
 
-        {/* Title & Interactive Placard */}
         <group position={[0, -3.6, 0.5]}>
           <mesh>
             <boxGeometry args={[3.4, 0.65, 0.2]} />
             <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.8} />
           </mesh>
           <Text position={[0, 0, 0.12]} fontSize={0.24} color="#f59e0b" anchorX="center" anchorY="middle" fontWeight="bold">
-            BAYAM RAJA (PRESIDENTIAL)
+            Bayam Raja (Kepemimpinan)
           </Text>
         </group>
       </group>
@@ -272,7 +320,6 @@ export default function MuseumGallery() {
           </mesh>
         </RigidBody>
 
-        {/* STATIC Textured Canvas Painting (With Authentic Gigi Haruan Batik Pattern!) */}
         <group position={[0, 0, 0.35]}>
           <mesh 
             castShadow 
@@ -293,7 +340,6 @@ export default function MuseumGallery() {
           </mesh>
         </group>
 
-        {/* Dedicated Gallery Wall Spotlight pointing down onto Painting */}
         <group position={[0, 4.2, 1.2]}>
           <mesh>
             <boxGeometry args={[1.5, 0.3, 0.8]} />
@@ -312,7 +358,7 @@ export default function MuseumGallery() {
             <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.8} />
           </mesh>
           <Text position={[0, 0, 0.12]} fontSize={0.24} color="#f59e0b" anchorX="center" anchorY="middle" fontWeight="bold">
-            GIGI HARUAN (SHARP FOCUS)
+            Gigi Haruan (Ketajaman Berpikir)
           </Text>
         </group>
       </group>
@@ -331,7 +377,6 @@ export default function MuseumGallery() {
           </mesh>
         </RigidBody>
 
-        {/* STATIC Textured Canvas Painting (With Authentic Kambang Kacang Batik Pattern!) */}
         <group position={[0, 0, 0.35]}>
           <mesh 
             castShadow 
@@ -352,7 +397,6 @@ export default function MuseumGallery() {
           </mesh>
         </group>
 
-        {/* Dedicated Gallery Wall Spotlight pointing down onto Painting */}
         <group position={[0, 4.2, 1.2]}>
           <mesh>
             <boxGeometry args={[1.5, 0.3, 0.8]} />
@@ -371,42 +415,124 @@ export default function MuseumGallery() {
             <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.8} />
           </mesh>
           <Text position={[0, 0, 0.12]} fontSize={0.24} color="#f59e0b" anchorX="center" anchorY="middle" fontWeight="bold">
-            KAMBANG KACANG (BONDING)
+            Kambang Kacang (Gotong Royong)
           </Text>
         </group>
       </group>
 
-      {/* ==========================================
-          6. GAMIFIED PHYSICAL KNOCKDOWN LETTERS (S-A-S-I-R-A-N-G-A-N)
-         ========================================== */}
-      {["S", "A", "S", "I", "R", "A", "N", "G", "A", "N"].map((letter, index) => {
-        const xPos = (index - 4.5) * 1.1;
-        return (
-          <RigidBody
-            key={`letter-${index}`}
-            position={[xPos, 1.2, 12]}
-            mass={0.8}
-            restitution={0.4}
-            friction={0.6}
-            colliders={false}
+      {/* --- SHOWCASE 4: KAIN SARIGADING (Left Wall, X = -7.5, Z = -16) --- */}
+      <group position={[-7.5, 4.5, -16]} rotation={[0, Math.PI / 2, 0]}>
+        <RigidBody type="fixed" colliders={false}>
+          <CuboidCollider args={[2, 3, 0.5]} />
+          <mesh castShadow receiveShadow>
+            <boxGeometry args={[4.2, 6.2, 0.4]} />
+            <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.9} />
+          </mesh>
+          <mesh position={[0, 0, 0.1]}>
+            <boxGeometry args={[3.6, 5.6, 0.42]} />
+            <meshStandardMaterial color="#06080f" roughness={0.8} />
+          </mesh>
+        </RigidBody>
+
+        <group position={[0, 0, 0.35]}>
+          <mesh 
+            castShadow 
+            onClick={() => handleInspect(MOTIFS_DATA[3])} 
+            onPointerOver={(e) => (document.body.style.cursor = 'pointer')} 
+            onPointerOut={(e) => (document.body.style.cursor = 'auto')}
           >
-            <CuboidCollider args={[0.4, 0.5, 0.2]} />
-            <RoundedBox args={[0.8, 1.0, 0.4]} radius={0.08} smoothness={4} castShadow receiveShadow>
-              <meshStandardMaterial color={index % 2 === 0 ? "#f59e0b" : "#06b6d4"} roughness={0.2} metalness={0.8} />
-            </RoundedBox>
-            <Text
-              position={[0, 0, 0.21]}
-              fontSize={0.65}
+            <boxGeometry args={[3.0, 5.0, 0.1]} />
+            <meshStandardMaterial
               color="#ffffff"
-              anchorX="center"
-              anchorY="middle"
-              fontWeight="black"
-            >
-              {letter}
-            </Text>
-          </RigidBody>
-        );
-      })}
+              map={sarigadingTex}
+              roughness={0.25}
+              metalness={0.1}
+              emissiveMap={sarigadingTex}
+              emissive="#06b6d4"
+              emissiveIntensity={0.2}
+            />
+          </mesh>
+        </group>
+
+        <group position={[0, 4.2, 1.2]}>
+          <mesh>
+            <boxGeometry args={[1.5, 0.3, 0.8]} />
+            <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.8} />
+          </mesh>
+          <mesh position={[0, -0.1, 0.2]}>
+            <boxGeometry args={[1.2, 0.1, 0.4]} />
+            <meshStandardMaterial color="#ffffff" emissive="#fffbeb" emissiveIntensity={3.0} />
+          </mesh>
+          <spotLight position={[0, 0, 0.2]} angle={0.6} penumbra={0.5} intensity={25} distance={12} color="#fffbeb" target-position={[0, -4.5, -1.2]} />
+        </group>
+
+        <group position={[0, -3.6, 0.5]}>
+          <mesh>
+            <boxGeometry args={[3.4, 0.65, 0.2]} />
+            <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.8} />
+          </mesh>
+          <Text position={[0, 0, 0.12]} fontSize={0.24} color="#f59e0b" anchorX="center" anchorY="middle" fontWeight="bold">
+            Kain Sarigading (Warisan Budaya)
+          </Text>
+        </group>
+      </group>
+
+      {/* --- SHOWCASE 5: NAGA BALIMBUR (Right Wall, X = 7.5, Z = -18) --- */}
+      <group position={[7.5, 4.5, -18]} rotation={[0, -Math.PI / 2, 0]}>
+        <RigidBody type="fixed" colliders={false}>
+          <CuboidCollider args={[2, 3, 0.5]} />
+          <mesh castShadow receiveShadow>
+            <boxGeometry args={[4.2, 6.2, 0.4]} />
+            <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.9} />
+          </mesh>
+          <mesh position={[0, 0, 0.1]}>
+            <boxGeometry args={[3.6, 5.6, 0.42]} />
+            <meshStandardMaterial color="#06080f" roughness={0.8} />
+          </mesh>
+        </RigidBody>
+
+        <group position={[0, 0, 0.35]}>
+          <mesh 
+            castShadow 
+            onClick={() => handleInspect(MOTIFS_DATA[4])} 
+            onPointerOver={(e) => (document.body.style.cursor = 'pointer')} 
+            onPointerOut={(e) => (document.body.style.cursor = 'auto')}
+          >
+            <boxGeometry args={[3.0, 5.0, 0.1]} />
+            <meshStandardMaterial
+              color="#ffffff"
+              map={nagaTex}
+              roughness={0.25}
+              metalness={0.1}
+              emissiveMap={nagaTex}
+              emissive="#fbbf24"
+              emissiveIntensity={0.2}
+            />
+          </mesh>
+        </group>
+
+        <group position={[0, 4.2, 1.2]}>
+          <mesh>
+            <boxGeometry args={[1.5, 0.3, 0.8]} />
+            <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.8} />
+          </mesh>
+          <mesh position={[0, -0.1, 0.2]}>
+            <boxGeometry args={[1.2, 0.1, 0.4]} />
+            <meshStandardMaterial color="#ffffff" emissive="#fffbeb" emissiveIntensity={3.0} />
+          </mesh>
+          <spotLight position={[0, 0, 0.2]} angle={0.6} penumbra={0.5} intensity={25} distance={12} color="#fffbeb" target-position={[0, -4.5, -1.2]} />
+        </group>
+
+        <group position={[0, -3.6, 0.5]}>
+          <mesh>
+            <boxGeometry args={[3.4, 0.65, 0.2]} />
+            <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.8} />
+          </mesh>
+          <Text position={[0, 0, 0.12]} fontSize={0.24} color="#f59e0b" anchorX="center" anchorY="middle" fontWeight="bold">
+            Naga Balimbur (Pelindung Alam)
+          </Text>
+        </group>
+      </group>
 
       {/* Glowing Exhibition Banners hanging from Ceiling */}
       <group position={[0, 11, 8]}>
@@ -419,7 +545,7 @@ export default function MuseumGallery() {
           <meshStandardMaterial color="#f59e0b" emissive="#f59e0b" emissiveIntensity={0.5} />
         </mesh>
         <Text position={[0, 0, 0.1]} fontSize={0.6} color="#06080f" anchorX="center" anchorY="middle" fontWeight="black">
-          CULTURE VERSE : SDG 11
+          Culture Verse : SDG 11
         </Text>
       </group>
 
@@ -433,7 +559,7 @@ export default function MuseumGallery() {
           <meshStandardMaterial color="#06b6d4" emissive="#06b6d4" emissiveIntensity={0.5} />
         </mesh>
         <Text position={[0, 0, 0.1]} fontSize={0.6} color="#06080f" anchorX="center" anchorY="middle" fontWeight="black">
-          HIGH-TECH HERITAGE EXHIBITION
+          Pameran Warisan Budaya High-Tech
         </Text>
       </group>
     </group>

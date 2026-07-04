@@ -8,13 +8,19 @@
   }
 
   body {
-    background-color: #090d16;
+    background-color: #06080f;
     color: #f8fafc;
     font-family: var(--font-primary);
     overflow-x: hidden;
     margin: 0;
     padding: 0;
     -webkit-font-smoothing: antialiased;
+    /* CUSTOM MINECRAFT / GAMING CROSSHAIR CURSOR (+): Free moving, never stuck! */
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23fbbf24' stroke='%23000000' stroke-width='2' d='M11 2h2v9h9v2h-9v9h-2v-9H2v-2h9z'/%3E%3C/svg%3E") 12 12, auto;
+  }
+
+  canvas {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23fbbf24' stroke='%23000000' stroke-width='2' d='M11 2h2v9h9v2h-9v9h-2v-9H2v-2h9z'/%3E%3C/svg%3E") 12 12, auto;
   }
 }
 
@@ -31,7 +37,7 @@
   font-family: var(--font-title);
 }
 
-/* ELITE AAA GAME HUD GLASSMORPHISM & EFFECTS (Clean, Structured, Zero Clutter) */
+/* ELITE AAA GAME HUD GLASSMORPHISM & EFFECTS */
 .glass-panel {
   background: rgba(15, 23, 42, 0.9);
   backdrop-filter: blur(20px);
@@ -44,7 +50,7 @@
   background: linear-gradient(135deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(245, 158, 11, 0.35); /* Luxury Gold Border */
+  border: 1px solid rgba(245, 158, 11, 0.35);
   box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.7);
 }
 
@@ -58,64 +64,50 @@
   transform: translateY(-4px);
 }
 
-/* Luxury Gold & Cyber Cyan Accents */
-.border-gold {
-  border-color: rgba(245, 158, 11, 0.5);
+/* CUSTOM ANIMATIONS */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.glow-gold {
-  box-shadow: 0 0 20px rgba(245, 158, 11, 0.4), inset 0 0 10px rgba(245, 158, 11, 0.2);
-}
-
-.glow-cyan {
-  box-shadow: 0 0 20px rgba(6, 182, 212, 0.4), inset 0 0 10px rgba(6, 182, 212, 0.2);
-}
-
-.text-gold {
-  color: #fbbf24;
-  text-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
-}
-
-.bg-grid-pattern {
-  background-size: 40px 40px;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: #090d16;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #334155;
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #f59e0b;
-}
-
-/* Animations */
-@keyframes float {
+@keyframes floatSlow {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 15px rgba(245, 158, 11, 0.3); }
+  50% { box-shadow: 0 0 30px rgba(245, 158, 11, 0.8); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-float {
-  animation: float 4s ease-in-out infinite;
-}
-
-@keyframes pulse-glow {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 0.9; }
+  animation: floatSlow 4s ease-in-out infinite;
 }
 
 .animate-pulse-glow {
-  animation: pulse-glow 3s ease-in-out infinite;
+  animation: pulseGlow 2.5s ease-in-out infinite;
+}
+
+/* CUSTOM SCROLLBAR FOR MODALS & PANELS */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(245, 158, 11, 0.5);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 158, 11, 0.8);
 }

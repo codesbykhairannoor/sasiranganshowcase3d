@@ -35,16 +35,16 @@ export default function RewardModal() {
           </div>
         </div>
 
-        {/* Certificate Title */}
+        {/* Certificate Title (Title Case Formatting - No ALL CAPS!) */}
         <div className="space-y-2 relative z-10 font-game">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-bold uppercase tracking-widest font-game">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-bold tracking-wide capitalize font-game">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Pencapaian Gamifikasi Selesai 100%</span>
           </div>
-          <h2 className="text-3xl md:text-4xl font-title font-black text-white tracking-wide uppercase">
-            SERTIFIKAT DUTA BUDAYA
+          <h2 className="text-3xl md:text-4xl font-title font-black text-white tracking-wide capitalize">
+            Sertifikat Duta Budaya
           </h2>
-          <p className="text-xs md:text-sm text-rose-400 font-bold uppercase tracking-widest">
+          <p className="text-xs md:text-sm text-rose-400 font-bold tracking-wide capitalize">
             Sasirangan Culture Verse • SDG Target 11.4
           </p>
         </div>
@@ -52,11 +52,11 @@ export default function RewardModal() {
         {/* Certificate Body */}
         <div className="p-6 rounded-2xl bg-slate-900/80 border border-white/10 text-slate-200 text-sm md:text-base leading-relaxed relative z-10 space-y-3 font-semibold">
           <p>
-            Dengan ini menyatakan bahwa Anda telah berhasil mengeksplorasi seluruh karya agung dan filosofi <strong>3 Motif Klasik Kain Sasirangan</strong> (Gigi Haruan, Bayam Raja, & Kambang Kacang) di Galeri Istana Gedung Putih.
+            Dengan ini menyatakan bahwa Anda telah berhasil mengeksplorasi seluruh karya agung dan filosofi <strong>5 Motif Klasik Kain Sasirangan</strong> di Galeri Istana Gedung Putih.
           </p>
-          <div className="pt-2 flex items-center justify-center gap-6 text-xs text-slate-300 font-game font-bold uppercase tracking-wider">
+          <div className="pt-2 flex items-center justify-center gap-6 text-xs text-slate-300 font-game font-bold tracking-wide capitalize">
             <span className="flex items-center gap-1"><CheckCircle2 className="w-4 h-4 text-emerald-400" /> State: 100% RAM</span>
-            <span className="flex items-center gap-1"><ShieldCheck className="w-4 h-4 text-amber-400" /> SDG 11 Verified</span>
+            <span className="flex items-center gap-1"><ShieldCheck className="w-4 h-4 text-amber-400" /> SDG 11 Terverifikasi</span>
           </div>
         </div>
 
@@ -64,22 +64,22 @@ export default function RewardModal() {
         <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3 relative z-10 font-game font-bold">
           <button
             onClick={closeRewardModal}
-            className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-500 hover:from-amber-400 hover:to-rose-400 text-white font-black text-sm shadow-lg shadow-amber-500/30 transition-all cursor-pointer uppercase tracking-wider"
+            className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-500 hover:from-amber-400 hover:to-rose-400 text-white font-black text-sm shadow-lg shadow-amber-500/30 transition-all cursor-pointer tracking-wide capitalize"
           >
             Lanjutkan Eksplorasi 3D
           </button>
 
           <button
             onClick={resetProgress}
-            className="w-full sm:w-auto px-6 py-4 rounded-2xl glass-panel hover:bg-slate-800 text-slate-300 hover:text-white font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer uppercase tracking-wider"
+            className="w-full sm:w-auto px-6 py-4 rounded-2xl glass-panel hover:bg-slate-800 text-slate-300 hover:text-white font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer tracking-wide capitalize"
           >
             <RotateCcw className="w-4 h-4" />
             <span>Reset Eksplorasi</span>
           </button>
         </div>
 
-        <p className="text-[11px] text-slate-400 font-game uppercase tracking-wider">
-          *Sistem berjalan murni tanpa LocalStorage / Database sesuai aturan Hukum Mutlak.
+        <p className="text-[11px] text-slate-400 font-game tracking-wide capitalize">
+          *Sistem Berjalan Murni Tanpa LocalStorage / Database Sesuai Aturan Hukum Mutlak.
         </p>
 
       </div>
