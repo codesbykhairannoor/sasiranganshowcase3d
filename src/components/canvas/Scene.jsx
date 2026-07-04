@@ -1,4 +1,4 @@
-import React, { Suspense, useRef, useEffect } from 'react';
+import React, { Suspense, useRef, useEffect, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment, ContactShadows, KeyboardControls, useKeyboardControls } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
@@ -19,23 +19,24 @@ const keyboardMap = [
   { name: 'rightward', keys: ['ArrowRight', 'KeyD'] },
   { name: 'jump', keys: ['Space'] },
   { name: 'run', keys: ['Shift'] },
+  { name: 'interact', keys: ['KeyE', 'Enter'] },
 ];
 
 // CLEAN WAWA SENSEI & MINECRAFT POINTER LOCK ARCHITECTURE:
 // 1. MANDATORY FOLLOWER TARGET IN useFrame:
-//    As documented in Ecctrl README line 238 ("EcctrlCameraControls does not automatically follow a character
-//    by itself; you still drive the follow target from your controller ref"), we MUST call
-//    cameraControlsRef.current.moveTo(target.x, eyeHeight, target.z, true) in useFrame! This guarantees
-//    the camera 1000% follows the character when walking or refreshing!
-// 2. AUTHENTIC MINECRAFT POINTER LOCK (NO HOLDING CLICK REQUIRED):
-//    When in RPG mode, clicking the canvas locks the mouse pointer (cursor disappears like Minecraft).
-//    Moving the physical mouse fires mousemove events that directly call cameraControlsRef.current.rotate(...),
-//    letting the player look around effortlessly without holding down any mouse button!
-function RpgSceneController() {
-  const { cameraMode, activePortalId, povMode, togglePov, mobileJump } = useAppStore();
+//    As documented in Ecctrl README line 238, we MUST call cameraControlsRef.current.moveTo(...)
+//    in useFrame to guarantee camera tracking when walking or refreshing!
+// 2. AUTHENTIC MINECRAFT POINTER LOCK & CROSSHAIR:
+//    When in RPG mode, clicking locks the mouse pointer. Moving the mouse rotates the camera smoothly
+//    without holding click. A Minecraft crosshair (+) in the center of the screen shows exact focus!
+// 3. KEYBOARD [E] & CLICK INTERACTION:
+//    When standing near a painting or pointing at it, pressing E or Left Click inspects the artwork!
+function RpgSceneController({ setNearbyMotif }) {
+  const { cameraMode, activePortalId, povMode, togglePov, mobileJump, enterPortal, discoverMotif } = useAppStore();
   const ecctrlRef = useRef();
   const cameraControlsRef = useRef();
   const [, getKeys] = useKeyboardControls();
+  const nearbyMotifRef = useRef(null);
 
   const is1stPerson = povMode === '1st';
 
@@ -45,25 +46,35 @@ function RpgSceneController() {
       if (e.key === 'v' || e.key === 'V' || e.key === 'F5') {
         e.preventDefault();
         togglePov();
+      } else if ((e.key === 'e' || e.key === 'E' || e.key === 'Enter') && cameraMode === 'rpg') {
+        if (nearbyMotifRef.current) {
+          e.preventDefault();
+          discoverMotif(nearbyMotifRef.current.id);
+          enterPortal(nearbyMotifRef.current.id);
+        }
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [togglePov]);
+  }, [togglePov, cameraMode, discoverMotif, enterPortal]);
 
   // MINECRAFT POINTER LOCK MOUSE LOOK (No holding click required!):
   useEffect(() => {
     const handleMouseMove = (e) => {
-      // When mouse pointer is locked in RPG mode, mouse movement rotates camera smoothly!
       if (document.pointerLockElement && cameraControlsRef.current && cameraMode === 'rpg') {
         cameraControlsRef.current.rotate(-e.movementX * 0.003, -e.movementY * 0.003, false);
       }
     };
 
     const handleClick = () => {
-      // When in RPG mode and clicking the game canvas, lock the pointer like Minecraft!
-      if (cameraMode === 'rpg' && !document.pointerLockElement && typeof document.body.requestPointerLock === 'function') {
-        document.body.requestPointerLock();
+      if (cameraMode === 'rpg') {
+        if (!document.pointerLockElement && typeof document.body.requestPointerLock === 'function') {
+          document.body.requestPointerLock();
+        } else if (document.pointerLockElement && nearbyMotifRef.current) {
+          // If already locked and clicking near a painting, interact like Minecraft!
+          discoverMotif(nearbyMotifRef.current.id);
+          enterPortal(nearbyMotifRef.current.id);
+        }
       }
     };
 
@@ -74,9 +85,9 @@ function RpgSceneController() {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('click', handleClick);
     };
-  }, [cameraMode]);
+  }, [cameraMode, discoverMotif, enterPortal]);
 
-  // Automatically unlock mouse pointer when leaving RPG mode (e.g. opening modal or returning to menu)
+  // Automatically unlock mouse pointer when leaving RPG mode
   useEffect(() => {
     if (cameraMode !== 'rpg' && document.pointerLockElement && typeof document.exitPointerLock === 'function') {
       document.exitPointerLock();
@@ -108,12 +119,11 @@ function RpgSceneController() {
     }
   }, [cameraMode, activePortalId]);
 
-  // In useFrame: Drive character movement AND camera follow target!
+  // In useFrame: Drive character movement, camera follow target, and proximity detection!
   useFrame(() => {
     if (!ecctrlRef.current) return;
 
     if (cameraMode === 'cinematic' || (cameraMode === 'portal' && activePortalId)) {
-      // Freeze character movement while on title screen or inspecting painting
       ecctrlRef.current.setMovement({
         forward: false, backward: false, leftward: false, rightward: false, jump: false, run: false
       });
@@ -132,12 +142,26 @@ function RpgSceneController() {
       });
 
       // DRIVE THE CAMERA FOLLOW TARGET EVERY FRAME (Required by EcctrlCameraControls docs line 238!)
-      if (cameraControlsRef.current) {
-        const target = ecctrlRef.current.currPos;
-        if (target && typeof target.x === 'number') {
-          // In 1st person, camera is inside visor (Y + 1.45). In 3rd person, orbit target is chest (Y + 1.2)
-          const eyeHeight = is1stPerson ? target.y + 1.45 : target.y + 1.2;
-          cameraControlsRef.current.moveTo(target.x, eyeHeight, target.z, true);
+      const target = ecctrlRef.current.currPos;
+      if (cameraControlsRef.current && target && typeof target.x === 'number') {
+        const eyeHeight = is1stPerson ? target.y + 1.45 : target.y + 1.2;
+        cameraControlsRef.current.moveTo(target.x, eyeHeight, target.z, true);
+      }
+
+      // PROXIMITY DETECTION TO PAINTINGS (For Minecraft-style prompt & interaction)
+      if (target && typeof target.z === 'number') {
+        let found = null;
+        if (target.z < -20 && Math.abs(target.x) < 6) {
+          found = MOTIFS_DATA[0]; // Bayam Raja
+        } else if (target.z > 0 && target.z < 12 && target.x < -3) {
+          found = MOTIFS_DATA[1]; // Gigi Haruan
+        } else if (target.z > -12 && target.z < 0 && target.x > 3) {
+          found = MOTIFS_DATA[2]; // Kambang Kacang
+        }
+        
+        if (nearbyMotifRef.current?.id !== found?.id) {
+          nearbyMotifRef.current = found;
+          setNearbyMotif(found);
         }
       }
     }
@@ -145,11 +169,6 @@ function RpgSceneController() {
 
   return (
     <>
-      {/* 
-          CLEAN WAWA SENSEI / ECCTRL ARCHITECTURE:
-          1. Default floatHeight=0.3 prevents capsule from scraping floor and bouncing/jumping!
-          2. Position Y=2.0 drops character cleanly onto carpet at Z=24.
-      */}
       <Ecctrl
         ref={ecctrlRef}
         maxWalkVel={4}
@@ -163,10 +182,6 @@ function RpgSceneController() {
         <CharacterDroid />
       </Ecctrl>
 
-      {/* 
-          EcctrlCameraControls follows the target driven in useFrame!
-          minDistance/maxDistance handle 1st vs 3rd Person POV cleanly!
-      */}
       <EcctrlCameraControls
         ref={cameraControlsRef}
         makeDefault
@@ -180,10 +195,39 @@ function RpgSceneController() {
 }
 
 export default function Scene() {
-  const { cameraMode } = useAppStore();
+  const { cameraMode, enterPortal, discoverMotif } = useAppStore();
+  const [nearbyMotif, setNearbyMotif] = useState(null);
 
   return (
     <div className="w-full h-screen fixed inset-0 z-10 bg-[#090d16]">
+      {/* MINECRAFT CROSSHAIR / POINTER UI (Visible in RPG Mode) */}
+      {cameraMode === 'rpg' && (
+        <div className="fixed inset-0 pointer-events-none z-40 flex items-center justify-center">
+          {/* Authentic Minecraft Crosshair (+) */}
+          <div className="relative flex items-center justify-center w-6 h-6 opacity-90">
+            <div className="absolute w-0.5 h-4 bg-white shadow-[0_0_2px_black]"></div>
+            <div className="absolute w-4 h-0.5 bg-white shadow-[0_0_2px_black]"></div>
+            <div className="w-1 h-1 bg-amber-400 rounded-full shadow-[0_0_4px_#f59e0b]"></div>
+          </div>
+        </div>
+      )}
+
+      {/* MINECRAFT INTERACTIVE PROMPT WHEN NEAR A PAINTING */}
+      {cameraMode === 'rpg' && nearbyMotif && (
+        <div className="fixed bottom-32 left-1/2 -translate-x-1/2 z-50 pointer-events-auto animate-bounce">
+          <button
+            onClick={() => {
+              discoverMotif(nearbyMotif.id);
+              enterPortal(nearbyMotif.id);
+            }}
+            className="px-6 py-3 bg-slate-900/95 hover:bg-slate-800 text-amber-400 font-bold rounded-xl border-2 border-amber-500/80 shadow-[0_0_25px_rgba(245,158,11,0.5)] flex items-center gap-3 transition-all transform hover:scale-105 cursor-pointer backdrop-blur-md"
+          >
+            <span className="px-2.5 py-1 bg-amber-500 text-slate-950 rounded-lg text-sm font-black shadow-inner">E</span>
+            <span className="text-base tracking-wide">KLIK / TEKAN E : Inspeksi {nearbyMotif.name}</span>
+          </button>
+        </div>
+      )}
+
       {/* On-Screen Mobile Joystick (Only visible during RPG Character Control Mode!) */}
       {cameraMode === 'rpg' && (
         <div className="fixed bottom-24 left-6 z-50 pointer-events-auto md:hidden">
@@ -198,44 +242,44 @@ export default function Scene() {
       >
         <KeyboardControls map={keyboardMap}>
           {/* ROYAL MUSEUM NIGHT BACKGROUND WITH CRYSTAL CLEAR STUDIO DEFINITION! */}
-          <color attach="background" args={["#090d16"]} />
-          <fog attach="fog" args={["#090d16", 35, 80]} />
+          <color attach="background" args={["#06080f"]} />
+          <fog attach="fog" args={["#06080f", 28, 70]} />
 
-          {/* BRIGHT STUDIO & HEMISPHERE LIGHTING TO PREVENT DARK VOIDS ON ALL GPUS */}
-          <ambientLight intensity={2.2} />
-          <hemisphereLight intensity={1.8} color="#ffffff" groundColor="#94a3b8" />
+          {/* 
+              SUPER RESEARCH: LUXURY AAA MUSEUM LIGHTING ARCHITECTURE!
+              Replaced flat/blending ambient light with moody, dramatic museum contrast.
+              Physical ceiling lamps in MuseumGallery provide rich localized illumination!
+          */}
+          <ambientLight intensity={0.4} />
+          <hemisphereLight intensity={0.4} color="#fffbeb" groundColor="#0f172a" />
           <directionalLight 
-            position={[10, 20, 10]} 
-            intensity={3.5} 
+            position={[15, 35, 15]} 
+            intensity={1.2} 
+            color="#fffbeb"
             castShadow 
             shadow-mapSize={[2048, 2048]}
             shadow-bias={-0.0001}
           />
-          <directionalLight position={[-10, 15, -10]} intensity={2.0} color="#ffffff" />
-          
-          {/* Soft corridor wall spotlights */}
-          <spotLight position={[-6, 12, 6]} intensity={4.0} angle={0.7} penumbra={0.8} color="#ffffff" castShadow />
-          <spotLight position={[6, 12, -6]} intensity={4.0} angle={0.7} penumbra={0.8} color="#ffffff" castShadow />
-          <spotLight position={[0, 12, -20]} intensity={4.5} angle={0.7} penumbra={0.8} color="#ffffff" castShadow />
+          <directionalLight position={[-15, 20, -15]} intensity={0.6} color="#38bdf8" />
 
           {/* BRIGHT STUDIO ENVIRONMENT REFLECTION */}
           <Environment preset="apartment" />
 
-          {/* SOFT CONTACT SHADOWS ON WHITE MARBLE FLOOR */}
+          {/* SOFT CONTACT SHADOWS ON POLISHED SLATE FLOOR */}
           <ContactShadows 
             position={[0, 0.01, 0]} 
-            opacity={0.6} 
+            opacity={0.8} 
             scale={60} 
-            blur={2} 
+            blur={2.5} 
             far={6} 
-            color="#0f172a" 
+            color="#06080f" 
           />
 
           {/* RAPIER PHYSICS ENGINE & GRAND GALLERY CORRIDOR */}
           <Suspense fallback={null}>
             <Physics gravity={[0, -9.81, 0]}>
               <MuseumGallery />
-              <RpgSceneController />
+              <RpgSceneController setNearbyMotif={setNearbyMotif} />
             </Physics>
           </Suspense>
         </KeyboardControls>
