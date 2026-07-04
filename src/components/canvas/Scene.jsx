@@ -64,6 +64,23 @@ function RpgSceneController({ setNearbyMotif }) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [togglePov, cameraMode, enterPortal]);
 
+  // INSTANTLY DOLLY CAMERA WHEN SWITCHING POV MODE (1st Person vs 3rd Person):
+  // Required because changing React minDistance/maxDistance props alone does not animate existing camera position!
+  useEffect(() => {
+    if (!cameraControlsRef.current) return;
+    if (povMode === '1st') {
+      // Dolly camera right into the character's eye socket!
+      cameraControlsRef.current.minDistance = 0.01;
+      cameraControlsRef.current.maxDistance = 0.01;
+      cameraControlsRef.current.dollyTo(0.01, true);
+    } else if (povMode === '3rd') {
+      // Dolly camera back out to over-the-shoulder 3rd person!
+      cameraControlsRef.current.minDistance = 1.0;
+      cameraControlsRef.current.maxDistance = 2.0;
+      cameraControlsRef.current.dollyTo(2.0, true);
+    }
+  }, [povMode]);
+
   // MINECRAFT POINTER LOCK CAMERA ROTATION & HEAD TRACKING FEED:
   useEffect(() => {
     const handleMouseMove = (e) => {
