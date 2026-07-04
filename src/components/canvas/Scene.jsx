@@ -22,13 +22,14 @@ const keyboardMap = [
   { name: 'interact', keys: ['KeyE', 'Enter'] },
 ];
 
-// CLEAN WAWA SENSEI & MINECRAFT POINTER LOCK ARCHITECTURE:
+// CLEAN WAWA SENSEI & FREE MOUSE POINTER ARCHITECTURE:
 // 1. MANDATORY FOLLOWER TARGET IN useFrame:
 //    As documented in Ecctrl README line 238, we MUST call cameraControlsRef.current.moveTo(...)
 //    in useFrame to guarantee camera tracking when walking or refreshing!
-// 2. AUTHENTIC MINECRAFT POINTER LOCK & CROSSHAIR:
-//    When in RPG mode, clicking locks the mouse pointer. Moving the mouse rotates the camera smoothly
-//    without holding click. A Minecraft crosshair (+) in the center of the screen shows exact focus!
+// 2. FREE MOUSE POINTER ("mirip kayak mouse bro sebenarnya"):
+//    Removed Pointer Lock and static center crosshair so the mouse cursor moves freely across the screen!
+//    Moving the mouse smoothly rotates the camera without holding click, while allowing the player to
+//    freely point and click on any painting or UI button!
 // 3. KEYBOARD [E] & CLICK INTERACTION:
 //    When standing near a painting or pointing at it, pressing E or Left Click inspects the artwork!
 function RpgSceneController({ setNearbyMotif }) {
@@ -58,40 +59,19 @@ function RpgSceneController({ setNearbyMotif }) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [togglePov, cameraMode, discoverMotif, enterPortal]);
 
-  // MINECRAFT POINTER LOCK MOUSE LOOK (No holding click required!):
+  // FREE MOUSE POINTER CAMERA ROTATION (No holding click, pointer moves freely like a real mouse!):
   useEffect(() => {
     const handleMouseMove = (e) => {
-      if (document.pointerLockElement && cameraControlsRef.current && cameraMode === 'rpg') {
+      // In RPG mode, moving the mouse smoothly rotates the camera without locking the pointer!
+      if (cameraControlsRef.current && cameraMode === 'rpg') {
         cameraControlsRef.current.rotate(-e.movementX * 0.003, -e.movementY * 0.003, false);
       }
     };
 
-    const handleClick = () => {
-      if (cameraMode === 'rpg') {
-        if (!document.pointerLockElement && typeof document.body.requestPointerLock === 'function') {
-          document.body.requestPointerLock();
-        } else if (document.pointerLockElement && nearbyMotifRef.current) {
-          // If already locked and clicking near a painting, interact like Minecraft!
-          discoverMotif(nearbyMotifRef.current.id);
-          enterPortal(nearbyMotifRef.current.id);
-        }
-      }
-    };
-
     window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('click', handleClick);
-
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('click', handleClick);
     };
-  }, [cameraMode, discoverMotif, enterPortal]);
-
-  // Automatically unlock mouse pointer when leaving RPG mode
-  useEffect(() => {
-    if (cameraMode !== 'rpg' && document.pointerLockElement && typeof document.exitPointerLock === 'function') {
-      document.exitPointerLock();
-    }
   }, [cameraMode]);
 
   // Handle camera transitions ONLY when entering portal inspection mode!
@@ -199,19 +179,7 @@ export default function Scene() {
   const [nearbyMotif, setNearbyMotif] = useState(null);
 
   return (
-    <div className="w-full h-screen fixed inset-0 z-10 bg-[#090d16]">
-      {/* MINECRAFT CROSSHAIR / POINTER UI (Visible in RPG Mode) */}
-      {cameraMode === 'rpg' && (
-        <div className="fixed inset-0 pointer-events-none z-40 flex items-center justify-center">
-          {/* Authentic Minecraft Crosshair (+) */}
-          <div className="relative flex items-center justify-center w-6 h-6 opacity-90">
-            <div className="absolute w-0.5 h-4 bg-white shadow-[0_0_2px_black]"></div>
-            <div className="absolute w-4 h-0.5 bg-white shadow-[0_0_2px_black]"></div>
-            <div className="w-1 h-1 bg-amber-400 rounded-full shadow-[0_0_4px_#f59e0b]"></div>
-          </div>
-        </div>
-      )}
-
+    <div className="w-full h-screen fixed inset-0 z-10 bg-[#06080f]">
       {/* MINECRAFT INTERACTIVE PROMPT WHEN NEAR A PAINTING */}
       {cameraMode === 'rpg' && nearbyMotif && (
         <div className="fixed bottom-32 left-1/2 -translate-x-1/2 z-50 pointer-events-auto animate-bounce">

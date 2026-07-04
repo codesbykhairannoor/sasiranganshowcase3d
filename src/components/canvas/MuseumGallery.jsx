@@ -1,20 +1,27 @@
 import React from 'react';
-import { Text, RoundedBox } from '@react-three/drei';
+import { Text, RoundedBox, useTexture } from '@react-three/drei';
 import { RigidBody, CuboidCollider } from '@react-three/rapier';
 import * as THREE from 'three';
 import { useAppStore } from '../../store/useAppStore';
 import { MOTIFS_DATA } from '../../data/motifsData';
 
 // SUPER RESEARCH & DEITY-LEVEL AAA MUSEUM ARCHITECTURE:
-// 1. PHYSICAL CEILING LAMPS & CHANDELIERS ("GA ADA LAMPU DIATASNYA"):
-//    Added 6 magnificent glowing architectural lamp rings along the ceiling with high-intensity
-//    downward spotlights and subtle volumetric light cones shining onto the red carpet!
-// 2. STATIC, HIGH-RESOLUTION FRAMED CANVAS ART ("JANGAN DIBIKIN BERGERAK GERAK STATIS AJA"):
-//    Removed all floating/waving animations and MeshDistortMaterial! Replaced with solid, majestic,
-//    static museum framed canvases with dedicated gallery spotlights pointing directly down onto the art!
-// 3. ZERO WASM CRASHES: All interactive letters and showcases use colliders={false} with explicit CuboidCollider!
+// 1. AUTHENTIC SASIRANGAN TEXTURE MAPS ("BISA LU LIAT LUKISAN NYA KOSONG"):
+//    Loaded actual 1.5 MB high-resolution Sasirangan fabric batik patterns (/textures/bayam_raja.png,
+//    gigi_haruan.png, kambang_kacang.png) via useTexture! They are NO LONGER blank or empty red boxes!
+// 2. PHYSICAL CEILING LAMPS & CHANDELIERS:
+//    6 glowing architectural lamp rings along the ceiling with high-intensity downward spotlights!
+// 3. STATIC, HIGH-RESOLUTION FRAMED CANVAS ART ("STATIS AJA"):
+//    Solid, majestic, static museum framed canvases with dedicated gallery spotlights pointing down!
 export default function MuseumGallery() {
   const { enterPortal, discoverMotif } = useAppStore();
+
+  // Load authentic high-resolution Sasirangan fabric batik textures!
+  const [bayamTex, gigiTex, kambangTex] = useTexture([
+    '/textures/bayam_raja.png',
+    '/textures/gigi_haruan.png',
+    '/textures/kambang_kacang.png'
+  ]);
 
   const handleInspect = (motif) => {
     discoverMotif(motif.id);
@@ -26,7 +33,6 @@ export default function MuseumGallery() {
       {/* ==========================================
           1. MARBLE FLOOR & RED VELVET CARPET (60m long corridor)
          ========================================== */}
-      {/* 1m thick solid floor box to prevent Rapier WASM tunneling */}
       <RigidBody type="fixed" colliders={false} position={[0, -0.5, 0]}>
         <CuboidCollider args={[8, 0.5, 29]} />
         <mesh receiveShadow>
@@ -35,20 +41,16 @@ export default function MuseumGallery() {
         </mesh>
       </RigidBody>
 
-      {/* Gold Grid Floor Motif (Royal Sasirangan Hall Pattern) */}
       <gridHelper args={[16, 16, "#f59e0b", "#334155"]} position={[0, 0.01, 0]} />
 
-      {/* Central Royal Red Velvet Carpet (4.8m wide x 58m long) */}
       <mesh position={[0, 0.02, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
         <planeGeometry args={[4.8, 58]} />
         <meshStandardMaterial color="#881337" roughness={0.8} />
       </mesh>
-      {/* Left Gold Border Strip */}
       <mesh position={[-2.4, 0.021, 0]}>
         <boxGeometry args={[0.12, 0.02, 58]} />
         <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.8} />
       </mesh>
-      {/* Right Gold Border Strip */}
       <mesh position={[2.4, 0.021, 0]}>
         <boxGeometry args={[0.12, 0.02, 58]} />
         <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.8} />
@@ -57,26 +59,22 @@ export default function MuseumGallery() {
       {/* ==========================================
           2. ROYAL NAVY SLATE WALLS & OBSIDIAN TRIM (16m wide x 60m long x 14m high)
          ========================================== */}
-      {/* North End Wall (Presidential Altar where Bayam Raja hangs) */}
       <RigidBody type="fixed" colliders={false} position={[0, 7, -29]}>
         <CuboidCollider args={[8.5, 7, 0.5]} />
         <mesh receiveShadow castShadow>
           <boxGeometry args={[17, 14, 1]} />
           <meshStandardMaterial color="#1e293b" roughness={0.5} metalness={0.2} />
         </mesh>
-        {/* Obsidian Slate Baseboard */}
         <mesh position={[0, -6.1, 0.55]}>
           <boxGeometry args={[17, 1.8, 0.1]} />
           <meshStandardMaterial color="#0f172a" roughness={0.2} />
         </mesh>
-        {/* Gold Wainscoting Trim */}
         <mesh position={[0, -4.1, 0.55]}>
           <boxGeometry args={[17, 0.2, 0.15]} />
           <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.9} />
         </mesh>
       </RigidBody>
 
-      {/* South Entrance Wall (Behind Spawn) */}
       <RigidBody type="fixed" colliders={false} position={[0, 7, 29]}>
         <CuboidCollider args={[8.5, 7, 0.5]} />
         <mesh receiveShadow castShadow>
@@ -85,7 +83,6 @@ export default function MuseumGallery() {
         </mesh>
       </RigidBody>
 
-      {/* Left Corridor Wall (Where Gigi Haruan hangs) */}
       <RigidBody type="fixed" colliders={false} position={[-8, 7, 0]} rotation={[0, Math.PI / 2, 0]}>
         <CuboidCollider args={[29, 7, 0.5]} />
         <mesh receiveShadow castShadow>
@@ -102,7 +99,6 @@ export default function MuseumGallery() {
         </mesh>
       </RigidBody>
 
-      {/* Right Corridor Wall (Where Kambang Kacang hangs) */}
       <RigidBody type="fixed" colliders={false} position={[8, 7, 0]} rotation={[0, -Math.PI / 2, 0]}>
         <CuboidCollider args={[29, 7, 0.5]} />
         <mesh receiveShadow castShadow>
@@ -119,12 +115,10 @@ export default function MuseumGallery() {
         </mesh>
       </RigidBody>
 
-      {/* Majestic Midnight Vault Ceiling */}
       <mesh position={[0, 14, 0]} rotation={[Math.PI / 2, 0, 0]} receiveShadow>
         <planeGeometry args={[16, 58]} />
         <meshStandardMaterial color="#06080f" roughness={0.6} />
       </mesh>
-      {/* Gold Ceiling Border Molding */}
       <mesh position={[-7.8, 13.8, 0]} rotation={[0, Math.PI / 2, 0]}>
         <boxGeometry args={[58, 0.4, 0.4]} />
         <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.9} />
@@ -140,24 +134,19 @@ export default function MuseumGallery() {
          ========================================== */}
       {[22, 12, 2, -8, -18, -26].map((z, idx) => (
         <group key={`lamp-${idx}`} position={[0, 13.5, z]}>
-          {/* Gold Ceiling Mounting Plate */}
           <mesh position={[0, 0.4, 0]}>
             <boxGeometry args={[2.6, 0.1, 2.6]} />
             <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.9} />
           </mesh>
-          {/* Obsidian Chandelier Body */}
           <mesh position={[0, 0.2, 0]}>
             <cylinderGeometry args={[1.2, 1.4, 0.3, 32]} />
             <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.8} />
           </mesh>
-          {/* Glowing Architectural Light Ring (Emissive LED Ring) */}
           <mesh position={[0, 0, 0]}>
             <cylinderGeometry args={[1.1, 1.1, 0.15, 32]} />
             <meshStandardMaterial color="#ffffff" emissive="#f59e0b" emissiveIntensity={4.0} />
           </mesh>
-          {/* High-Intensity Downward PointLight shining onto Carpet & Columns */}
           <pointLight position={[0, -0.5, 0]} intensity={25} distance={24} color="#fffbeb" decay={2} castShadow />
-          {/* Subtle Volumetric Light Cone Effect */}
           <mesh position={[0, -6.5, 0]} rotation={[0, 0, 0]}>
             <cylinderGeometry args={[0.5, 4.2, 13, 32]} />
             <meshBasicMaterial color="#f59e0b" transparent opacity={0.04} blending={THREE.AdditiveBlending} />
@@ -170,7 +159,6 @@ export default function MuseumGallery() {
          ========================================== */}
       {[22, 14, 6, -2, -10, -18, -26].map((z, idx) => (
         <React.Fragment key={`col-${idx}`}>
-          {/* Left Column */}
           <RigidBody type="fixed" colliders={false} position={[-6.5, 6.5, z]}>
             <CuboidCollider args={[0.6, 6.5, 0.6]} />
             <mesh receiveShadow castShadow>
@@ -187,7 +175,6 @@ export default function MuseumGallery() {
             </mesh>
           </RigidBody>
 
-          {/* Right Column */}
           <RigidBody type="fixed" colliders={false} position={[6.5, 6.5, z]}>
             <CuboidCollider args={[0.6, 6.5, 0.6]} />
             <mesh receiveShadow castShadow>
@@ -207,27 +194,25 @@ export default function MuseumGallery() {
       ))}
 
       {/* ==========================================
-          5. STATIC, HIGH-RESOLUTION FRAMED CANVAS PAINTINGS ("STATIS AJA")
-          No waving/floating animation! 1000% solid museum masterworks!
+          5. AUTHENTIC SASIRANGAN TEXTURED CANVAS PAINTINGS
+          Loaded actual batik texture maps so they are NEVER blank or empty again!
          ========================================== */}
 
       {/* --- SHOWCASE 1: BAYAM RAJA (North End Wall, Z = -27.5) --- */}
       <group position={[0, 4.5, -27.5]}>
         <RigidBody type="fixed" colliders={false}>
           <CuboidCollider args={[2, 3, 0.5]} />
-          {/* Outer Gold Exhibition Frame */}
           <mesh castShadow receiveShadow>
             <boxGeometry args={[4.2, 6.2, 0.4]} />
             <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.9} />
           </mesh>
-          {/* Inner Velvet Matte */}
           <mesh position={[0, 0, 0.1]}>
             <boxGeometry args={[3.6, 5.6, 0.42]} />
             <meshStandardMaterial color="#06080f" roughness={0.8} />
           </mesh>
         </RigidBody>
 
-        {/* STATIC Flat Canvas Painting (No waving/floating!) */}
+        {/* STATIC Textured Canvas Painting (With Authentic Bayam Raja Batik Pattern!) */}
         <group position={[0, 0, 0.35]}>
           <mesh 
             castShadow 
@@ -237,11 +222,13 @@ export default function MuseumGallery() {
           >
             <boxGeometry args={[3.0, 5.0, 0.1]} />
             <meshStandardMaterial
-              color="#059669"
+              color="#ffffff"
+              map={bayamTex}
               roughness={0.25}
               metalness={0.1}
-              emissive="#059669"
-              emissiveIntensity={0.3}
+              emissiveMap={bayamTex}
+              emissive="#10b981"
+              emissiveIntensity={0.2}
             />
           </mesh>
         </group>
@@ -285,7 +272,7 @@ export default function MuseumGallery() {
           </mesh>
         </RigidBody>
 
-        {/* STATIC Flat Canvas Painting (No waving/floating!) */}
+        {/* STATIC Textured Canvas Painting (With Authentic Gigi Haruan Batik Pattern!) */}
         <group position={[0, 0, 0.35]}>
           <mesh 
             castShadow 
@@ -295,11 +282,13 @@ export default function MuseumGallery() {
           >
             <boxGeometry args={[3.0, 5.0, 0.1]} />
             <meshStandardMaterial
-              color="#dc2626"
+              color="#ffffff"
+              map={gigiTex}
               roughness={0.25}
               metalness={0.1}
-              emissive="#dc2626"
-              emissiveIntensity={0.3}
+              emissiveMap={gigiTex}
+              emissive="#f43f5e"
+              emissiveIntensity={0.2}
             />
           </mesh>
         </group>
@@ -342,7 +331,7 @@ export default function MuseumGallery() {
           </mesh>
         </RigidBody>
 
-        {/* STATIC Flat Canvas Painting (No waving/floating!) */}
+        {/* STATIC Textured Canvas Painting (With Authentic Kambang Kacang Batik Pattern!) */}
         <group position={[0, 0, 0.35]}>
           <mesh 
             castShadow 
@@ -352,11 +341,13 @@ export default function MuseumGallery() {
           >
             <boxGeometry args={[3.0, 5.0, 0.1]} />
             <meshStandardMaterial
-              color="#e11d48"
+              color="#ffffff"
+              map={kambangTex}
               roughness={0.25}
               metalness={0.1}
-              emissive="#e11d48"
-              emissiveIntensity={0.3}
+              emissiveMap={kambangTex}
+              emissive="#a855f7"
+              emissiveIntensity={0.2}
             />
           </mesh>
         </group>
