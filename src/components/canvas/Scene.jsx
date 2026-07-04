@@ -28,8 +28,9 @@ const keyboardMap = [
 // 2. POINTER LOCK ON CLICK ("ketika kita mainin mouse pointer nya ttp ngikut dalam keadaan stuck versis kayak minecraft"):
 //    Clicking on the game window engages Pointer Lock, trapping the invisible pointer in the center!
 //    Moving your physical mouse smoothly rotates the camera AND turns the character's head!
-// 3. LEFT CLICK INTERACTION:
-//    Aiming the center crosshair at any painting and left-clicking (or pressing E) inspects it!
+// 3. PRESS ESC TO UNLOCK ("kalau mau keluar harus pencet ESC bro"):
+//    Pressing ESC releases Pointer Lock so you get your normal system mouse cursor to click UI buttons!
+//    While unlocked (ESC pressed), moving the mouse will NOT spin the camera, keeping the angle perfect!
 function RpgSceneController({ setNearbyMotif }) {
   const { cameraMode, activePortalId, povMode, togglePov, mobileJump, enterPortal } = useAppStore();
   const ecctrlRef = useRef();
@@ -59,8 +60,9 @@ function RpgSceneController({ setNearbyMotif }) {
   // MINECRAFT POINTER LOCK CAMERA ROTATION & HEAD TRACKING FEED:
   useEffect(() => {
     const handleMouseMove = (e) => {
-      if (cameraControlsRef.current && cameraMode === 'rpg') {
-        // Rotate camera smoothly whether in Pointer Lock or Free Mouse!
+      // ONLY rotate camera and track head when Pointer Lock is ACTIVE ("kalau mau keluar harus pencet ESC bro")!
+      // This prevents the camera from spinning away when using the mouse cursor after pressing ESC!
+      if (cameraControlsRef.current && cameraMode === 'rpg' && document.pointerLockElement) {
         cameraControlsRef.current.rotate(-e.movementX * 0.003, -e.movementY * 0.003, false);
 
         // Feed mouse movement into window.__mouseLook for character head tracking!
