@@ -1,6 +1,6 @@
 import React from 'react';
 import { Float, Text, RoundedBox } from '@react-three/drei';
-import { RigidBody } from '@react-three/rapier';
+import { RigidBody, CuboidCollider } from '@react-three/rapier';
 import { MOTIFS_DATA } from '../../data/motifsData';
 import SasiranganPortal from './SasiranganPortal';
 import * as THREE from 'three';
@@ -8,9 +8,11 @@ import * as THREE from 'three';
 // THE GRAND PRESIDENTIAL GALLERY CORRIDOR (LORONG PANJANG MEWAH):
 // 1. Width: 16m (Spacious, majestic, not cramped, but keeps paintings prominent and close on left/right walls!).
 // 2. Length: 60m (From South entrance Z=30 down to North Presidential Altar Z=-30).
-// 3. ZERO-CRASH RAPIER COLLIDER FIX:
-//    Replaced 0-thickness <planeGeometry> with a 1-meter thick <boxGeometry> floor at Y = -0.5!
-//    This guarantees Rapier WASM never generates a degenerate NaN bounding box, preventing silent unmounting of the gallery!
+// 3. 1000% RAPIER WASM ANTI-CRASH & ZERO UNSAFE ALIASING ARCHITECTURE:
+//    - NEVER use automatic colliders="cuboid" on RigidBodies containing <Text> or <Float>!
+//    - Troika <Text> asynchronous font loading & <Float> animations cause Rapier WASM to throw "unreachable executed"
+//      and "recursive use of an object detected which would lead to unsafe aliasing in rust"!
+//    - We use colliders={false} and explicit <CuboidCollider> for EVERY physics body! This guarantees 1000% stability!
 export default function MuseumGallery() {
   return (
     <group>
@@ -18,11 +20,8 @@ export default function MuseumGallery() {
       {/* ==========================================
           0. RAPIER PHYSICS FLOOR AT EXACT GROUND ZERO (Y = 0)
          ========================================== */}
-      {/* 
-          CRITICAL FIX: A 2D planeGeometry has 0 thickness, which causes Rapier WASM to throw degenerate collider exceptions!
-          We use a solid boxGeometry of thickness 1.0 at Y = -0.5 so its top surface is exactly at Y = 0!
-      */}
-      <RigidBody type="fixed" colliders="cuboid" friction={1} restitution={0.1} position={[0, -0.5, 0]}>
+      <RigidBody type="fixed" colliders={false} friction={1} restitution={0.1} position={[0, -0.5, 0]}>
+        <CuboidCollider args={[10, 0.5, 35]} />
         <mesh receiveShadow>
           <boxGeometry args={[20, 1.0, 70]} />
           <meshStandardMaterial color="#f8fafc" roughness={0.18} metalness={0.08} />
@@ -55,58 +54,62 @@ export default function MuseumGallery() {
           2. GRAND CORRIDOR WALLS & CEILING (16m wide x 60m long x 14m high)
          ========================================== */}
       {/* North End Wall (Presidential Altar where Bayam Raja hangs) */}
-      <RigidBody type="fixed" colliders="cuboid">
-        <mesh position={[0, 7, -29]} receiveShadow castShadow>
+      <RigidBody type="fixed" colliders={false} position={[0, 7, -29]}>
+        <CuboidCollider args={[8.5, 7, 0.5]} />
+        <mesh receiveShadow castShadow>
           <boxGeometry args={[17, 14, 1]} />
           <meshStandardMaterial color="#fcf8f2" roughness={0.3} />
         </mesh>
         {/* Obsidian Slate Baseboard */}
-        <mesh position={[0, 0.9, -28.45]}>
+        <mesh position={[0, -6.1, 0.55]}>
           <boxGeometry args={[17, 1.8, 0.1]} />
           <meshStandardMaterial color="#0f172a" roughness={0.2} />
         </mesh>
         {/* Gold Wainscoting Trim */}
-        <mesh position={[0, 2.9, -28.45]}>
+        <mesh position={[0, -4.1, 0.55]}>
           <boxGeometry args={[17, 0.2, 0.15]} />
           <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.9} />
         </mesh>
       </RigidBody>
 
       {/* South Entrance Wall (Behind Spawn) */}
-      <RigidBody type="fixed" colliders="cuboid">
-        <mesh position={[0, 7, 29]} receiveShadow castShadow>
+      <RigidBody type="fixed" colliders={false} position={[0, 7, 29]}>
+        <CuboidCollider args={[8.5, 7, 0.5]} />
+        <mesh receiveShadow castShadow>
           <boxGeometry args={[17, 14, 1]} />
           <meshStandardMaterial color="#fcf8f2" roughness={0.3} />
         </mesh>
       </RigidBody>
 
       {/* Left Corridor Wall (Where Gigi Haruan hangs) */}
-      <RigidBody type="fixed" colliders="cuboid">
-        <mesh position={[-8, 7, 0]} rotation={[0, Math.PI / 2, 0]} receiveShadow castShadow>
+      <RigidBody type="fixed" colliders={false} position={[-8, 7, 0]} rotation={[0, Math.PI / 2, 0]}>
+        <CuboidCollider args={[29, 7, 0.5]} />
+        <mesh receiveShadow castShadow>
           <boxGeometry args={[58, 14, 1]} />
           <meshStandardMaterial color="#fcf8f2" roughness={0.3} />
         </mesh>
-        <mesh position={[-7.45, 0.9, 0]} rotation={[0, Math.PI / 2, 0]}>
+        <mesh position={[0, -6.1, 0.55]}>
           <boxGeometry args={[58, 1.8, 0.1]} />
           <meshStandardMaterial color="#0f172a" roughness={0.2} />
         </mesh>
-        <mesh position={[-7.45, 2.9, 0]} rotation={[0, Math.PI / 2, 0]}>
+        <mesh position={[0, -4.1, 0.55]}>
           <boxGeometry args={[58, 0.2, 0.15]} />
           <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.9} />
         </mesh>
       </RigidBody>
 
       {/* Right Corridor Wall (Where Kambang Kacang hangs) */}
-      <RigidBody type="fixed" colliders="cuboid">
-        <mesh position={[8, 7, 0]} rotation={[0, -Math.PI / 2, 0]} receiveShadow castShadow>
+      <RigidBody type="fixed" colliders={false} position={[8, 7, 0]} rotation={[0, -Math.PI / 2, 0]}>
+        <CuboidCollider args={[29, 7, 0.5]} />
+        <mesh receiveShadow castShadow>
           <boxGeometry args={[58, 14, 1]} />
           <meshStandardMaterial color="#fcf8f2" roughness={0.3} />
         </mesh>
-        <mesh position={[7.45, 0.9, 0]} rotation={[0, -Math.PI / 2, 0]}>
+        <mesh position={[0, -6.1, 0.55]}>
           <boxGeometry args={[58, 1.8, 0.1]} />
           <meshStandardMaterial color="#0f172a" roughness={0.2} />
         </mesh>
-        <mesh position={[7.45, 2.9, 0]} rotation={[0, -Math.PI / 2, 0]}>
+        <mesh position={[0, -4.1, 0.55]}>
           <boxGeometry args={[58, 0.2, 0.15]} />
           <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.9} />
         </mesh>
@@ -134,7 +137,8 @@ export default function MuseumGallery() {
       {[22, 14, 6, -2, -10, -18, -26].map((z, idx) => (
         <React.Fragment key={`col-${idx}`}>
           {/* Left Column */}
-          <RigidBody type="fixed" colliders="cuboid" position={[-6.5, 6.5, z]}>
+          <RigidBody type="fixed" colliders={false} position={[-6.5, 6.5, z]}>
+            <CuboidCollider args={[0.6, 6.5, 0.6]} />
             <mesh receiveShadow castShadow>
               <cylinderGeometry args={[0.6, 0.65, 13, 32]} />
               <meshStandardMaterial color="#ffffff" roughness={0.15} />
@@ -149,7 +153,8 @@ export default function MuseumGallery() {
             </mesh>
           </RigidBody>
           {/* Right Column */}
-          <RigidBody type="fixed" colliders="cuboid" position={[6.5, 6.5, z]}>
+          <RigidBody type="fixed" colliders={false} position={[6.5, 6.5, z]}>
+            <CuboidCollider args={[0.6, 6.5, 0.6]} />
             <mesh receiveShadow castShadow>
               <cylinderGeometry args={[0.6, 0.65, 13, 32]} />
               <meshStandardMaterial color="#ffffff" roughness={0.15} />
@@ -169,7 +174,8 @@ export default function MuseumGallery() {
       {/* Velvet Rope Stanchions along Red Carpet Edge */}
       {[26, 22, 18, 14, 10, 6, 2, -2, -6, -10, -14, -18, -22, -26].map((z, idx) => (
         <React.Fragment key={`stanchion-${idx}`}>
-          <RigidBody type="fixed" colliders="cuboid" position={[-2.7, 0.5, z]}>
+          <RigidBody type="fixed" colliders={false} position={[-2.7, 0.5, z]}>
+            <CuboidCollider args={[0.15, 0.5, 0.15]} />
             <mesh castShadow>
               <cylinderGeometry args={[0.07, 0.16, 1.0, 16]} />
               <meshStandardMaterial color="#f59e0b" roughness={0.1} metalness={0.9} />
@@ -179,7 +185,8 @@ export default function MuseumGallery() {
               <meshStandardMaterial color="#f59e0b" roughness={0.1} metalness={0.9} />
             </mesh>
           </RigidBody>
-          <RigidBody type="fixed" colliders="cuboid" position={[2.7, 0.5, z]}>
+          <RigidBody type="fixed" colliders={false} position={[2.7, 0.5, z]}>
+            <CuboidCollider args={[0.15, 0.5, 0.15]} />
             <mesh castShadow>
               <cylinderGeometry args={[0.07, 0.16, 1.0, 16]} />
               <meshStandardMaterial color="#f59e0b" roughness={0.1} metalness={0.9} />
@@ -214,7 +221,8 @@ export default function MuseumGallery() {
          ========================================== */}
       {MOTIFS_DATA.map((motif) => (
         <React.Fragment key={motif.id}>
-          <RigidBody type="fixed" colliders="cuboid" position={motif.position}>
+          <RigidBody type="fixed" colliders={false} position={motif.position}>
+            <CuboidCollider args={[1.75, 2.5, 0.25]} />
             <mesh>
               <boxGeometry args={[3.5, 5, 0.5]} />
               <meshBasicMaterial transparent opacity={0} />
@@ -229,7 +237,8 @@ export default function MuseumGallery() {
          ========================================== */}
       <group position={[0, 0, 16]}>
         {/* Welcome Pedestal */}
-        <RigidBody type="fixed" colliders="cuboid" position={[0, 0.4, 0]}>
+        <RigidBody type="fixed" colliders={false} position={[0, 0.4, 0]}>
+          <CuboidCollider args={[7, 0.4, 0.9]} />
           <mesh receiveShadow castShadow>
             <boxGeometry args={[14, 0.8, 1.8]} />
             <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.8} />
@@ -241,18 +250,24 @@ export default function MuseumGallery() {
         </RigidBody>
 
         {/* 10 Dynamic Knockdown Physics Letters */}
+        {/* 
+            CRITICAL FIX: NEVER use automatic colliders="cuboid" on a RigidBody containing <Text>!
+            Troika <Text> asynchronous geometry computation triggers "unreachable executed" and "unsafe aliasing" in Rapier WASM!
+            We use colliders={false} and an explicit <CuboidCollider> matching the letter box!
+        */}
         {["S", "A", "S", "I", "R", "A", "N", "G", "A", "N"].map((letter, idx) => {
           const xPos = (idx - 4.5) * 1.3;
           return (
             <RigidBody
               key={`letter-${idx}`}
               type="dynamic"
-              colliders="cuboid"
+              colliders={false}
               position={[xPos, 1.8, 0]}
               mass={1.5}
               restitution={0.6}
               friction={0.4}
             >
+              <CuboidCollider args={[0.5, 0.75, 0.2]} />
               <RoundedBox args={[1.0, 1.5, 0.4]} radius={0.1} smoothness={4} castShadow receiveShadow>
                 <meshStandardMaterial
                   color={idx % 2 === 0 ? "#f59e0b" : "#06b6d4"}
@@ -279,8 +294,13 @@ export default function MuseumGallery() {
           7. CULTURAL ARTIFACT SHOWCASES & ROYAL BENCHES
          ========================================== */}
       {/* Showcases at Z = 0 and Z = -14 along Left/Right walls */}
+      {/* 
+          CRITICAL FIX: Showcases contain <Float> and <Text>. Automatic colliders on animating/async meshes cause Rapier WASM crashes!
+          We use colliders={false} and an explicit <CuboidCollider args={[1.0, 0.6, 1.0]} />!
+      */}
       {[[-5.2, 0], [5.2, -14]].map(([x, z], idx) => (
-        <RigidBody key={`showcase-${idx}`} type="fixed" colliders="cuboid" position={[x, 0.6, z]}>
+        <RigidBody key={`showcase-${idx}`} type="fixed" colliders={false} position={[x, 0.6, z]}>
+          <CuboidCollider args={[1.0, 0.6, 1.0]} />
           <mesh receiveShadow castShadow>
             <boxGeometry args={[2.0, 1.2, 2.0]} />
             <meshStandardMaterial color="#0f172a" roughness={0.2} />
@@ -303,7 +323,8 @@ export default function MuseumGallery() {
 
       {/* Royal Benches along walls */}
       {[[-5.2, 10], [5.2, 10], [-5.2, -10], [5.2, -10]].map(([x, z], idx) => (
-        <RigidBody key={`bench-${idx}`} type="fixed" colliders="cuboid" position={[x, 0.3, z]}>
+        <RigidBody key={`bench-${idx}`} type="fixed" colliders={false} position={[x, 0.3, z]}>
+          <CuboidCollider args={[1.25, 0.3, 0.5]} />
           <mesh receiveShadow castShadow>
             <boxGeometry args={[2.5, 0.6, 1.0]} />
             <meshStandardMaterial color="#1e293b" roughness={0.5} />
