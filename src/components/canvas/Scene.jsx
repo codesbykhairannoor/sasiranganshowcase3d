@@ -1,5 +1,5 @@
 import React, { Suspense, useRef, useEffect, useState } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Environment, ContactShadows, KeyboardControls, useKeyboardControls } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
 import { Ecctrl } from 'ecctrl';
@@ -34,12 +34,16 @@ const keyboardMap = [
 // 4. INSTANT RE-LOCK & GENEROUS CENTER AIMING ("gak perlu klik dua kali, posisi pas ketengah"):
 //    Returning from inspection modal auto re-locks pointer immediately!
 //    Proximity detection covers the entire corridor width so you can stand comfortably centered!
+// 5. CLOSE IMMERSIVE POV & WALL CLIPPING PROTECTION ("pov deket kaya tadi & gak tembus tembok/glitch"):
+//    Camera maxDistance locked to 3.5m for a close, intimate AAA RPG feel!
+//    Camera coordinates strictly clamped inside gallery walls so it never clips into the outside void!
 function RpgSceneController({ setNearbyMotif }) {
   const { cameraMode, activePortalId, povMode, togglePov, mobileJump, enterPortal } = useAppStore();
   const ecctrlRef = useRef();
   const cameraControlsRef = useRef();
   const [, getKeys] = useKeyboardControls();
   const nearbyMotifRef = useRef(null);
+  const { camera } = useThree();
 
   const is1stPerson = povMode === '1st';
 
@@ -153,6 +157,15 @@ function RpgSceneController({ setNearbyMotif }) {
         cameraControlsRef.current.moveTo(target.x, eyeHeight, target.z, true);
       }
 
+      // PREVENT CAMERA FROM CLIPPING INTO WALLS OR OUTSIDE VOID ("keliatan bagian luarnya & glitch"):
+      // Gallery interior walls are at X = -8 to +8, Z = -29 to +29.
+      // We strictly clamp camera coordinates inside the room so it NEVER clips through walls!
+      if (!is1stPerson && camera) {
+        camera.position.x = THREE.MathUtils.clamp(camera.position.x, -7.2, 7.2);
+        camera.position.z = THREE.MathUtils.clamp(camera.position.z, -27.5, 27.5);
+        if (camera.position.y < 0.4) camera.position.y = 0.4;
+      }
+
       // SUPER GENEROUS PROXIMITY DETECTION ACROSS ENTIRE CORRIDOR WIDTH ("kurang ketengah & gak kedeketan"):
       if (target && typeof target.z === 'number') {
         let found = null;
@@ -200,12 +213,16 @@ function RpgSceneController({ setNearbyMotif }) {
         <CharacterDroid />
       </Ecctrl>
 
+      {/* 
+          CLOSE IMMERSIVE POV ("bikin deket kaya tadi aja"):
+          minDistance=1.5, maxDistance=3.5 keeps the 3rd person camera compact, intimate, and cinematic!
+      */}
       <EcctrlCameraControls
         ref={cameraControlsRef}
         makeDefault
         smoothTime={0.1}
         minDistance={is1stPerson ? 0.01 : 1.5}
-        maxDistance={is1stPerson ? 0.01 : 12}
+        maxDistance={is1stPerson ? 0.01 : 3.5}
         maxPolarAngle={Math.PI / 2 - 0.05}
       />
     </>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Text, RoundedBox, useTexture } from '@react-three/drei';
 import { RigidBody, CuboidCollider } from '@react-three/rapier';
 import * as THREE from 'three';
@@ -15,9 +15,26 @@ import { MOTIFS_DATA } from '../../data/motifsData';
 //    Removed knockdown letters and built a Grand Exhibition Reception Monument with the Banjarmasin Logo!
 // 4. TITLE CASE TYPOGRAPHY ("CUKUP TIAP HURUF KATA PERTAMA YG BESAR"):
 //    Replaced all ALL CAPS text with elegant Title Case formatting!
-// 5. FIXED INSPECTION CLICK: Directly calls enterPortal(motif.id) without errors!
+// 5. FIXED INSPECTION CLICK & WALL CLIPPING PROTECTION ("keliatan bagian luarnya & glitch"):
+//    All gallery materials automatically rendered as DoubleSide so walls never disappear from any angle!
 export default function MuseumGallery() {
   const { enterPortal } = useAppStore();
+  const galleryRef = useRef();
+
+  // Automatically make ALL meshes DoubleSide so turning around near walls never shows outside glitches!
+  useEffect(() => {
+    if (galleryRef.current) {
+      galleryRef.current.traverse((child) => {
+        if (child.isMesh && child.material) {
+          if (Array.isArray(child.material)) {
+            child.material.forEach((mat) => { mat.side = THREE.DoubleSide; });
+          } else {
+            child.material.side = THREE.DoubleSide;
+          }
+        }
+      });
+    }
+  }, []);
 
   // Load authentic high-resolution WebP Sasirangan textures & Banjarmasin Logo!
   const [bayamTex, gigiTex, kambangTex, sarigadingTex, nagaTex, logoTex] = useTexture([
@@ -34,7 +51,7 @@ export default function MuseumGallery() {
   };
 
   return (
-    <group>
+    <group ref={galleryRef}>
       {/* ==========================================
           1. MARBLE FLOOR & RED VELVET CARPET (60m long corridor)
          ========================================== */}
