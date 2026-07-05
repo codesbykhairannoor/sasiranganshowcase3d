@@ -243,8 +243,8 @@ function RpgSceneController({ setNearbyMotif }) {
         ref={cameraControlsRef}
         makeDefault
         smoothTime={0.1}
-        minDistance={is1stPerson ? 0.01 : 1.0}
-        maxDistance={is1stPerson ? 0.01 : 2.0}
+        minDistance={cameraMode === 'portal' ? 2.0 : (is1stPerson ? 0.01 : 1.0)}
+        maxDistance={cameraMode === 'portal' ? 12.0 : (is1stPerson ? 0.01 : 2.0)}
         minPolarAngle={0.15}
         maxPolarAngle={Math.PI - 0.15}
       />

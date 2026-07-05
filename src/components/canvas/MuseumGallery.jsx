@@ -16,25 +16,35 @@ import { MOTIFS_DATA } from '../../data/motifsData';
 // 4. TITLE CASE TYPOGRAPHY ("CUKUP TIAP HURUF KATA PERTAMA YG BESAR"):
 //    Replaced all ALL CAPS text with elegant Title Case formatting!
 // 5. FIXED INSPECTION CLICK & WALL CLIPPING PROTECTION ("keliatan bagian luarnya & glitch"):
-// --- MANNEQUIN COMPONENT ---
+// --- BOUTIQUE DRESS FORM (ELEGANT MANNEQUIN) ---
 const ExhibitionMannequin = ({ position, rotation, texture }) => {
   return (
     <group position={position} rotation={rotation}>
       <RigidBody type="fixed" colliders="hull">
-        {/* Body / Shirt with Sasirangan Texture */}
-        <mesh position={[0, 0.75, 0]} castShadow receiveShadow>
-          <boxGeometry args={[0.6, 1.5, 0.3]} />
-          <meshStandardMaterial map={texture} roughness={0.4} />
+        {/* Torso / Dress Form */}
+        <mesh position={[0, 1.2, 0]} castShadow receiveShadow>
+          <cylinderGeometry args={[0.25, 0.2, 0.6, 32]} />
+          <meshStandardMaterial map={texture} roughness={0.6} />
         </mesh>
-        {/* Head */}
-        <mesh position={[0, 1.7, 0]} castShadow receiveShadow>
-          <sphereGeometry args={[0.25, 32, 32]} />
-          <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.8} />
+        {/* Chest/Shoulders */}
+        <mesh position={[0, 1.6, 0]} castShadow receiveShadow>
+          <cylinderGeometry args={[0.2, 0.28, 0.4, 32]} />
+          <meshStandardMaterial map={texture} roughness={0.6} />
+        </mesh>
+        {/* Neck */}
+        <mesh position={[0, 1.85, 0]} castShadow receiveShadow>
+          <cylinderGeometry args={[0.08, 0.09, 0.15, 32]} />
+          <meshStandardMaterial color="#1e293b" roughness={0.2} metalness={0.8} />
+        </mesh>
+        {/* Golden Pole */}
+        <mesh position={[0, 0.45, 0]} castShadow receiveShadow>
+          <cylinderGeometry args={[0.03, 0.03, 0.9, 16]} />
+          <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.9} />
         </mesh>
         {/* Base Pedestal */}
-        <mesh position={[0, -0.05, 0]} castShadow receiveShadow>
-          <cylinderGeometry args={[0.5, 0.6, 0.1, 32]} />
-          <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.8} />
+        <mesh position={[0, -0.02, 0]} castShadow receiveShadow>
+          <cylinderGeometry args={[0.3, 0.35, 0.05, 32]} />
+          <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.9} />
         </mesh>
       </RigidBody>
     </group>
@@ -87,7 +97,6 @@ export default function MuseumGallery() {
         </mesh>
       </RigidBody>
 
-      <gridHelper args={[16, 16, "#f59e0b", "#334155"]} position={[0, 0.01, 0]} />
 
       <mesh position={[0, 0.02, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
         <planeGeometry args={[4.8, 58]} />
@@ -192,10 +201,6 @@ export default function MuseumGallery() {
             <meshStandardMaterial color="#ffffff" emissive="#f59e0b" emissiveIntensity={4.0} />
           </mesh>
           <pointLight position={[0, -0.5, 0]} intensity={25} distance={24} color="#fffbeb" decay={2} castShadow />
-          <mesh position={[0, -6.5, 0]} rotation={[0, 0, 0]}>
-            <cylinderGeometry args={[0.5, 4.2, 13, 32]} />
-            <meshBasicMaterial color="#f59e0b" transparent opacity={0.04} blending={THREE.AdditiveBlending} />
-          </mesh>
         </group>
       ))}
 
@@ -329,7 +334,7 @@ export default function MuseumGallery() {
             <boxGeometry args={[1.5, 0.3, 0.8]} />
             <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.8} />
           </mesh>
-          <mesh position={[0, -0.1, 0.2]}>
+          <mesh position={[0, -0.16, 0.2]}>
             <boxGeometry args={[1.2, 0.1, 0.4]} />
             <meshStandardMaterial color="#ffffff" emissive="#fffbeb" emissiveIntensity={3.0} />
           </mesh>
@@ -389,7 +394,7 @@ export default function MuseumGallery() {
             <boxGeometry args={[1.5, 0.3, 0.8]} />
             <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.8} />
           </mesh>
-          <mesh position={[0, -0.1, 0.2]}>
+          <mesh position={[0, -0.16, 0.2]}>
             <boxGeometry args={[1.2, 0.1, 0.4]} />
             <meshStandardMaterial color="#ffffff" emissive="#fffbeb" emissiveIntensity={3.0} />
           </mesh>
@@ -449,7 +454,7 @@ export default function MuseumGallery() {
             <boxGeometry args={[1.5, 0.3, 0.8]} />
             <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.8} />
           </mesh>
-          <mesh position={[0, -0.1, 0.2]}>
+          <mesh position={[0, -0.16, 0.2]}>
             <boxGeometry args={[1.2, 0.1, 0.4]} />
             <meshStandardMaterial color="#ffffff" emissive="#fffbeb" emissiveIntensity={3.0} />
           </mesh>
@@ -509,7 +514,7 @@ export default function MuseumGallery() {
             <boxGeometry args={[1.5, 0.3, 0.8]} />
             <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.8} />
           </mesh>
-          <mesh position={[0, -0.1, 0.2]}>
+          <mesh position={[0, -0.16, 0.2]}>
             <boxGeometry args={[1.2, 0.1, 0.4]} />
             <meshStandardMaterial color="#ffffff" emissive="#fffbeb" emissiveIntensity={3.0} />
           </mesh>
@@ -569,7 +574,7 @@ export default function MuseumGallery() {
             <boxGeometry args={[1.5, 0.3, 0.8]} />
             <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.8} />
           </mesh>
-          <mesh position={[0, -0.1, 0.2]}>
+          <mesh position={[0, -0.16, 0.2]}>
             <boxGeometry args={[1.2, 0.1, 0.4]} />
             <meshStandardMaterial color="#ffffff" emissive="#fffbeb" emissiveIntensity={3.0} />
           </mesh>
