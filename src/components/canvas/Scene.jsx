@@ -146,8 +146,18 @@ function RpgSceneController({ setNearbyMotif }) {
         
         cameraControlsRef.current.setLookAt(camPos.x, camPos.y, camPos.z, lookPos.x, lookPos.y, lookPos.z, true);
       }
+    } else if (cameraMode === 'rpg') {
+      if (povMode === '1st') {
+        cameraControlsRef.current.minDistance = 0.01;
+        cameraControlsRef.current.maxDistance = 0.01;
+        cameraControlsRef.current.dollyTo(0.01, true);
+      } else {
+        cameraControlsRef.current.minDistance = 1.0;
+        cameraControlsRef.current.maxDistance = 2.0;
+        cameraControlsRef.current.dollyTo(2.0, true);
+      }
     }
-  }, [cameraMode, activePortalId]);
+  }, [cameraMode, activePortalId, povMode]);
 
   // In useFrame: Drive character movement, camera follow target, and proximity detection!
   useFrame(() => {
