@@ -7,11 +7,15 @@ import MotifDetailModal from './components/ui/MotifDetailModal';
 import GamificationHud from './components/ui/GamificationHud';
 import RewardModal from './components/ui/RewardModal';
 import AudioPlayer from './components/ui/AudioPlayer';
+import MobileLandscapeOverlay from './components/ui/MobileLandscapeOverlay';
 import Scene from './components/canvas/Scene';
 
 export default function App() {
   return (
     <div className="relative w-full h-screen overflow-hidden select-none bg-slate-950 font-sans">
+      {/* 0. Mobile Landscape Blocker */}
+      <MobileLandscapeOverlay />
+
       {/* 1. UI Overlay Layer (Drei useProgress & HTML Overlays) */}
       <LoadingScreen />
       <Navbar />

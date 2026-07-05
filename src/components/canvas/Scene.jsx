@@ -1,4 +1,4 @@
-import React, { Suspense, useRef, useEffect, useState } from 'react';
+import React, { Suspense, useRef, useEffect, useState, useMemo } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Environment, ContactShadows, KeyboardControls, useKeyboardControls } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
@@ -278,6 +278,14 @@ export default function Scene() {
     }
   };
 
+  // Mobile Detection for Performance Optimizations
+  const isMobile = useMemo(() => {
+    if (typeof window !== 'undefined') {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+    }
+    return false;
+  }, []);
+
   return (
     <div 
       onClick={handleSceneClick}
@@ -314,16 +322,16 @@ export default function Scene() {
       )}
 
       {/* On-Screen Mobile Joystick (Only visible during RPG Character Control Mode!) */}
-      {cameraMode === 'rpg' && (
-        <div className="fixed bottom-24 left-6 z-50 pointer-events-auto md:hidden">
+      {cameraMode === 'rpg' && isMobile && (
+        <div className="fixed bottom-12 left-12 z-50 pointer-events-auto scale-150 transform-origin-bottom-left opacity-80 mix-blend-screen">
           <Joystick buttonNumber={1} />
         </div>
       )}
 
       <Canvas
-        shadows
-        dpr={[1, 2]}
-        gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
+        shadows={!isMobile}
+        dpr={isMobile ? 1 : [1, 2]}
+        gl={{ antialias: !isMobile, alpha: false, powerPreference: 'high-performance' }}
       >
         <KeyboardControls map={keyboardMap}>
           {/* ROYAL MUSEUM NIGHT BACKGROUND WITH CRYSTAL CLEAR STUDIO DEFINITION! */}
@@ -341,8 +349,8 @@ export default function Scene() {
             position={[15, 35, 15]} 
             intensity={1.2} 
             color="#fffbeb"
-            castShadow 
-            shadow-mapSize={[2048, 2048]}
+            castShadow={!isMobile} 
+            shadow-mapSize={isMobile ? [512, 512] : [2048, 2048]}
             shadow-bias={-0.0001}
           />
           <directionalLight position={[-15, 20, -15]} intensity={0.6} color="#38bdf8" />
@@ -358,6 +366,8 @@ export default function Scene() {
             blur={2.5} 
             far={6} 
             color="#06080f" 
+            frames={1} // MASSIVE PERFORMANCE BOOST: Only render once on load!
+            resolution={isMobile ? 512 : 1024}
           />
 
           {/* RAPIER PHYSICS ENGINE & GRAND GALLERY CORRIDOR */}
