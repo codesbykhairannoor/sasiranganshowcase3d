@@ -287,7 +287,12 @@ export default function MuseumGallery() {
         <RigidBody type="fixed" colliders={false}>
           <CuboidCollider args={[2.5, 1.8, 0.6]} />
           {/* Obsidian Marble Monument Pedestal */}
-          <mesh castShadow receiveShadow>
+          <mesh 
+            castShadow receiveShadow
+            onClick={() => handleInspect(MOTIFS_DATA[6])} 
+            onPointerOver={(e) => (document.body.style.cursor = 'pointer')} 
+            onPointerOut={(e) => (document.body.style.cursor = 'auto')}
+          >
             <boxGeometry args={[5.0, 3.6, 1.2]} />
             <meshStandardMaterial color="#0f172a" roughness={0.15} metalness={0.7} />
           </mesh>
@@ -356,21 +361,25 @@ export default function MuseumGallery() {
             <meshStandardMaterial color="#e0f2fe" transparent opacity={0.15} roughness={0.0} metalness={0.9} envMapIntensity={2.0} />
           </mesh>
 
-          {/* Glowing Natural Dye Elements Inside */}
+          {/* Floating Cloth & Natural Dye Spheres */}
           <group position={[0, 0.2, 0]}>
-            <mesh position={[-0.3, 0, 0]} rotation={[Math.PI/4, Math.PI/4, 0]}>
-              <octahedronGeometry args={[0.25]} />
-              <meshStandardMaterial color="#eab308" emissive="#ca8a04" emissiveIntensity={1.5} roughness={0.2} />
+            {/* Floating Fabric Roll */}
+            <mesh position={[0, 0.1, 0]} castShadow>
+              <cylinderGeometry args={[0.25, 0.25, 1.0, 32]} />
+              <meshStandardMaterial map={bayamTex} roughness={0.5} />
             </mesh>
-            <mesh position={[0.3, 0.2, 0.2]} rotation={[Math.PI/3, Math.PI/6, 0]}>
-              <icosahedronGeometry args={[0.2]} />
-              <meshStandardMaterial color="#84cc16" emissive="#65a30d" emissiveIntensity={1.5} roughness={0.2} />
+            
+            {/* Glowing Natural Dye Extracts (Turmeric & Indigo) */}
+            <mesh position={[-0.4, -0.6, 0.3]}>
+              <sphereGeometry args={[0.12, 32, 32]} />
+              <meshStandardMaterial color="#eab308" emissive="#ca8a04" emissiveIntensity={2.0} />
             </mesh>
-            <mesh position={[0.1, -0.3, -0.2]} rotation={[Math.PI/2, 0, 0]}>
-              <dodecahedronGeometry args={[0.2]} />
-              <meshStandardMaterial color="#10b981" emissive="#059669" emissiveIntensity={1.5} roughness={0.2} />
+            <mesh position={[0.4, -0.6, -0.3]}>
+              <sphereGeometry args={[0.12, 32, 32]} />
+              <meshStandardMaterial color="#84cc16" emissive="#65a30d" emissiveIntensity={2.0} />
             </mesh>
-            <spotLight position={[0, 0.8, 0]} angle={0.8} penumbra={0.5} intensity={15} distance={3} color="#84cc16" />
+            
+            <spotLight position={[0, 1.2, 0]} angle={0.8} penumbra={0.5} intensity={15} distance={3} color="#84cc16" />
           </group>
         </RigidBody>
 
