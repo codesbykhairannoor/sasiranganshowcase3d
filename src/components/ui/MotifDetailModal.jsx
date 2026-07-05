@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAppStore } from '../../store/useAppStore';
-import { ArrowLeft, Sparkles, Shield, CheckCircle, Info } from 'lucide-react';
+import { ArrowLeft, Sparkles, Shield, CheckCircle, Info, ShoppingCart } from 'lucide-react';
 
 export default function MotifDetailModal() {
   const { currentView, selectedMotif, exitPortal } = useAppStore();
@@ -82,14 +82,23 @@ export default function MotifDetailModal() {
           </div>
         </div>
 
-        {/* Action Button */}
-        <div className="pt-2">
+        {/* Action Buttons */}
+        <div className="pt-2 flex flex-col md:flex-row gap-3">
+          <button
+            onClick={() => window.alert('Mengalihkan ke Marketplace UMKM Banjarmasin...\n\n(Ini adalah Simulasi Solusi Aksi Nyata SDG 8 & 9)')}
+            className="flex-1 py-4 rounded-2xl font-game font-bold text-xs md:text-sm text-slate-900 shadow-lg transition-all hover:scale-102 active:scale-98 flex items-center justify-center gap-2 cursor-pointer tracking-wide bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400"
+            style={{ boxShadow: `0 0 20px rgba(251, 191, 36, 0.4)` }}
+          >
+            <ShoppingCart className="w-4 h-4" />
+            <span>Dukung Pengrajin (Beli Produk)</span>
+          </button>
+
           <button
             onClick={exitPortal}
-            className="w-full py-4 rounded-2xl font-game font-bold text-xs md:text-sm text-white shadow-lg transition-all hover:scale-102 active:scale-98 flex items-center justify-center gap-2 cursor-pointer tracking-wide"
-            style={{ backgroundColor: selectedMotif.color, boxShadow: `0 0 20px ${selectedMotif.color}50` }}
+            className="flex-1 py-4 rounded-2xl font-game font-bold text-xs md:text-sm text-white shadow-lg transition-all hover:scale-102 active:scale-98 flex items-center justify-center gap-2 cursor-pointer tracking-wide"
+            style={{ backgroundColor: selectedMotif.color, boxShadow: `0 0 20px ${selectedMotif.color}40` }}
           >
-            <span>Selesai Eksplorasi & Kembali Ke Karpet Merah</span>
+            <span>Kembali Ke Galeri</span>
             <ArrowLeft className="w-4 h-4 rotate-180" />
           </button>
         </div>

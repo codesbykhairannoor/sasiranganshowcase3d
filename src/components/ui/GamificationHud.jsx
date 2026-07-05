@@ -1,10 +1,10 @@
 import React from 'react';
 import { useAppStore } from '../../store/useAppStore';
 import { MOTIFS_DATA } from '../../data/motifsData';
-import { Award, ArrowLeft, Gamepad2, Eye, Rocket } from 'lucide-react';
+import { Award, ArrowLeft, Gamepad2, Eye, Rocket, Volume2, VolumeX } from 'lucide-react';
 
 export default function GamificationHud() {
-  const { currentView, discoveredMotifs, isAllDiscovered, openRewardModal, setView, povMode, togglePov, setMobileJump } = useAppStore();
+  const { currentView, discoveredMotifs, isAllDiscovered, openRewardModal, setView, povMode, togglePov, setMobileJump, isAudioMuted, toggleAudio } = useAppStore();
 
   if (currentView !== 'museum') return null;
 
@@ -41,6 +41,19 @@ export default function GamificationHud() {
           >
             <Eye className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform" />
             <span>POV : <strong className="text-amber-400">{is1stPerson ? '1st (Mata)' : '3rd (Ikuti)'}</strong></span>
+          </button>
+
+          {/* Audio Toggle Button */}
+          <button
+            onClick={toggleAudio}
+            className="bg-slate-950/90 backdrop-blur-2xl p-3 rounded-2xl border border-white/20 hover:border-amber-500/50 shadow-2xl flex items-center justify-center text-white transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0"
+            title={isAudioMuted ? "Putar BGM Tradisional" : "Matikan BGM"}
+          >
+            {isAudioMuted ? (
+              <VolumeX className="w-5 h-5 text-slate-500" />
+            ) : (
+              <Volume2 className="w-5 h-5 text-amber-400 animate-pulse" />
+            )}
           </button>
 
           {/* Controls Hint Box */}

@@ -83,6 +83,40 @@ export const MOTIFS_DATA = [
       'Sering dipakai dalam acara mandi-mandi pengantin adat Banjar.',
       'Menggabungkan unsur flora dan fauna dalam satu kesatuan estetika.'
     ]
+  },
+  {
+    id: 'sdg12-alchemist',
+    title: 'Pewarnaan Alami & Zero Waste',
+    subtitle: 'Sustainable Fashion Initiative (SDG 12 Showcase)',
+    color: '#84cc16', // Lime Green
+    glowColor: 'rgba(132, 204, 22, 0.6)',
+    textureUrl: null, 
+    position: [0, 5.0, 0], // Center of the room
+    rotation: [0, 0, 0],
+    philosophy: 'Industri fashion modern seringkali menjadi penyumbang polusi air terbesar. Namun, pengrajin Sasirangan tradisional Kalimantan Selatan telah lama mengadopsi prinsip "Zero Waste" dengan memanfaatkan ekstrak bahan alam seperti kayu ulin, kunyit, dan daun tarum untuk menghasilkan warna yang indah sekaligus menjaga kejernihan air sungai.',
+    sdgImpact: 'SDG 12 — Konsumsi dan Produksi Bertanggung Jawab: Memastikan pola produksi fesyen yang ramah lingkungan dengan meminimalisir limbah kimia berbahaya ke aliran sungai lokal.',
+    facts: [
+      'Warna kuning alami diekstrak dari rimpang kunyit.',
+      'Warna coklat eksotis didapat dari ekstrak kayu ulin khas Kalimantan.',
+      'Sisa rebusan pewarna alam aman untuk diserap kembali oleh tanah.'
+    ]
+  },
+  {
+    id: 'monolith-babad',
+    title: 'Babad Sasirangan',
+    subtitle: 'Titik Nol Geografis Budaya Banjar (Heritage Monolith)',
+    color: '#eab308', // Yellow
+    glowColor: 'rgba(234, 179, 8, 0.6)',
+    textureUrl: null, 
+    position: [0, 3.5, 20.5], // Perfect camera position to view the monument at z=16
+    rotation: [0, Math.PI, 0],
+    philosophy: 'Menurut Hikayat Banjar (Abad ke-12), Sasirangan pertama kali dibuat oleh Patih Lambung Mangkurat sebagai "Kain Pamali" atau kain penyembuhan sakral untuk Putri Junjung Buih. Tumbuh dari tanah Banjarmasin, kini kain ini telah berevolusi menjadi simbol identitas modern masyarakat Kalimantan Selatan tanpa kehilangan ruh mistisnya.',
+    sdgImpact: 'SDG 11 — Kota dan Pemukiman Inklusif: Menjadikan sejarah dan geografi kota Banjarmasin sebagai akar utama yang menginspirasi inovasi budaya generasi masa depan.',
+    facts: [
+      'Berasal dari kata "Sirang" yang berarti dijelujur atau dijahit dengan tangan.',
+      'Awalnya dikerjakan semalaman suntuk sambil melantunkan doa (salawat).',
+      'Setiap warna dulunya melambangkan metode penyembuhan penyakit tertentu.'
+    ]
   }
 ];
 

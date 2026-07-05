@@ -16,58 +16,58 @@ import { MOTIFS_DATA } from '../../data/motifsData';
 // 4. TITLE CASE TYPOGRAPHY ("CUKUP TIAP HURUF KATA PERTAMA YG BESAR"):
 //    Replaced all ALL CAPS text with elegant Title Case formatting!
 // 5. FIXED INSPECTION CLICK & WALL CLIPPING PROTECTION ("keliatan bagian luarnya & glitch"):
-// --- SLEEK SILVER HUMANOID MANNEQUIN ---
+// --- SLEEK ROUNDED HUMANOID MANNEQUIN ---
 const ExhibitionMannequin = ({ position, rotation, texture }) => {
   return (
     <group position={position} rotation={rotation}>
       <RigidBody type="fixed" colliders="hull">
         {/* 1. Marble Stand Base */}
         <mesh position={[0, -0.05, 0]} receiveShadow>
-          <boxGeometry args={[1.0, 0.1, 1.0]} />
+          <cylinderGeometry args={[0.6, 0.6, 0.1, 32]} />
           <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.8} />
         </mesh>
 
-        {/* 2. Slate Black Trousers / Legs */}
-        <mesh position={[-0.22, 0.7, 0]} castShadow receiveShadow>
-          <boxGeometry args={[0.24, 1.4, 0.26]} />
+        {/* 2. Slate Black Trousers / Legs (Capsules) */}
+        <mesh position={[-0.18, 0.7, 0]} castShadow receiveShadow>
+          <capsuleGeometry args={[0.12, 1.16, 4, 16]} />
           <meshStandardMaterial color="#1e293b" roughness={0.5} />
         </mesh>
-        <mesh position={[0.22, 0.7, 0]} castShadow receiveShadow>
-          <boxGeometry args={[0.24, 1.4, 0.26]} />
+        <mesh position={[0.18, 0.7, 0]} castShadow receiveShadow>
+          <capsuleGeometry args={[0.12, 1.16, 4, 16]} />
           <meshStandardMaterial color="#1e293b" roughness={0.5} />
         </mesh>
 
         {/* 3. Gold Belt / Waist */}
         <mesh position={[0, 1.45, 0]} castShadow receiveShadow>
-          <boxGeometry args={[0.72, 0.12, 0.3]} />
+          <cylinderGeometry args={[0.36, 0.36, 0.12, 32]} />
           <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.9} />
         </mesh>
 
-        {/* 4. Torso / Shirt wearing Sasirangan Texture */}
+        {/* 4. Torso / Shirt wearing Sasirangan Texture (Capsule for rounded body) */}
         <mesh position={[0, 2.05, 0]} castShadow receiveShadow>
-          <boxGeometry args={[0.7, 1.1, 0.35]} />
+          <capsuleGeometry args={[0.35, 0.4, 4, 32]} />
           <meshStandardMaterial map={texture} roughness={0.4} />
         </mesh>
 
-        {/* 5. Sleek Silver Arms */}
-        <mesh position={[-0.46, 1.95, 0]} castShadow receiveShadow>
-          <boxGeometry args={[0.2, 1.1, 0.2]} />
+        {/* 5. Sleek Silver Arms (Capsules) */}
+        <mesh position={[-0.48, 1.95, 0]} castShadow receiveShadow rotation={[0, 0, 0.1]}>
+          <capsuleGeometry args={[0.1, 0.9, 4, 16]} />
           <meshStandardMaterial color="#e2e8f0" roughness={0.3} metalness={0.5} />
         </mesh>
-        <mesh position={[0.46, 1.95, 0]} castShadow receiveShadow>
-          <boxGeometry args={[0.2, 1.1, 0.2]} />
+        <mesh position={[0.48, 1.95, 0]} castShadow receiveShadow rotation={[0, 0, -0.1]}>
+          <capsuleGeometry args={[0.1, 0.9, 4, 16]} />
           <meshStandardMaterial color="#e2e8f0" roughness={0.3} metalness={0.5} />
         </mesh>
 
         {/* 6. Neck */}
         <mesh position={[0, 2.68, 0]} castShadow receiveShadow>
-          <cylinderGeometry args={[0.1, 0.11, 0.16, 16]} />
+          <cylinderGeometry args={[0.08, 0.1, 0.16, 16]} />
           <meshStandardMaterial color="#e2e8f0" roughness={0.3} metalness={0.5} />
         </mesh>
 
         {/* 7. Sleek Faceless Silver Head */}
         <mesh position={[0, 2.98, 0]} scale={[1, 1.25, 1]} castShadow receiveShadow>
-          <sphereGeometry args={[0.22, 32, 32]} />
+          <sphereGeometry args={[0.2, 32, 32]} />
           <meshStandardMaterial color="#f8fafc" roughness={0.2} metalness={0.6} />
         </mesh>
       </RigidBody>
@@ -299,20 +299,84 @@ export default function MuseumGallery() {
         </RigidBody>
 
         {/* Banjarmasin Logo Displayed Prominently on Front */}
-        <mesh position={[0, 0.4, 0.62]} castShadow>
+        <mesh 
+          position={[0, 0.4, 0.62]} 
+          castShadow
+          onClick={() => handleInspect(MOTIFS_DATA[6])} 
+          onPointerOver={(e) => (document.body.style.cursor = 'pointer')} 
+          onPointerOut={(e) => (document.body.style.cursor = 'auto')}
+        >
           <planeGeometry args={[2.2, 2.2]} />
           <meshStandardMaterial map={logoTex} transparent roughness={0.2} />
         </mesh>
 
         {/* Title Case Welcome Typography */}
-        <group position={[0, -1.1, 0.62]}>
+        <group 
+          position={[0, -1.1, 0.62]}
+          onClick={() => handleInspect(MOTIFS_DATA[6])} 
+          onPointerOver={(e) => (document.body.style.cursor = 'pointer')} 
+          onPointerOut={(e) => (document.body.style.cursor = 'auto')}
+        >
           <Text position={[0, 0, 0]} fontSize={0.28} color="#f59e0b" anchorX="center" anchorY="middle" fontWeight="bold">
             Kota Banjarmasin • Culture Verse
           </Text>
           <Text position={[0, -0.32, 0]} fontSize={0.2} color="#ffffff" anchorX="center" anchorY="middle" fontWeight="medium">
             Pameran Metaverse Kain Sasirangan
           </Text>
+          <Text position={[0, -0.6, 0]} fontSize={0.16} color="#38bdf8" anchorX="center" anchorY="middle" fontWeight="bold">
+            [ Klik Untuk Baca Sejarah Babad Sasirangan ]
+          </Text>
         </group>
+      </group>
+
+      {/* ==========================================
+          5.5 SDG 12 ALCHEMIST SHOWCASE (NATURAL DYES)
+          Center of the Room at Z = 0
+         ========================================== */}
+      <group position={[0, 1.2, 0]}>
+        <RigidBody type="fixed" colliders="cuboid">
+          {/* Base Pedestal */}
+          <mesh position={[0, -1.0, 0]} castShadow receiveShadow>
+            <boxGeometry args={[1.6, 0.4, 1.6]} />
+            <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.8} />
+          </mesh>
+          <mesh position={[0, -0.75, 0]}>
+            <boxGeometry args={[1.7, 0.1, 1.7]} />
+            <meshStandardMaterial color="#84cc16" roughness={0.2} metalness={0.9} />
+          </mesh>
+
+          {/* Glass Display Case */}
+          <mesh 
+            position={[0, 0.2, 0]} 
+            onClick={() => handleInspect(MOTIFS_DATA[5])} 
+            onPointerOver={(e) => (document.body.style.cursor = 'pointer')} 
+            onPointerOut={(e) => (document.body.style.cursor = 'auto')}
+          >
+            <boxGeometry args={[1.4, 1.8, 1.4]} />
+            <meshStandardMaterial color="#e0f2fe" transparent opacity={0.15} roughness={0.0} metalness={0.9} envMapIntensity={2.0} />
+          </mesh>
+
+          {/* Glowing Natural Dye Elements Inside */}
+          <group position={[0, 0.2, 0]}>
+            <mesh position={[-0.3, 0, 0]} rotation={[Math.PI/4, Math.PI/4, 0]}>
+              <octahedronGeometry args={[0.25]} />
+              <meshStandardMaterial color="#eab308" emissive="#ca8a04" emissiveIntensity={1.5} roughness={0.2} />
+            </mesh>
+            <mesh position={[0.3, 0.2, 0.2]} rotation={[Math.PI/3, Math.PI/6, 0]}>
+              <icosahedronGeometry args={[0.2]} />
+              <meshStandardMaterial color="#84cc16" emissive="#65a30d" emissiveIntensity={1.5} roughness={0.2} />
+            </mesh>
+            <mesh position={[0.1, -0.3, -0.2]} rotation={[Math.PI/2, 0, 0]}>
+              <dodecahedronGeometry args={[0.2]} />
+              <meshStandardMaterial color="#10b981" emissive="#059669" emissiveIntensity={1.5} roughness={0.2} />
+            </mesh>
+            <spotLight position={[0, 0.8, 0]} angle={0.8} penumbra={0.5} intensity={15} distance={3} color="#84cc16" />
+          </group>
+        </RigidBody>
+
+        <Text position={[0, 1.5, 0.8]} fontSize={0.2} maxWidth={1.8} textAlign="center" color="#84cc16" anchorX="center" anchorY="middle" fontWeight="bold">
+          [ SDG 12: Pewarnaan Alami ]
+        </Text>
       </group>
 
       {/* ==========================================
@@ -370,7 +434,7 @@ export default function MuseumGallery() {
             <boxGeometry args={[3.4, 0.65, 0.2]} />
             <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.8} />
           </mesh>
-          <Text position={[0, 0, 0.12]} fontSize={0.24} color="#f59e0b" anchorX="center" anchorY="middle" fontWeight="bold">
+          <Text position={[0, 0, 0.12]} fontSize={0.24} maxWidth={3.2} textAlign="center" color="#f59e0b" anchorX="center" anchorY="middle" fontWeight="bold">
             Bayam Raja (Kepemimpinan)
           </Text>
         </group>
@@ -430,7 +494,7 @@ export default function MuseumGallery() {
             <boxGeometry args={[3.4, 0.65, 0.2]} />
             <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.8} />
           </mesh>
-          <Text position={[0, 0, 0.12]} fontSize={0.24} color="#f59e0b" anchorX="center" anchorY="middle" fontWeight="bold">
+          <Text position={[0, 0, 0.12]} fontSize={0.24} maxWidth={3.2} textAlign="center" color="#f59e0b" anchorX="center" anchorY="middle" fontWeight="bold">
             Gigi Haruan (Ketajaman Berpikir)
           </Text>
         </group>
@@ -490,7 +554,7 @@ export default function MuseumGallery() {
             <boxGeometry args={[3.4, 0.65, 0.2]} />
             <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.8} />
           </mesh>
-          <Text position={[0, 0, 0.12]} fontSize={0.24} color="#f59e0b" anchorX="center" anchorY="middle" fontWeight="bold">
+          <Text position={[0, 0, 0.12]} fontSize={0.24} maxWidth={3.2} textAlign="center" color="#f59e0b" anchorX="center" anchorY="middle" fontWeight="bold">
             Kambang Kacang (Gotong Royong)
           </Text>
         </group>
@@ -550,7 +614,7 @@ export default function MuseumGallery() {
             <boxGeometry args={[3.4, 0.65, 0.2]} />
             <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.8} />
           </mesh>
-          <Text position={[0, 0, 0.12]} fontSize={0.24} color="#f59e0b" anchorX="center" anchorY="middle" fontWeight="bold">
+          <Text position={[0, 0, 0.12]} fontSize={0.24} maxWidth={3.2} textAlign="center" color="#f59e0b" anchorX="center" anchorY="middle" fontWeight="bold">
             Kain Sarigading (Warisan Budaya)
           </Text>
         </group>
@@ -610,7 +674,7 @@ export default function MuseumGallery() {
             <boxGeometry args={[3.4, 0.65, 0.2]} />
             <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.8} />
           </mesh>
-          <Text position={[0, 0, 0.12]} fontSize={0.24} color="#f59e0b" anchorX="center" anchorY="middle" fontWeight="bold">
+          <Text position={[0, 0, 0.12]} fontSize={0.24} maxWidth={3.2} textAlign="center" color="#f59e0b" anchorX="center" anchorY="middle" fontWeight="bold">
             Naga Balimbur (Pelindung Alam)
           </Text>
         </group>
