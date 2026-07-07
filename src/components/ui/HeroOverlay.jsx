@@ -31,21 +31,8 @@ export default function HeroOverlay() {
       >
         <div className="max-w-4xl w-full flex flex-col items-center text-center space-y-8 pointer-events-auto animate-fade-in mt-12 md:mt-24">
         
-        {/* Top Elite Badge */}
-        <div className="inline-flex items-center gap-3 px-1 border-b border-amber-500/30 pb-2 mb-4">
-          <Sparkles className="w-4 h-4 text-amber-500 animate-pulse" />
-          <span className="text-[10px] md:text-xs font-game font-semibold tracking-[0.3em] uppercase text-amber-500/90">
-            SDG 11 Creative Web Competition
-          </span>
-        </div>
-
         {/* Main Game Screen Title Typography */}
         <div className="space-y-4 relative z-10 flex flex-col items-center">
-          <div className="flex items-center gap-2 text-xs md:text-sm font-game font-medium text-slate-300 tracking-[0.2em] uppercase bg-slate-950/50 px-4 py-1.5 rounded-full border border-white/5 backdrop-blur-sm">
-            <Terminal className="w-4 h-4 text-cyan-500" />
-            <span>Interactive RPG Heritage Simulator</span>
-          </div>
-
           <h1 className="text-5xl md:text-8xl font-title font-medium tracking-wide text-slate-100 uppercase leading-[1.1] drop-shadow-[0_0_30px_rgba(0,0,0,0.8)]">
             Sasirangan
             <br />
@@ -102,10 +89,10 @@ export default function HeroOverlay() {
           </button>
 
           {/* Tech Specs / Controls Info (Minimalist Centered) */}
-          <div className="flex flex-wrap justify-center items-center gap-4 text-[10px] md:text-xs font-game text-slate-400 font-medium tracking-wider uppercase w-full pt-6 border-t border-white/5 mt-4">
-            <span className="flex items-center gap-2"><Cpu className="w-3 h-3 text-slate-500" /> WASD / Arrows = Jalan</span>
-            <span className="flex items-center gap-2"><Compass className="w-3 h-3 text-slate-500" /> Spasi = Lompat</span>
-            <span className="flex items-center gap-2"><Shield className="w-3 h-3 text-emerald-500/70" /> 100% Client-Side</span>
+          <div className="flex flex-wrap justify-center items-center gap-6 text-[10px] md:text-xs font-game text-slate-400 font-bold tracking-[0.2em] uppercase w-full pt-8 border-t border-white/5 mt-6">
+            <span className="flex items-center gap-2"><Cpu className="w-3.5 h-3.5 text-slate-500" /> WASD = JALAN</span>
+            <span className="flex items-center gap-2"><Compass className="w-3.5 h-3.5 text-slate-500" /> SPASI = LOMPAT</span>
+            <span className="flex items-center gap-2"><Shield className="w-3.5 h-3.5 text-amber-500/70" /> P = PENGATURAN</span>
           </div>
         </div>
 

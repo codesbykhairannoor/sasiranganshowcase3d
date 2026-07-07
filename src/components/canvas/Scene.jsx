@@ -58,6 +58,13 @@ function RpgSceneController({ setNearbyMotif }) {
           e.preventDefault();
           enterPortal(nearbyMotifRef.current.id);
         }
+      } else if (e.key === 'p' || e.key === 'P') {
+        e.preventDefault();
+        const appStore = useAppStore.getState();
+        appStore.setSettingsOpen(!appStore.isSettingsOpen);
+        if (document.pointerLockElement) {
+          document.exitPointerLock();
+        }
       }
     };
     window.addEventListener('keydown', handleKeyDown);

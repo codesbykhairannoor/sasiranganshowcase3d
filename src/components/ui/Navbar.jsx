@@ -19,6 +19,8 @@ export default function Navbar() {
   const totalMotifs = MOTIFS_DATA.length;
   const foundCount = discoveredMotifs.length;
 
+  if (currentView === 'hero') return null;
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 px-4 py-3 md:px-8 md:py-4 pointer-events-none font-sans">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 pointer-events-auto">
