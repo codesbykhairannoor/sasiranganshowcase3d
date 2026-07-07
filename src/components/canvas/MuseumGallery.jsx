@@ -18,91 +18,8 @@ import EcoDyeStation from './EcoDyeStation';
 //    Replaced all ALL CAPS text with elegant Title Case formatting!
 // 5. FIXED INSPECTION CLICK & WALL CLIPPING PROTECTION ("keliatan bagian luarnya & glitch"):
 // --- "PRODUK PAS DIPAKE" : 3D APPAREL DISPLAY (Berbagai Macam Produk Sasirangan) ---
-// Displays the Sasirangan texture precisely on worn apparel shapes!
+// Displays the Sasirangan texture precisely on volumetric apparel shapes!
 const ExhibitionMannequin = ({ position, rotation, texture, type = 'tshirt' }) => {
-  // Create a realistic 2D Profile Shape based on apparel type
-  const apparelShape = React.useMemo(() => {
-    const s = new THREE.Shape();
-    if (type === 'tshirt') {
-      s.moveTo(-0.55, -0.9);
-      s.lineTo(-0.55, 0.35);
-      s.lineTo(-0.95, 0.05);
-      s.lineTo(-1.1, 0.35);
-      s.lineTo(-0.65, 0.8);
-      s.lineTo(-0.25, 0.95);
-      s.bezierCurveTo(-0.1, 0.75, 0.1, 0.75, 0.25, 0.95);
-      s.lineTo(0.65, 0.8);
-      s.lineTo(1.1, 0.35);
-      s.lineTo(0.95, 0.05);
-      s.lineTo(0.55, 0.35);
-      s.lineTo(0.55, -0.9);
-      s.lineTo(-0.55, -0.9);
-    } else if (type === 'kimono') {
-      // Kimono / Outer (Wider sleeves, longer body)
-      s.moveTo(-0.65, -1.2);
-      s.lineTo(-0.65, 0.1); 
-      s.lineTo(-1.4, -0.4); // dropping sleeve
-      s.lineTo(-1.5, 0.4);
-      s.lineTo(-0.7, 0.8);
-      s.lineTo(-0.25, 0.95);
-      s.lineTo(0.0, 0.6); // V neck
-      s.lineTo(0.25, 0.95);
-      s.lineTo(0.7, 0.8);
-      s.lineTo(1.5, 0.4);
-      s.lineTo(1.4, -0.4);
-      s.lineTo(0.65, 0.1);
-      s.lineTo(0.65, -1.2);
-      s.lineTo(-0.65, -1.2);
-    } else if (type === 'selendang') {
-      // Selendang / Shawl (Draped long fabric)
-      s.moveTo(-0.25, -1.6);
-      s.lineTo(-0.25, 0.8);
-      s.bezierCurveTo(-0.25, 1.1, 0.25, 1.1, 0.25, 0.8); // Top loop over hanger
-      s.lineTo(0.25, -1.4);
-      s.lineTo(0.15, -1.4);
-      s.lineTo(0.15, 0.8);
-      s.bezierCurveTo(0.15, 0.9, -0.15, 0.9, -0.15, 0.8); // Inner loop
-      s.lineTo(-0.15, -1.6);
-      s.lineTo(-0.25, -1.6);
-    } else if (type === 'totebag') {
-      // Totebag Sasirangan
-      s.moveTo(-0.5, -0.6);
-      s.lineTo(-0.6, 0.4); // bag body
-      s.lineTo(-0.3, 0.4);
-      s.lineTo(-0.3, 0.9); // handle up
-      s.lineTo(-0.2, 0.9);
-      s.lineTo(-0.2, 0.4);
-      s.lineTo(0.2, 0.4);
-      s.lineTo(0.2, 0.9); // handle up
-      s.lineTo(0.3, 0.9);
-      s.lineTo(0.3, 0.4);
-      s.lineTo(0.6, 0.4); // bag body
-      s.lineTo(0.5, -0.6);
-      s.lineTo(-0.5, -0.6);
-    } else if (type === 'dress') {
-      // Long Dress / Gamis
-      s.moveTo(-0.8, -1.6); // wide bottom
-      s.lineTo(-0.4, 0.2); // waist
-      s.lineTo(-0.5, 0.8); // shoulder
-      s.lineTo(-0.2, 0.95); // collar
-      s.lineTo(0.2, 0.95);
-      s.lineTo(0.5, 0.8);
-      s.lineTo(0.4, 0.2);
-      s.lineTo(0.8, -1.6); // wide bottom
-      s.lineTo(-0.8, -1.6);
-    }
-    return s;
-  }, [type]);
-
-  const extrudeSettings = {
-    depth: 0.15,
-    bevelEnabled: true,
-    bevelSegments: 4,
-    steps: 1,
-    bevelSize: 0.03,
-    bevelThickness: 0.04
-  };
-
   return (
     <group position={position} rotation={rotation}>
       <RigidBody type="fixed" colliders="cuboid">
@@ -129,11 +46,118 @@ const ExhibitionMannequin = ({ position, rotation, texture, type = 'tshirt' }) =
         </mesh>
 
         {/* === THE APPAREL (Sasirangan Worn Product) === */}
-        {/* Extrude geometry centers on Z=0 based on depth. We offset it to hang on the rack */}
-        <mesh position={[0, 1.7, 0]} castShadow receiveShadow>
-          <extrudeGeometry args={[apparelShape, extrudeSettings]} />
-          <meshStandardMaterial map={texture} roughness={type === 'selendang' ? 0.9 : 0.8} />
-        </mesh>
+        {type === 'tshirt' && (
+          <group position={[0, 1.35, 0]}>
+            {/* Torso */}
+            <RoundedBox args={[0.8, 1.1, 0.18]} radius={0.06} smoothness={4} castShadow receiveShadow>
+              <meshStandardMaterial map={texture} roughness={0.8} />
+            </RoundedBox>
+            {/* Left Sleeve */}
+            <RoundedBox args={[0.4, 0.35, 0.16]} radius={0.04} smoothness={4} position={[-0.55, 0.35, 0]} rotation={[0, 0, Math.PI/8]} castShadow receiveShadow>
+              <meshStandardMaterial map={texture} roughness={0.8} />
+            </RoundedBox>
+            {/* Right Sleeve */}
+            <RoundedBox args={[0.4, 0.35, 0.16]} radius={0.04} smoothness={4} position={[0.55, 0.35, 0]} rotation={[0, 0, -Math.PI/8]} castShadow receiveShadow>
+              <meshStandardMaterial map={texture} roughness={0.8} />
+            </RoundedBox>
+          </group>
+        )}
+
+        {type === 'kimono' && (
+          <group position={[0, 1.35, 0]}>
+            {/* Torso */}
+            <RoundedBox args={[0.9, 1.5, 0.2]} radius={0.05} smoothness={4} castShadow receiveShadow>
+              <meshStandardMaterial map={texture} roughness={0.8} />
+            </RoundedBox>
+            {/* Left Sleeve (Draping down) */}
+            <RoundedBox args={[0.5, 1.0, 0.18]} radius={0.05} smoothness={4} position={[-0.7, -0.1, 0]} castShadow receiveShadow>
+              <meshStandardMaterial map={texture} roughness={0.8} />
+            </RoundedBox>
+            {/* Right Sleeve */}
+            <RoundedBox args={[0.5, 1.0, 0.18]} radius={0.05} smoothness={4} position={[0.7, -0.1, 0]} castShadow receiveShadow>
+              <meshStandardMaterial map={texture} roughness={0.8} />
+            </RoundedBox>
+            {/* Obi Belt */}
+            <mesh position={[0, 0.1, 0.11]}>
+              <boxGeometry args={[0.92, 0.25, 0.02]} />
+              <meshStandardMaterial color="#0f172a" roughness={0.5} />
+            </mesh>
+          </group>
+        )}
+
+        {type === 'selendang' && (
+          <group position={[0, 1.65, 0.05]}>
+            {/* Front drape */}
+            <mesh position={[0, -0.8, 0.03]} castShadow receiveShadow>
+              <boxGeometry args={[0.75, 1.6, 0.04]} />
+              <meshStandardMaterial map={texture} roughness={0.9} />
+            </mesh>
+            {/* Back drape */}
+            <mesh position={[0, -0.6, -0.06]} castShadow receiveShadow>
+              <boxGeometry args={[0.75, 1.2, 0.04]} />
+              <meshStandardMaterial map={texture} roughness={0.9} />
+            </mesh>
+            {/* Top wrap over the hanger */}
+            <mesh position={[0, 0, -0.015]} rotation={[0, 0, Math.PI/2]} castShadow receiveShadow>
+              <cylinderGeometry args={[0.045, 0.045, 0.75, 16]} />
+              <meshStandardMaterial map={texture} roughness={0.9} />
+            </mesh>
+          </group>
+        )}
+
+        {type === 'totebag' && (
+          <group position={[0, 1.1, 0]}>
+            {/* Totebag Body */}
+            <RoundedBox args={[1.2, 1.3, 0.3]} radius={0.08} smoothness={4} castShadow receiveShadow>
+              <meshStandardMaterial map={texture} roughness={0.7} />
+            </RoundedBox>
+            {/* Top seam detail */}
+            <mesh position={[0, 0.65, 0]}>
+              <boxGeometry args={[1.22, 0.04, 0.32]} />
+              <meshStandardMaterial color="#e2e8f0" roughness={0.9} />
+            </mesh>
+            {/* Handle Left */}
+            <mesh position={[-0.3, 0.65, 0]} castShadow>
+              <torusGeometry args={[0.25, 0.04, 16, 32, Math.PI]} />
+              <meshStandardMaterial color="#334155" roughness={0.6} />
+            </mesh>
+            {/* Handle Right */}
+            <mesh position={[0.3, 0.65, 0]} castShadow>
+              <torusGeometry args={[0.25, 0.04, 16, 32, Math.PI]} />
+              <meshStandardMaterial color="#334155" roughness={0.6} />
+            </mesh>
+          </group>
+        )}
+
+        {type === 'dress' && (
+          <group position={[0, 1.25, 0]}>
+            {/* Skirt */}
+            <mesh position={[0, -0.4, 0]} castShadow receiveShadow>
+              <cylinderGeometry args={[0.4, 0.85, 1.4, 32]} />
+              <meshStandardMaterial map={texture} roughness={0.8} />
+            </mesh>
+            {/* Torso */}
+            <mesh position={[0, 0.7, 0]} castShadow receiveShadow>
+              <cylinderGeometry args={[0.35, 0.4, 0.8, 32]} />
+              <meshStandardMaterial map={texture} roughness={0.8} />
+            </mesh>
+            {/* Left Sleeve */}
+            <mesh position={[-0.45, 0.7, 0]} rotation={[0, 0, Math.PI/6]} castShadow receiveShadow>
+              <cylinderGeometry args={[0.12, 0.15, 0.7, 16]} />
+              <meshStandardMaterial map={texture} roughness={0.8} />
+            </mesh>
+            {/* Right Sleeve */}
+            <mesh position={[0.45, 0.7, 0]} rotation={[0, 0, -Math.PI/6]} castShadow receiveShadow>
+              <cylinderGeometry args={[0.12, 0.15, 0.7, 16]} />
+              <meshStandardMaterial map={texture} roughness={0.8} />
+            </mesh>
+            {/* Waistband */}
+            <mesh position={[0, 0.3, 0]}>
+              <cylinderGeometry args={[0.41, 0.41, 0.1, 32]} />
+              <meshStandardMaterial color="#f59e0b" roughness={0.3} metalness={0.8} />
+            </mesh>
+          </group>
+        )}
 
       </RigidBody>
     </group>
