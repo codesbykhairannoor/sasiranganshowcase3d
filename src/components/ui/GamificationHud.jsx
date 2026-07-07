@@ -56,10 +56,10 @@ export default function GamificationHud() {
             )}
           </button>
 
-          {/* Settings shortcut button (Minimized on Mobile) */}
+          {/* Settings shortcut button (Hidden on Mobile, now in Top-Right Navbar) */}
           <button
             onClick={() => useAppStore.getState().setSettingsOpen(true)}
-            className="bg-slate-950/90 backdrop-blur-2xl p-3 lg:px-4 lg:py-3 rounded-full lg:rounded-2xl border border-white/20 hover:border-amber-500/50 shadow-2xl flex items-center justify-center gap-2 text-slate-300 hover:text-white transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0"
+            className="hidden lg:flex bg-slate-950/90 backdrop-blur-2xl p-3 lg:px-4 lg:py-3 rounded-full lg:rounded-2xl border border-white/20 hover:border-amber-500/50 shadow-2xl items-center justify-center gap-2 text-slate-300 hover:text-white transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0"
             title="Buka Pengaturan"
           >
             <span className="hidden lg:inline text-xs font-game font-bold tracking-wide capitalize"><span className="text-amber-400 font-black">P</span> = Pengaturan</span>

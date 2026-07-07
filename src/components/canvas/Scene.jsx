@@ -401,10 +401,10 @@ export default function Scene() {
 
       {/* On-Screen Mobile Joystick & Jump Button (Only visible during RPG Character Control Mode!) */}
       {cameraMode === 'rpg' && (
-        <div className="block lg:hidden pointer-events-auto opacity-90 drop-shadow-2xl">
+        <div className="block lg:hidden fixed inset-0 pointer-events-none z-50">
           {/* Movement Joystick (Bottom Left) */}
           <Joystick 
-            joystickWrapperStyle={{ bottom: '40px', left: '40px' }}
+            joystickWrapperStyle={{ bottom: '40px', left: '40px', pointerEvents: 'auto' }}
             joystickBaseStyle={{ background: 'rgba(15, 23, 42, 0.5)', border: '2px solid rgba(251, 191, 36, 0.8)' }}
             joystickKnobStyle={{ background: 'rgba(251, 191, 36, 0.9)', boxShadow: '0 0 15px rgba(251, 191, 36, 0.5)' }}
           />
@@ -412,7 +412,7 @@ export default function Scene() {
           {/* Jump Button (Bottom Right) */}
           <VirtualButton 
             id="jump"
-            buttonWrapperStyle={{ bottom: '40px', right: '40px' }}
+            buttonWrapperStyle={{ bottom: '40px', right: '40px', pointerEvents: 'auto' }}
             buttonCapStyle={{ width: '60px', height: '60px', background: 'rgba(15, 23, 42, 0.5)', border: '2px solid rgba(6, 182, 212, 0.8)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
           >
             <span className="text-cyan-400 font-game font-bold text-xs uppercase tracking-wider pointer-events-none">Lompat</span>

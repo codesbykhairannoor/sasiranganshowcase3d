@@ -22,6 +22,15 @@ export default function Navbar() {
           Kembali Ke Menu Utama
         </span>
       </button>
+
+      {/* Settings Button, flush right */}
+      <button 
+        onClick={() => useAppStore.getState().setSettingsOpen(true)}
+        className="pointer-events-auto absolute top-4 right-4 flex items-center justify-center w-10 h-10 rounded-xl bg-slate-950/90 backdrop-blur-2xl border border-white/20 text-amber-400 hover:text-amber-300 transition-all hover:scale-110 active:scale-95 cursor-pointer shadow-md"
+        title="Buka Pengaturan"
+      >
+        <span className="text-xl">⚙</span>
+      </button>
     </header>
   );
 }

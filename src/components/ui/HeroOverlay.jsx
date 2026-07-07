@@ -28,12 +28,12 @@ export default function HeroOverlay() {
         <div className="flex flex-col items-center text-center pointer-events-auto animate-fade-in select-none px-6">
 
           {/* ── Subtitle Tag ── */}
-          <p className="text-[10px] font-game font-semibold tracking-[0.4em] uppercase text-amber-500/80 mb-6">
+          <p className="text-[9px] sm:text-[10px] font-game font-semibold tracking-[0.4em] uppercase text-amber-500/80 mb-2 sm:mb-4">
             SDG 11 • Culture Verse • Target 11.4
           </p>
 
           {/* ── Main Title ── */}
-          <h1 className="text-[2.2rem] sm:text-5xl md:text-7xl lg:text-8xl font-title font-bold tracking-wider text-slate-100 uppercase leading-[1.05] drop-shadow-[0_4px_32px_rgba(0,0,0,0.9)]">
+          <h1 className="text-[1.6rem] sm:text-3xl md:text-4xl lg:text-7xl font-title font-bold tracking-wider text-slate-100 uppercase leading-[1.05] drop-shadow-[0_4px_32px_rgba(0,0,0,0.9)]">
             Sasirangan
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-400 to-yellow-500">
@@ -42,21 +42,21 @@ export default function HeroOverlay() {
           </h1>
 
           {/* ── Divider ── */}
-          <div className="flex items-center gap-5 mt-8 mb-10">
-            <div className="h-px w-24 bg-gradient-to-r from-transparent to-amber-500/60" />
-            <Sparkles className="w-4 h-4 text-amber-500/60 animate-pulse" />
-            <div className="h-px w-24 bg-gradient-to-l from-transparent to-amber-500/60" />
+          <div className="flex items-center gap-3 sm:gap-5 mt-4 sm:mt-6 mb-4 sm:mb-6">
+            <div className="h-px w-16 sm:w-24 bg-gradient-to-r from-transparent to-amber-500/60" />
+            <Sparkles className="w-3.5 h-3.5 text-amber-500/60 animate-pulse" />
+            <div className="h-px w-16 sm:w-24 bg-gradient-to-l from-transparent to-amber-500/60" />
           </div>
 
           {/* ── Menu Items ── */}
-          <nav className="flex flex-col items-center gap-4">
+          <nav className="flex flex-col items-center gap-2 sm:gap-4">
             {/* MULAI BERMAIN */}
             <button
               onClick={handleStartGame}
               disabled={!is3dLoaded || isTransitioning}
-              className="group flex items-center gap-3 font-title font-bold text-base sm:text-2xl md:text-4xl tracking-[0.15em] uppercase transition-all duration-300 disabled:cursor-not-allowed"
+              className="group flex items-center gap-2 sm:gap-3 font-title font-bold text-sm sm:text-lg md:text-xl lg:text-3xl tracking-[0.15em] uppercase transition-all duration-300 disabled:cursor-not-allowed"
             >
-              <Play className="w-4 h-4 md:w-7 md:h-7 text-amber-400 opacity-0 group-hover:opacity-100 -translate-x-3 group-hover:translate-x-0 transition-all duration-300" />
+              <Play className="w-3 h-3 sm:w-5 sm:h-5 text-amber-400 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all duration-300" />
               <span className={`transition-colors duration-300 ${is3dLoaded ? 'text-white group-hover:text-amber-400' : 'text-slate-500'}`}>
                 {is3dLoaded ? 'Mulai Bermain' : 'Memuat...'}
               </span>
@@ -65,7 +65,7 @@ export default function HeroOverlay() {
             {/* PENGATURAN */}
             <button
               onClick={() => setSettingsOpen(true)}
-              className="font-title font-bold text-sm sm:text-xl md:text-2xl tracking-[0.15em] uppercase text-slate-400 hover:text-amber-300 transition-colors duration-300"
+              className="font-title font-bold text-xs sm:text-sm md:text-base lg:text-xl tracking-[0.15em] uppercase text-slate-400 hover:text-amber-300 transition-colors duration-300"
             >
               Pengaturan
             </button>
@@ -73,7 +73,7 @@ export default function HeroOverlay() {
             {/* TENTANG GAME */}
             <button
               onClick={() => setAboutOpen(true)}
-              className="font-title font-bold text-sm sm:text-xl md:text-2xl tracking-[0.15em] uppercase text-slate-400 hover:text-amber-300 transition-colors duration-300"
+              className="font-title font-bold text-xs sm:text-sm md:text-base lg:text-xl tracking-[0.15em] uppercase text-slate-400 hover:text-amber-300 transition-colors duration-300"
             >
               Tentang Game
             </button>
