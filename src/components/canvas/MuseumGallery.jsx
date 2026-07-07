@@ -369,11 +369,11 @@ export default function MuseumGallery() {
           
           {/* Main Stone Base */}
           <mesh position={[0, 1.3, 0]} castShadow receiveShadow>
-            <boxGeometry args={[4.0, 2.6, 1.2]} />
+            <boxGeometry args={[4.2, 2.6, 1.0]} />
             <meshStandardMaterial color="#0f172a" roughness={0.6} />
           </mesh>
           
-          <group position={[0, 3.0, 0.2]} rotation={[-Math.PI / 6, 0, 0]}>
+          <group position={[0, 2.8, 0.5]} rotation={[-Math.PI / 6, 0, 0]}>
             {/* Slanted Face for Engraving */}
             <mesh castShadow>
               <boxGeometry args={[4.8, 3.2, 0.2]} />
@@ -388,17 +388,22 @@ export default function MuseumGallery() {
 
             {/* Engraved Typography */}
             <group position={[0, 0, 0.11]}>
-              <Text position={[0, 1.0, 0]} fontSize={0.24} color="#f59e0b" anchorX="center" anchorY="middle" fontWeight="bold" letterSpacing={0.05}>
+              <Text position={[0, 1.0, 0]} fontSize={0.28} color="#f59e0b" anchorX="center" anchorY="middle" fontWeight="bold" letterSpacing={0.08}>
                 BABAD SASIRANGAN
               </Text>
-              <Text position={[0, 0.3, 0]} fontSize={0.14} color="#e2e8f0" anchorX="center" anchorY="middle" maxWidth={4.2} textAlign="center" lineHeight={1.5}>
+              <Text position={[0, 0.2, 0]} fontSize={0.16} color="#f8fafc" anchorX="center" anchorY="middle" maxWidth={4.2} textAlign="center" lineHeight={1.6} letterSpacing={0.02}>
                 Menurut Hikayat Banjar (Abad ke-12), Sasirangan pertama kali dibuat oleh Patih Lambung Mangkurat sebagai "Kain Pamali" atau kain penyembuhan sakral untuk Putri Junjung Buih.
               </Text>
-              <Text position={[0, -0.5, 0]} fontSize={0.14} color="#cbd5e1" anchorX="center" anchorY="middle" maxWidth={4.2} textAlign="center" lineHeight={1.5}>
+              <Text position={[0, -0.6, 0]} fontSize={0.16} color="#e2e8f0" anchorX="center" anchorY="middle" maxWidth={4.2} textAlign="center" lineHeight={1.6} letterSpacing={0.02}>
                 Berasal dari kata "Sirang" (dijelujur dengan tangan) dan dikerjakan semalaman suntuk sambil melantunkan salawat. Kini, karya ini berevolusi menjadi identitas membanggakan masyarakat Kalimantan Selatan tanpa kehilangan ruh mistisnya.
               </Text>
-              <Text position={[0, -1.2, 0]} fontSize={0.11} color="#38bdf8" anchorX="center" anchorY="middle" fontWeight="bold">
-                • TITIK NOL GEOGRAFIS BUDAYA BANJAR •
+              {/* Ornamental Divider */}
+              <mesh position={[0, -1.2, 0]}>
+                 <boxGeometry args={[2.0, 0.02, 0.01]} />
+                 <meshStandardMaterial color="#f59e0b" />
+              </mesh>
+              <Text position={[0, -1.45, 0]} fontSize={0.12} color="#38bdf8" anchorX="center" anchorY="middle" fontWeight="bold" letterSpacing={0.15}>
+                TITIK NOL GEOGRAFIS BUDAYA BANJAR
               </Text>
             </group>
           </group>
@@ -473,9 +478,9 @@ export default function MuseumGallery() {
 
         {/* Double Mannequin Showcase */}
         {/* Left: Standard T-Shirt */}
-        <ExhibitionMannequin position={[-3.5, -4.4, 0.5]} rotation={[0, Math.PI / 6, 0]} texture={bayamTex} type="tshirt" />
+        <ExhibitionMannequin position={[-3.5, -4.4, 1.2]} rotation={[0, Math.PI / 6, 0]} texture={bayamTex} type="tshirt" />
         {/* Right: Same T-Shirt but slightly different rotation for variety since Bayam Raja is the base */}
-        <ExhibitionMannequin position={[3.5, -4.4, 0.5]} rotation={[0, -Math.PI / 6, 0]} texture={bayamTex} type="tshirt" />
+        <ExhibitionMannequin position={[3.5, -4.4, 1.2]} rotation={[0, -Math.PI / 6, 0]} texture={bayamTex} type="tshirt" />
       </group>
 
       {/* --- SHOWCASE 2: GIGI HARUAN (Left Wall, X = -7.5, Z = 6) --- */}
@@ -536,9 +541,9 @@ export default function MuseumGallery() {
 
         {/* Double Mannequin Showcase */}
         {/* Left: Standard T-Shirt */}
-        <ExhibitionMannequin position={[-3.5, -4.4, 0.5]} rotation={[0, Math.PI / 6, 0]} texture={gigiTex} type="tshirt" />
+        <ExhibitionMannequin position={[-3.5, -4.4, 1.2]} rotation={[0, Math.PI / 6, 0]} texture={gigiTex} type="tshirt" />
         {/* Right: Diverse Apparel (Kimono) */}
-        <ExhibitionMannequin position={[3.5, -4.4, 0.5]} rotation={[0, -Math.PI / 6, 0]} texture={gigiTex} type="kimono" />
+        <ExhibitionMannequin position={[3.5, -4.4, 1.2]} rotation={[0, -Math.PI / 6, 0]} texture={gigiTex} type="kimono" />
       </group>
 
       {/* --- SHOWCASE 3: KAMBANG KACANG (Right Wall, X = 7.5, Z = -6) --- */}
@@ -599,9 +604,9 @@ export default function MuseumGallery() {
 
         {/* Double Mannequin Showcase */}
         {/* Left: Standard T-Shirt */}
-        <ExhibitionMannequin position={[-3.5, -4.4, 0.5]} rotation={[0, Math.PI / 6, 0]} texture={kambangTex} type="tshirt" />
+        <ExhibitionMannequin position={[-3.5, -4.4, 1.2]} rotation={[0, Math.PI / 6, 0]} texture={kambangTex} type="tshirt" />
         {/* Right: Diverse Apparel (Selendang / Shawl) */}
-        <ExhibitionMannequin position={[3.5, -4.4, 0.5]} rotation={[0, -Math.PI / 6, 0]} texture={kambangTex} type="selendang" />
+        <ExhibitionMannequin position={[3.5, -4.4, 1.2]} rotation={[0, -Math.PI / 6, 0]} texture={kambangTex} type="selendang" />
       </group>
 
       {/* --- SHOWCASE 4: KAIN SARIGADING (Left Wall, X = -7.5, Z = -16) --- */}
@@ -662,9 +667,9 @@ export default function MuseumGallery() {
 
         {/* Double Mannequin Showcase */}
         {/* Left: Standard T-Shirt */}
-        <ExhibitionMannequin position={[-3.5, -4.4, 0.5]} rotation={[0, Math.PI / 6, 0]} texture={sarigadingTex} type="tshirt" />
+        <ExhibitionMannequin position={[-3.5, -4.4, 1.2]} rotation={[0, Math.PI / 6, 0]} texture={sarigadingTex} type="tshirt" />
         {/* Right: Diverse Apparel (Totebag) */}
-        <ExhibitionMannequin position={[3.5, -4.4, 0.5]} rotation={[0, -Math.PI / 6, 0]} texture={sarigadingTex} type="totebag" />
+        <ExhibitionMannequin position={[3.5, -4.4, 1.2]} rotation={[0, -Math.PI / 6, 0]} texture={sarigadingTex} type="totebag" />
       </group>
 
       {/* --- SHOWCASE 5: NAGA BALIMBUR (Right Wall, X = 7.5, Z = -18) --- */}
@@ -725,9 +730,9 @@ export default function MuseumGallery() {
 
         {/* Double Mannequin Showcase */}
         {/* Left: Standard T-Shirt */}
-        <ExhibitionMannequin position={[-3.5, -4.4, 0.5]} rotation={[0, Math.PI / 6, 0]} texture={nagaTex} type="tshirt" />
+        <ExhibitionMannequin position={[-3.5, -4.4, 1.2]} rotation={[0, Math.PI / 6, 0]} texture={nagaTex} type="tshirt" />
         {/* Right: Diverse Apparel (Long Dress) */}
-        <ExhibitionMannequin position={[3.5, -4.4, 0.5]} rotation={[0, -Math.PI / 6, 0]} texture={nagaTex} type="dress" />
+        <ExhibitionMannequin position={[3.5, -4.4, 1.2]} rotation={[0, -Math.PI / 6, 0]} texture={nagaTex} type="dress" />
       </group>
 
       {/* Glowing Exhibition Banners hanging from Ceiling */}
