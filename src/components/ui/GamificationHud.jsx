@@ -59,10 +59,10 @@ export default function GamificationHud() {
           {/* Settings shortcut button */}
           <button
             onClick={() => useAppStore.getState().setSettingsOpen(true)}
-            className="bg-slate-950/90 backdrop-blur-2xl px-3 py-3 rounded-2xl border border-white/20 hover:border-amber-500/50 shadow-2xl flex items-center justify-center text-white transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0 text-xs font-game font-bold tracking-widest"
-            title="Pengaturan (P)"
+            className="bg-slate-950/90 backdrop-blur-2xl px-4 py-3 rounded-2xl border border-white/20 hover:border-amber-500/50 shadow-2xl flex items-center justify-center gap-2 text-slate-300 hover:text-white transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0 text-xs font-game font-bold tracking-wide capitalize"
+            title="Buka Pengaturan"
           >
-            ⚙
+            <span className="text-amber-400 font-black">P</span> = Pengaturan ⚙
           </button>
         </div>
 
