@@ -323,7 +323,7 @@ export default function Scene() {
 
       {/* On-Screen Mobile Joystick (Only visible during RPG Character Control Mode!) */}
       {cameraMode === 'rpg' && isMobile && (
-        <div className="fixed bottom-12 left-12 z-50 pointer-events-auto scale-150 transform-origin-bottom-left opacity-80 mix-blend-screen">
+        <div className="fixed bottom-12 left-12 z-50 pointer-events-auto opacity-100 mix-blend-screen drop-shadow-2xl">
           <Joystick buttonNumber={1} />
         </div>
       )}
