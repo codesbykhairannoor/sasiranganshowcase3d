@@ -22,7 +22,7 @@ const keyboardMap = [
   { name: 'interact', keys: ['KeyE', 'Enter'] },
 ];
 
-const isMobileDevice = typeof window !== 'undefined' ? /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768 : false;
+const isTouchDevice = typeof window !== 'undefined' ? ('ontouchstart' in window || navigator.maxTouchPoints > 0) : false;
 
 // AUTHENTIC MINECRAFT POINTER LOCK & STUCK CENTER CROSSHAIR ARCHITECTURE:
 // 1. CENTER STUCK CROSSHAIR (+) ("memang harus ttp stuck aja ditengah"):
@@ -136,7 +136,7 @@ function RpgSceneController({ setNearbyMotif }) {
     };
 
     const handleTouchMove = (e) => {
-      if (cameraControlsRef.current && cameraMode === 'rpg' && isMobileDevice) {
+      if (cameraControlsRef.current && cameraMode === 'rpg' && isTouchDevice) {
         let lookTouch = null;
         for (let i = 0; i < e.touches.length; i++) {
           if (e.touches[i].clientX > window.innerWidth / 2) {
@@ -161,7 +161,7 @@ function RpgSceneController({ setNearbyMotif }) {
       }
     };
 
-    if (isMobileDevice) {
+    if (isTouchDevice) {
       window.addEventListener('touchstart', handleTouchStart);
       window.addEventListener('touchmove', handleTouchMove, { passive: false });
     }
@@ -352,7 +352,7 @@ export default function Scene() {
   }, []);
 
   const requestLock = () => {
-    if (isMobileDevice) return;
+    if (isTouchDevice) return;
     if (!document.pointerLockElement) document.body.requestPointerLock();
   };
 
@@ -361,7 +361,7 @@ export default function Scene() {
       className="w-full h-screen fixed inset-0 z-10 bg-[#06080f]"
     >
       {/* Toast Prompt to click to lock pointer when not locked */}
-      {cameraMode === 'rpg' && !isPointerLocked && !isMobileDevice && (
+      {cameraMode === 'rpg' && !isPointerLocked && !isTouchDevice && (
         <div className="fixed top-24 left-1/2 -translate-x-1/2 z-40 pointer-events-none animate-pulse">
           <div className="bg-amber-500/90 text-slate-950 px-6 py-2 rounded-full font-game font-bold text-sm shadow-[0_0_15px_rgba(245,158,11,0.5)]">
             Klik di mana saja untuk mengunci kursor & bermain
@@ -400,14 +400,14 @@ export default function Scene() {
       )}
 
       {/* On-Screen Mobile Joystick (Only visible during RPG Character Control Mode!) */}
-      {cameraMode === 'rpg' && isMobileDevice && (
+      {cameraMode === 'rpg' && isTouchDevice && (
         <div className="fixed bottom-12 left-12 z-50 pointer-events-auto opacity-100 mix-blend-screen drop-shadow-2xl">
           <Joystick buttonNumber={1} />
         </div>
       )}
 
       <Canvas
-        shadows={!isMobileDevice}
+        shadows={!isTouchDevice}
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
         onPointerMissed={requestLock}
@@ -428,8 +428,8 @@ export default function Scene() {
             position={[15, 35, 15]} 
             intensity={1.2} 
             color="#fffbeb"
-            castShadow={!isMobileDevice} 
-            shadow-mapSize={isMobileDevice ? [512, 512] : [2048, 2048]}
+            castShadow={!isTouchDevice} 
+            shadow-mapSize={isTouchDevice ? [512, 512] : [2048, 2048]}
             shadow-bias={-0.0001}
           />
           <directionalLight position={[-15, 20, -15]} intensity={0.6} color="#38bdf8" />
@@ -446,7 +446,7 @@ export default function Scene() {
             far={6} 
             color="#06080f" 
             frames={1} // MASSIVE PERFORMANCE BOOST: Only render once on load!
-            resolution={isMobileDevice ? 512 : 1024}
+            resolution={isTouchDevice ? 512 : 1024}
           />
 
           {/* RAPIER PHYSICS ENGINE & GRAND GALLERY CORRIDOR */}
