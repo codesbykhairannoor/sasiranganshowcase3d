@@ -56,7 +56,11 @@ function RpgSceneController({ setNearbyMotif }) {
       } else if ((e.key === 'e' || e.key === 'E' || e.key === 'Enter') && cameraMode === 'rpg') {
         if (nearbyMotifRef.current) {
           e.preventDefault();
-          enterPortal(nearbyMotifRef.current.id);
+          if (nearbyMotifRef.current.id === 'sdg12-alchemist') {
+            useAppStore.getState().setEcoModalOpen(true);
+          } else {
+            enterPortal(nearbyMotifRef.current.id);
+          }
         }
       } else if (e.key === 'p' || e.key === 'P') {
         e.preventDefault();
@@ -121,7 +125,11 @@ function RpgSceneController({ setNearbyMotif }) {
       // Only handle crosshair-click inspection when pointer is locked AND in rpg mode
       if (cameraMode !== 'rpg' || !document.pointerLockElement) return;
       if (nearbyMotifRef.current) {
-        enterPortal(nearbyMotifRef.current.id);
+        if (nearbyMotifRef.current.id === 'sdg12-alchemist') {
+          useAppStore.getState().setEcoModalOpen(true);
+        } else {
+          enterPortal(nearbyMotifRef.current.id);
+        }
       }
     };
     window.addEventListener('pointerdown', handleWindowPointerDown);
@@ -213,12 +221,15 @@ function RpgSceneController({ setNearbyMotif }) {
 
         // Painting positions (x, z): Bayam Raja (0, -27.5), Gigi Haruan (-7.5, 6),
         // Kambang Kacang (7.5, -6), Kain Sarigading (-7.5, -16), Naga Balimbur (7.5, -18)
+        // SDG 12 EcoDye (0, 0), Monolith Babad (0, 16)
         const paintings = [
           { motif: MOTIFS_DATA[0], px: 0,    pz: -27.5 },
           { motif: MOTIFS_DATA[1], px: -7.5, pz: 6     },
           { motif: MOTIFS_DATA[2], px: 7.5,  pz: -6    },
           { motif: MOTIFS_DATA[3], px: -7.5, pz: -16   },
           { motif: MOTIFS_DATA[4], px: 7.5,  pz: -18   },
+          { motif: MOTIFS_DATA[5], px: 0,    pz: 0     }, // EcoDyeStation
+          { motif: MOTIFS_DATA[6], px: 0,    pz: 16    }  // Monolith
         ];
 
         let found = null;
@@ -302,22 +313,16 @@ export default function Scene() {
     <div 
       className="w-full h-screen fixed inset-0 z-10 bg-[#06080f]"
     >
-      {/* CLICK TO PLAY overlay - only shown when pointer is NOT locked and we are in RPG mode */}
-      {cameraMode === 'rpg' && !isPointerLocked && (
-        <div 
-          onClick={requestLock}
-          className="fixed inset-0 z-50 flex items-center justify-center cursor-pointer group"
-        >
-          <div className="bg-slate-950/80 backdrop-blur-xl border border-amber-500/50 rounded-2xl px-8 py-5 flex flex-col items-center gap-2 shadow-[0_0_40px_rgba(245,158,11,0.3)] group-hover:scale-105 transition-all">
-            <div className="w-12 h-12 rounded-full bg-amber-500 flex items-center justify-center">
-              <svg className="w-5 h-5 text-slate-950" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            </div>
-            <p className="text-amber-400 font-game font-black text-base tracking-widest uppercase">Klik Untuk Bermain</p>
-            <p className="text-slate-400 font-game text-xs">Gunakan WASD / Joystick untuk bergerak</p>
+      {/* Toast Prompt to click to lock pointer when not locked */}
+      {cameraMode === 'rpg' && !isPointerLocked && !isMobile && (
+        <div className="fixed top-24 left-1/2 -translate-x-1/2 z-40 pointer-events-none animate-pulse">
+          <div className="bg-amber-500/90 text-slate-950 px-6 py-2 rounded-full font-game font-bold text-sm shadow-[0_0_15px_rgba(245,158,11,0.5)]">
+            Klik di mana saja untuk mengunci kursor & bermain
           </div>
         </div>
       )}
-      {/* AUTHENTIC MINECRAFT CENTER STUCK CROSSHAIR (+) ("memang harus ttp stuck aja ditengah") */}
+
+      {/* AUTHENTIC MINECRAFT CENTER STUCK CROSSHAIR (+) */}
       {cameraMode === 'rpg' && (
         <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 pointer-events-none select-none flex items-center justify-center">
           <div className="relative flex items-center justify-center">
@@ -358,6 +363,7 @@ export default function Scene() {
         shadows={!isMobile}
         dpr={isMobile ? 1 : [1, 2]}
         gl={{ antialias: !isMobile, alpha: false, powerPreference: 'high-performance' }}
+        onPointerMissed={requestLock}
       >
         <KeyboardControls map={keyboardMap}>
           {/* ROYAL MUSEUM NIGHT BACKGROUND WITH CRYSTAL CLEAR STUDIO DEFINITION! */}

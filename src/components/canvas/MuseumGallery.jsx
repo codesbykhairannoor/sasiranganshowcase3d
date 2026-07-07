@@ -17,72 +17,68 @@ import EcoDyeStation from './EcoDyeStation';
 // 4. TITLE CASE TYPOGRAPHY ("CUKUP TIAP HURUF KATA PERTAMA YG BESAR"):
 //    Replaced all ALL CAPS text with elegant Title Case formatting!
 // 5. FIXED INSPECTION CLICK & WALL CLIPPING PROTECTION ("keliatan bagian luarnya & glitch"):
-// --- ELEGANT FASHION DISPLAY DUMMY (Classic Museum Tailor Dummy / Dress Form) ---
+// --- "PRODUK PAS DIPAKE" : 3D T-SHIRT APPAREL DISPLAY ---
+// Displays the Sasirangan texture precisely on a worn T-Shirt shape!
 const ExhibitionMannequin = ({ position, rotation, texture }) => {
+  // Create a realistic T-Shirt 2D Profile Shape
+  const shirtShape = React.useMemo(() => {
+    const shape = new THREE.Shape();
+    shape.moveTo(-0.55, -0.9); // left bottom
+    shape.lineTo(-0.55, 0.35); // left armpit
+    shape.lineTo(-0.95, 0.05); // left sleeve bottom
+    shape.lineTo(-1.1, 0.35);  // left sleeve tip
+    shape.lineTo(-0.65, 0.8);  // left shoulder
+    shape.lineTo(-0.25, 0.95); // left collar
+    // Neck hole dip
+    shape.bezierCurveTo(-0.1, 0.75, 0.1, 0.75, 0.25, 0.95);
+    shape.lineTo(0.65, 0.8);   // right shoulder
+    shape.lineTo(1.1, 0.35);   // right sleeve tip
+    shape.lineTo(0.95, 0.05);  // right sleeve bottom
+    shape.lineTo(0.55, 0.35);  // right armpit
+    shape.lineTo(0.55, -0.9);  // right bottom
+    shape.lineTo(-0.55, -0.9); // back to left bottom
+    return shape;
+  }, []);
+
+  const extrudeSettings = {
+    depth: 0.15,
+    bevelEnabled: true,
+    bevelSegments: 4,
+    steps: 1,
+    bevelSize: 0.03,
+    bevelThickness: 0.04
+  };
+
   return (
     <group position={position} rotation={rotation}>
-      <RigidBody type="fixed" colliders="hull">
+      <RigidBody type="fixed" colliders="cuboid">
 
         {/* === BASE PEDESTAL === */}
         <mesh position={[0, 0.06, 0]} receiveShadow>
-          <cylinderGeometry args={[0.52, 0.58, 0.12, 32]} />
+          <cylinderGeometry args={[0.5, 0.55, 0.12, 32]} />
           <meshStandardMaterial color="#0f172a" roughness={0.15} metalness={0.85} />
         </mesh>
         <mesh position={[0, 0.13, 0]}>
-          <cylinderGeometry args={[0.53, 0.53, 0.04, 32]} />
+          <cylinderGeometry args={[0.51, 0.51, 0.04, 32]} />
           <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.95} />
         </mesh>
 
-        {/* === POLE / STEM === */}
-        <mesh position={[0, 0.78, 0]} castShadow>
-          <cylinderGeometry args={[0.042, 0.042, 1.35, 14]} />
+        {/* === CLOTHING RACK / POLE === */}
+        <mesh position={[0, 0.9, 0]} castShadow>
+          <cylinderGeometry args={[0.035, 0.035, 1.6, 14]} />
           <meshStandardMaterial color="#1e293b" roughness={0.2} metalness={0.95} />
         </mesh>
-
-        {/* === DRESS FORM BODY (stacked frustum sections for hourglass shape) === */}
-        {/* Hip / lower body (widest) */}
-        <mesh position={[0, 1.62, 0]} castShadow receiveShadow>
-          <cylinderGeometry args={[0.38, 0.42, 0.35, 32]} />
-          <meshStandardMaterial map={texture} roughness={0.35} />
-        </mesh>
-        {/* Waist (narrowest) */}
-        <mesh position={[0, 1.9, 0]} castShadow receiveShadow>
-          <cylinderGeometry args={[0.28, 0.36, 0.22, 32]} />
-          <meshStandardMaterial map={texture} roughness={0.35} />
-        </mesh>
-        {/* Mid torso */}
-        <mesh position={[0, 2.12, 0]} castShadow receiveShadow>
-          <cylinderGeometry args={[0.34, 0.28, 0.2, 32]} />
-          <meshStandardMaterial map={texture} roughness={0.35} />
-        </mesh>
-        {/* Chest (second widest) */}
-        <mesh position={[0, 2.35, 0]} castShadow receiveShadow>
-          <cylinderGeometry args={[0.4, 0.34, 0.28, 32]} />
-          <meshStandardMaterial map={texture} roughness={0.35} />
+        {/* Hanger top bar */}
+        <mesh position={[0, 1.65, 0.08]} castShadow>
+          <boxGeometry args={[0.9, 0.03, 0.03]} />
+          <meshStandardMaterial color="#cbd5e1" roughness={0.3} metalness={0.8} />
         </mesh>
 
-        {/* Gold belt */}
-        <mesh position={[0, 1.78, 0]}>
-          <cylinderGeometry args={[0.30, 0.30, 0.07, 32]} />
-          <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.95} />
-        </mesh>
-
-        {/* Shoulder / collar ring */}
-        <mesh position={[0, 2.5, 0]} castShadow>
-          <cylinderGeometry args={[0.42, 0.40, 0.1, 32]} />
-          <meshStandardMaterial map={texture} roughness={0.35} />
-        </mesh>
-
-        {/* === NECK === */}
-        <mesh position={[0, 2.65, 0]} castShadow>
-          <cylinderGeometry args={[0.06, 0.08, 0.2, 14]} />
-          <meshStandardMaterial color="#e2e8f0" roughness={0.2} metalness={0.6} />
-        </mesh>
-
-        {/* === HEAD (smooth classic mannequin — elongated oval) === */}
-        <mesh position={[0, 2.92, 0]} scale={[0.75, 1.15, 0.78]} castShadow receiveShadow>
-          <sphereGeometry args={[0.24, 32, 32]} />
-          <meshStandardMaterial color="#f1f5f9" roughness={0.08} metalness={0.7} />
+        {/* === THE T-SHIRT (Sasirangan Worn Product) === */}
+        {/* Extrude geometry centers on Z=0 based on depth. We offset it to hang on the rack */}
+        <mesh position={[0, 1.7, 0]} castShadow receiveShadow>
+          <extrudeGeometry args={[shirtShape, extrudeSettings]} />
+          <meshStandardMaterial map={texture} roughness={0.8} />
         </mesh>
 
       </RigidBody>
