@@ -204,28 +204,30 @@ function RpgSceneController({ setNearbyMotif }) {
         if (camera.position.y < 0.4) camera.position.y = 0.4;
       }
 
-      // SUPER GENEROUS PROXIMITY DETECTION ACROSS ENTIRE CORRIDOR WIDTH ("kurang ketengah & gak kedeketan"):
+      // TIGHT PROXIMITY DETECTION — checks real 3D distance to each painting's position
       if (target && typeof target.z === 'number') {
+        const px = target.x;
+        const pz = target.z;
+        const RADIUS = 4.5; // units before E button shows
+
+        // Painting positions (x, z): Bayam Raja (0, -27.5), Gigi Haruan (-7.5, 6),
+        // Kambang Kacang (7.5, -6), Kain Sarigading (-7.5, -16), Naga Balimbur (7.5, -18)
+        const paintings = [
+          { motif: MOTIFS_DATA[0], px: 0,    pz: -27.5 },
+          { motif: MOTIFS_DATA[1], px: -7.5, pz: 6     },
+          { motif: MOTIFS_DATA[2], px: 7.5,  pz: -6    },
+          { motif: MOTIFS_DATA[3], px: -7.5, pz: -16   },
+          { motif: MOTIFS_DATA[4], px: 7.5,  pz: -18   },
+        ];
+
         let found = null;
-        // Bayam Raja (North Wall at z = -27.5): Anyone standing at Z < -18 is in range!
-        if (target.z < -18) {
-          found = MOTIFS_DATA[0]; // Bayam Raja
-        } 
-        // Gigi Haruan (Left Wall Front at z = 6): Anyone standing between Z = 0 and Z = 14 on left half (X < 2.5)
-        else if (target.z >= 0 && target.z <= 14 && target.x < 2.5) {
-          found = MOTIFS_DATA[1]; // Gigi Haruan
-        } 
-        // Kambang Kacang (Right Wall Front at z = -6): Anyone standing between Z = -11 and Z = 0 on right half (X > -2.5)
-        else if (target.z >= -11 && target.z < 0 && target.x > -2.5) {
-          found = MOTIFS_DATA[2]; // Kambang Kacang
-        } 
-        // Kain Sarigading (Left Wall Back at z = -16): Anyone standing between Z = -20 and Z = -11 on left half (X < 2.5)
-        else if (target.z >= -20 && target.z < -11 && target.x < 2.5) {
-          found = MOTIFS_DATA[3]; // Kain Sarigading
-        } 
-        // Naga Balimbur (Right Wall Back at z = -18): Anyone standing between Z = -22 and Z = -11 on right half (X > -2.5)
-        else if (target.z >= -22 && target.z < -11 && target.x > -2.5) {
-          found = MOTIFS_DATA[4]; // Naga Balimbur
+        for (const p of paintings) {
+          const dx = px - p.px;
+          const dz = pz - p.pz;
+          if (Math.sqrt(dx * dx + dz * dz) < RADIUS) {
+            found = p.motif;
+            break;
+          }
         }
         
         if (nearbyMotifRef.current?.id !== found?.id) {
