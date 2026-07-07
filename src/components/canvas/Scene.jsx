@@ -446,7 +446,7 @@ export default function Scene() {
             far={6} 
             color="#06080f" 
             frames={1} // MASSIVE PERFORMANCE BOOST: Only render once on load!
-            resolution={isMobile ? 512 : 1024}
+            resolution={isMobileDevice ? 512 : 1024}
           />
 
           {/* RAPIER PHYSICS ENGINE & GRAND GALLERY CORRIDOR */}
