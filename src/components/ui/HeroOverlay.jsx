@@ -33,7 +33,7 @@ export default function HeroOverlay() {
           </p>
 
           {/* ── Main Title ── */}
-          <h1 className="text-[clamp(2.5rem,8vw,8rem)] font-title font-bold tracking-wider text-slate-100 uppercase leading-[1.05] drop-shadow-[0_4px_32px_rgba(0,0,0,0.9)]">
+          <h1 className="text-[2.2rem] sm:text-5xl md:text-7xl lg:text-8xl font-title font-bold tracking-wider text-slate-100 uppercase leading-[1.05] drop-shadow-[0_4px_32px_rgba(0,0,0,0.9)]">
             Sasirangan
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-400 to-yellow-500">
@@ -54,7 +54,7 @@ export default function HeroOverlay() {
             <button
               onClick={handleStartGame}
               disabled={!is3dLoaded || isTransitioning}
-              className="group flex items-center gap-3 font-title font-bold text-[clamp(1rem,4vw,2.5rem)] tracking-[0.15em] uppercase transition-all duration-300 disabled:cursor-not-allowed"
+              className="group flex items-center gap-3 font-title font-bold text-base sm:text-2xl md:text-4xl tracking-[0.15em] uppercase transition-all duration-300 disabled:cursor-not-allowed"
             >
               <Play className="w-4 h-4 md:w-7 md:h-7 text-amber-400 opacity-0 group-hover:opacity-100 -translate-x-3 group-hover:translate-x-0 transition-all duration-300" />
               <span className={`transition-colors duration-300 ${is3dLoaded ? 'text-white group-hover:text-amber-400' : 'text-slate-500'}`}>
@@ -65,7 +65,7 @@ export default function HeroOverlay() {
             {/* PENGATURAN */}
             <button
               onClick={() => setSettingsOpen(true)}
-              className="font-title font-bold text-[clamp(0.875rem,3vw,1.5rem)] tracking-[0.15em] uppercase text-slate-400 hover:text-amber-300 transition-colors duration-300"
+              className="font-title font-bold text-sm sm:text-xl md:text-2xl tracking-[0.15em] uppercase text-slate-400 hover:text-amber-300 transition-colors duration-300"
             >
               Pengaturan
             </button>
@@ -73,7 +73,7 @@ export default function HeroOverlay() {
             {/* TENTANG GAME */}
             <button
               onClick={() => setAboutOpen(true)}
-              className="font-title font-bold text-[clamp(0.875rem,3vw,1.5rem)] tracking-[0.15em] uppercase text-slate-400 hover:text-amber-300 transition-colors duration-300"
+              className="font-title font-bold text-sm sm:text-xl md:text-2xl tracking-[0.15em] uppercase text-slate-400 hover:text-amber-300 transition-colors duration-300"
             >
               Tentang Game
             </button>
