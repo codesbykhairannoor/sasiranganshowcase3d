@@ -22,6 +22,8 @@ const keyboardMap = [
   { name: 'interact', keys: ['KeyE', 'Enter'] },
 ];
 
+const isMobileDevice = typeof window !== 'undefined' ? /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768 : false;
+
 // AUTHENTIC MINECRAFT POINTER LOCK & STUCK CENTER CROSSHAIR ARCHITECTURE:
 // 1. CENTER STUCK CROSSHAIR (+) ("memang harus ttp stuck aja ditengah"):
 //    A fixed gaming + crosshair is rendered in the exact center of the screen!
@@ -134,7 +136,7 @@ function RpgSceneController({ setNearbyMotif }) {
     };
 
     const handleTouchMove = (e) => {
-      if (cameraControlsRef.current && cameraMode === 'rpg' && isMobile) {
+      if (cameraControlsRef.current && cameraMode === 'rpg' && isMobileDevice) {
         let lookTouch = null;
         for (let i = 0; i < e.touches.length; i++) {
           if (e.touches[i].clientX > window.innerWidth / 2) {
@@ -159,7 +161,7 @@ function RpgSceneController({ setNearbyMotif }) {
       }
     };
 
-    if (isMobile) {
+    if (isMobileDevice) {
       window.addEventListener('touchstart', handleTouchStart);
       window.addEventListener('touchmove', handleTouchMove, { passive: false });
     }
@@ -168,7 +170,7 @@ function RpgSceneController({ setNearbyMotif }) {
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchmove', handleTouchMove);
     };
-  }, [cameraMode, isMobile]);
+  }, [cameraMode]);
 
   // Window-level pointer handler — ONLY fires inspection logic when pointer is LOCKED
   // This runs independently of Three.js mesh clicks so they never conflict!
@@ -350,24 +352,16 @@ export default function Scene() {
   }, []);
 
   const requestLock = () => {
-    if (isMobile) return;
+    if (isMobileDevice) return;
     if (!document.pointerLockElement) document.body.requestPointerLock();
   };
-
-  // Mobile Detection for Performance Optimizations
-  const isMobile = useMemo(() => {
-    if (typeof window !== 'undefined') {
-      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
-    }
-    return false;
-  }, []);
 
   return (
     <div 
       className="w-full h-screen fixed inset-0 z-10 bg-[#06080f]"
     >
       {/* Toast Prompt to click to lock pointer when not locked */}
-      {cameraMode === 'rpg' && !isPointerLocked && !isMobile && (
+      {cameraMode === 'rpg' && !isPointerLocked && !isMobileDevice && (
         <div className="fixed top-24 left-1/2 -translate-x-1/2 z-40 pointer-events-none animate-pulse">
           <div className="bg-amber-500/90 text-slate-950 px-6 py-2 rounded-full font-game font-bold text-sm shadow-[0_0_15px_rgba(245,158,11,0.5)]">
             Klik di mana saja untuk mengunci kursor & bermain
@@ -406,14 +400,14 @@ export default function Scene() {
       )}
 
       {/* On-Screen Mobile Joystick (Only visible during RPG Character Control Mode!) */}
-      {cameraMode === 'rpg' && isMobile && (
+      {cameraMode === 'rpg' && isMobileDevice && (
         <div className="fixed bottom-12 left-12 z-50 pointer-events-auto opacity-100 mix-blend-screen drop-shadow-2xl">
           <Joystick buttonNumber={1} />
         </div>
       )}
 
       <Canvas
-        shadows={!isMobile}
+        shadows={!isMobileDevice}
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
         onPointerMissed={requestLock}
@@ -434,8 +428,8 @@ export default function Scene() {
             position={[15, 35, 15]} 
             intensity={1.2} 
             color="#fffbeb"
-            castShadow={!isMobile} 
-            shadow-mapSize={isMobile ? [512, 512] : [2048, 2048]}
+            castShadow={!isMobileDevice} 
+            shadow-mapSize={isMobileDevice ? [512, 512] : [2048, 2048]}
             shadow-bias={-0.0001}
           />
           <directionalLight position={[-15, 20, -15]} intensity={0.6} color="#38bdf8" />
