@@ -107,7 +107,10 @@ const ExhibitionMannequin = ({ position, rotation, texture, type = 'tshirt' }) =
 
   return (
     <group position={position} rotation={rotation}>
-      <RigidBody type="fixed" colliders="cuboid">
+      <RigidBody type="fixed" colliders={false}>
+        {/* === COLLIDERS: One for base, one tall for pole + clothing === */}
+        <CuboidCollider args={[0.55, 0.12, 0.55]} position={[0, 0.06, 0]} />
+        <CuboidCollider args={[0.3, 1.4, 0.3]} position={[0, 1.4, 0]} />
 
         {/* === BASE PEDESTAL === */}
         <mesh position={[0, 0.06, 0]} receiveShadow>
@@ -365,44 +368,95 @@ export default function MuseumGallery() {
          ========================================== */}
       <group position={[0, 0, 16]}>
         <RigidBody type="fixed" colliders={false}>
-          <CuboidCollider args={[2.5, 1.5, 0.6]} position={[0, 1.5, 0]} />
-          
+          {/* === COLLIDERS === */}
+          {/* Base stone block */}
+          <CuboidCollider args={[2.1, 1.3, 0.5]} position={[0, 1.3, 0]} />
+          {/* The angled plaque board */}
+          <CuboidCollider args={[2.4, 1.6, 0.2]} position={[0, 3.5, 0.5]} rotation={[-Math.PI / 6, 0, 0]} />
+
           {/* Main Stone Base */}
           <mesh position={[0, 1.3, 0]} castShadow receiveShadow>
             <boxGeometry args={[4.2, 2.6, 1.0]} />
             <meshStandardMaterial color="#0f172a" roughness={0.6} />
           </mesh>
-          
+
           <group position={[0, 2.8, 0.5]} rotation={[-Math.PI / 6, 0, 0]}>
-            {/* Slanted Face for Engraving */}
+            {/* Slanted plaque board */}
             <mesh castShadow>
-              <boxGeometry args={[4.8, 3.2, 0.2]} />
+              <boxGeometry args={[4.8, 3.4, 0.2]} />
               <meshStandardMaterial color="#1e293b" roughness={0.8} />
             </mesh>
-            
-            {/* Gold Trim Border (Slightly larger, placed behind) */}
-            <mesh position={[0, 0, -0.05]}>
-              <boxGeometry args={[5.0, 3.4, 0.15]} />
+            {/* Gold Trim Border */}
+            <mesh position={[0, 0, -0.06]}>
+              <boxGeometry args={[5.0, 3.6, 0.15]} />
               <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.9} />
             </mesh>
 
-            {/* Engraved Typography */}
-            <group position={[0, 0, 0.11]}>
-              <Text position={[0, 1.0, 0]} fontSize={0.28} color="#f59e0b" anchorX="center" anchorY="middle" fontWeight="bold" letterSpacing={0.08}>
+            {/* === ENGRAVED TYPOGRAPHY (positioned carefully within board bounds) === */}
+            <group position={[0, 0, 0.12]}>
+              {/* Title */}
+              <Text
+                position={[0, 1.2, 0]}
+                fontSize={0.26}
+                color="#f59e0b"
+                anchorX="center"
+                anchorY="middle"
+                fontWeight="bold"
+                letterSpacing={0.1}
+              >
                 BABAD SASIRANGAN
               </Text>
-              <Text position={[0, 0.2, 0]} fontSize={0.16} color="#f8fafc" anchorX="center" anchorY="middle" maxWidth={4.2} textAlign="center" lineHeight={1.6} letterSpacing={0.02}>
-                Menurut Hikayat Banjar (Abad ke-12), Sasirangan pertama kali dibuat oleh Patih Lambung Mangkurat sebagai "Kain Pamali" atau kain penyembuhan sakral untuk Putri Junjung Buih.
-              </Text>
-              <Text position={[0, -0.6, 0]} fontSize={0.16} color="#e2e8f0" anchorX="center" anchorY="middle" maxWidth={4.2} textAlign="center" lineHeight={1.6} letterSpacing={0.02}>
-                Berasal dari kata "Sirang" (dijelujur dengan tangan) dan dikerjakan semalaman suntuk sambil melantunkan salawat. Kini, karya ini berevolusi menjadi identitas membanggakan masyarakat Kalimantan Selatan tanpa kehilangan ruh mistisnya.
-              </Text>
-              {/* Ornamental Divider */}
-              <mesh position={[0, -1.2, 0]}>
-                 <boxGeometry args={[2.0, 0.02, 0.01]} />
-                 <meshStandardMaterial color="#f59e0b" />
+
+              {/* Ornamental line under title */}
+              <mesh position={[0, 0.9, 0]}>
+                <boxGeometry args={[3.0, 0.015, 0.01]} />
+                <meshStandardMaterial color="#f59e0b" />
               </mesh>
-              <Text position={[0, -1.45, 0]} fontSize={0.12} color="#38bdf8" anchorX="center" anchorY="middle" fontWeight="bold" letterSpacing={0.15}>
+
+              {/* Paragraph 1 - compact */}
+              <Text
+                position={[0, 0.4, 0]}
+                fontSize={0.135}
+                color="#f8fafc"
+                anchorX="center"
+                anchorY="middle"
+                maxWidth={4.0}
+                textAlign="center"
+                lineHeight={1.55}
+              >
+                {`Menurut Hikayat Banjar (Abad ke-12), Sasirangan pertama kali\ndibuat oleh Patih Lambung Mangkurat sebagai "Kain Pamali"\natau kain penyembuhan sakral untuk Putri Junjung Buih.`}
+              </Text>
+
+              {/* Paragraph 2 - compact */}
+              <Text
+                position={[0, -0.45, 0]}
+                fontSize={0.125}
+                color="#cbd5e1"
+                anchorX="center"
+                anchorY="middle"
+                maxWidth={4.0}
+                textAlign="center"
+                lineHeight={1.55}
+              >
+                {`Berasal dari kata "Sirang" (dijelujur dengan tangan),\ndikerjakan semalaman sambil melantunkan salawat.\nKini menjadi identitas membanggakan Kalimantan Selatan.`}
+              </Text>
+
+              {/* Bottom ornamental line */}
+              <mesh position={[0, -1.05, 0]}>
+                <boxGeometry args={[2.0, 0.015, 0.01]} />
+                <meshStandardMaterial color="#38bdf8" />
+              </mesh>
+
+              {/* Footer caption */}
+              <Text
+                position={[0, -1.3, 0]}
+                fontSize={0.11}
+                color="#38bdf8"
+                anchorX="center"
+                anchorY="middle"
+                fontWeight="bold"
+                letterSpacing={0.12}
+              >
                 TITIK NOL GEOGRAFIS BUDAYA BANJAR
               </Text>
             </group>

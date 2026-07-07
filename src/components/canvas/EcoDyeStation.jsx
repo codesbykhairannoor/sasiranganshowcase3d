@@ -85,27 +85,40 @@ export default function EcoDyeStation({ position, rotation }) {
       </RigidBody>
 
       {/* 3 Rotating Fabric Rolls with actual Sasirangan textures */}
-      <FabricRoll
-        textureUrl="/textures/bayam_raja.png"
-        color="#10b981"
-        position={[-2.2, 0.12, 0]}
-        label="Motif Bayam Raja"
-        speed={0.25}
-      />
-      <FabricRoll
-        textureUrl="/textures/gigi_haruan.png"
-        color="#f43f5e"
-        position={[0, 0.12, 0]}
-        label="Motif Gigi Haruan"
-        speed={0.3}
-      />
-      <FabricRoll
-        textureUrl="/textures/kambang_kacang.png"
-        color="#a855f7"
-        position={[2.2, 0.12, 0]}
-        label="Motif Kambang Kacang"
-        speed={0.2}
-      />
+      {/* Each roll is wrapped in its own RigidBody so the player cannot walk through */}
+      <RigidBody type="fixed" colliders={false} position={[-2.2, 0.12, 0]}>
+        <CuboidCollider args={[0.42, 1.0, 0.42]} position={[0, 1.8, 0]} />
+        <CuboidCollider args={[0.55, 0.1, 0.55]} position={[0, 0.06, 0]} />
+        <FabricRoll
+          textureUrl="/textures/bayam_raja.png"
+          color="#10b981"
+          position={[0, 0, 0]}
+          label="Motif Bayam Raja"
+          speed={0.25}
+        />
+      </RigidBody>
+      <RigidBody type="fixed" colliders={false} position={[0, 0.12, 0]}>
+        <CuboidCollider args={[0.42, 1.0, 0.42]} position={[0, 1.8, 0]} />
+        <CuboidCollider args={[0.55, 0.1, 0.55]} position={[0, 0.06, 0]} />
+        <FabricRoll
+          textureUrl="/textures/gigi_haruan.png"
+          color="#f43f5e"
+          position={[0, 0, 0]}
+          label="Motif Gigi Haruan"
+          speed={0.3}
+        />
+      </RigidBody>
+      <RigidBody type="fixed" colliders={false} position={[2.2, 0.12, 0]}>
+        <CuboidCollider args={[0.42, 1.0, 0.42]} position={[0, 1.8, 0]} />
+        <CuboidCollider args={[0.55, 0.1, 0.55]} position={[0, 0.06, 0]} />
+        <FabricRoll
+          textureUrl="/textures/kambang_kacang.png"
+          color="#a855f7"
+          position={[0, 0, 0]}
+          label="Motif Kambang Kacang"
+          speed={0.2}
+        />
+      </RigidBody>
 
       {/* Clickable floating info banner */}
       <group
