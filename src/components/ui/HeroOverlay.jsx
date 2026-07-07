@@ -1,113 +1,92 @@
 import React, { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore';
-import { Sparkles, Play, Shield, Compass, Cpu, Terminal } from 'lucide-react';
+import { Sparkles, Play } from 'lucide-react';
 
 export default function HeroOverlay() {
-  const { currentView, setView, is3dLoaded } = useAppStore();
+  const { currentView, setView, is3dLoaded, setSettingsOpen, setAboutOpen } = useAppStore();
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   if (currentView !== 'hero' && !isTransitioning) return null;
 
   const handleStartGame = () => {
     setIsTransitioning(true);
-    // Wait for fade to black before changing view
     setTimeout(() => {
       setView('museum');
-      // Hide transition screen after a short delay to let the glitch pass
       setTimeout(() => setIsTransitioning(false), 1000);
     }, 600);
   };
 
   return (
     <>
-      {/* 
-        ========================================================================
-        ELITE AAA CINEMATIC HOME SCREEN (LEFT-ALIGNED)
-        No more centered box modal! Uses a beautiful dark gradient vignette.
-        ========================================================================
-      */}
-      <div 
-        className={`fixed inset-0 z-40 flex flex-col items-center justify-center p-6 md:p-16 pointer-events-none font-sans transition-opacity duration-500 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
+      {/* ===== DARK OVERLAY BEHIND MENU (prevents 3D bleed-through) ===== */}
+      <div className={`fixed inset-0 z-30 bg-slate-950/70 backdrop-blur-sm transition-opacity duration-500 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`} />
+
+      {/* ===== CINEMATIC HERO MENU ===== */}
+      <div
+        className={`fixed inset-0 z-40 flex flex-col items-center justify-center pointer-events-none transition-opacity duration-500 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
       >
-        <div className="max-w-4xl w-full flex flex-col items-center text-center space-y-8 pointer-events-auto animate-fade-in mt-12 md:mt-24">
-        
-        {/* Main Game Screen Title Typography */}
-        <div className="space-y-4 relative z-10 flex flex-col items-center">
-          <h1 className="text-5xl md:text-8xl font-title font-medium tracking-wide text-slate-100 uppercase leading-[1.1] drop-shadow-[0_0_30px_rgba(0,0,0,0.8)]">
+        <div className="flex flex-col items-center text-center pointer-events-auto animate-fade-in select-none px-6">
+
+          {/* ── Subtitle Tag ── */}
+          <p className="text-[10px] font-game font-semibold tracking-[0.4em] uppercase text-amber-500/80 mb-6">
+            SDG 11 • Culture Verse • Target 11.4
+          </p>
+
+          {/* ── Main Title ── */}
+          <h1 className="text-6xl md:text-9xl font-title font-bold tracking-wider text-slate-100 uppercase leading-[1.05] drop-shadow-[0_4px_32px_rgba(0,0,0,0.9)]">
             Sasirangan
             <br />
-            <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 drop-shadow-[0_0_20px_rgba(245,158,11,0.5)]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-400 to-yellow-500">
               Metaverse
             </span>
           </h1>
-          
-          <div className="pt-2 flex items-center gap-4">
-            <div className="h-[1px] w-8 md:w-16 bg-gradient-to-r from-transparent to-amber-500/80"></div>
-            <p className="text-xs md:text-sm font-game font-medium tracking-[0.3em] text-slate-300 uppercase drop-shadow-md">
-              Culture Verse • Target 11.4
-            </p>
-            <div className="h-[1px] w-8 md:w-16 bg-gradient-to-l from-transparent to-amber-500/80"></div>
-          </div>
-        </div>
-          
-        <p className="text-slate-300 text-xs md:text-base max-w-2xl leading-relaxed relative z-10 font-game font-light tracking-wide mt-6 drop-shadow-md bg-slate-950/40 p-4 rounded-xl backdrop-blur-sm border border-white/5">
-          Jelajahi galeri pameran kain adat Kalimantan Selatan dalam format game 3D interaktif. Kontrol karakter lu, temukan rahasia filosofi motif leluhur, dan dukung ekosistem fashion berkelanjutan.
-        </p>
 
-        {/* START GAME RPG CTA MENU (CENTERED ELEGANT) */}
-        <div className="pt-8 flex flex-col items-center gap-5 relative z-10 w-full max-w-md mx-auto">
-          <button
-            onClick={handleStartGame}
-            disabled={!is3dLoaded || isTransitioning}
-            className="group relative flex items-center justify-center gap-4 text-center font-title font-bold text-2xl md:text-3xl tracking-[0.2em] uppercase transition-all duration-500 hover:scale-105 disabled:hover:scale-100"
-          >
-            {is3dLoaded ? (
-              <>
-                <Play className="w-5 h-5 text-amber-500 opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:-translate-x-0 transition-all duration-500" />
-                <span className="text-slate-100 group-hover:text-amber-400 transition-colors duration-300 drop-shadow-[0_0_15px_rgba(245,158,11,0.5)]">
-                  Mulai Bermain
-                </span>
-                <Play className="w-5 h-5 text-amber-500 opacity-0 group-hover:opacity-100 transform -translate-x-4 group-hover:translate-x-0 transition-all duration-500 rotate-180" />
-              </>
-            ) : (
-              <span className="text-slate-500 cursor-not-allowed">
-                Memuat Aset...
+          {/* ── Divider ── */}
+          <div className="flex items-center gap-5 mt-8 mb-10">
+            <div className="h-px w-24 bg-gradient-to-r from-transparent to-amber-500/60" />
+            <Sparkles className="w-4 h-4 text-amber-500/60 animate-pulse" />
+            <div className="h-px w-24 bg-gradient-to-l from-transparent to-amber-500/60" />
+          </div>
+
+          {/* ── Menu Items ── */}
+          <nav className="flex flex-col items-center gap-4">
+            {/* MULAI BERMAIN */}
+            <button
+              onClick={handleStartGame}
+              disabled={!is3dLoaded || isTransitioning}
+              className="group flex items-center gap-3 font-title font-bold text-2xl md:text-4xl tracking-[0.15em] uppercase transition-all duration-300 disabled:cursor-not-allowed"
+            >
+              <Play className="w-5 h-5 md:w-7 md:h-7 text-amber-400 opacity-0 group-hover:opacity-100 -translate-x-3 group-hover:translate-x-0 transition-all duration-300" />
+              <span className={`transition-colors duration-300 ${is3dLoaded ? 'text-white group-hover:text-amber-400' : 'text-slate-500'}`}>
+                {is3dLoaded ? 'Mulai Bermain' : 'Memuat...'}
               </span>
-            )}
-          </button>
+            </button>
 
-          {/* Settings Button */}
-          <button 
-            onClick={() => useAppStore.getState().setSettingsOpen(true)}
-            className="group relative text-center font-title font-bold text-lg md:text-xl tracking-[0.2em] uppercase text-slate-400 hover:text-amber-300 transition-all duration-300"
-          >
-            Pengaturan
-          </button>
-          
-          <button className="group relative text-center font-title font-bold text-lg md:text-xl tracking-[0.2em] uppercase text-slate-400 hover:text-amber-300 transition-all duration-300">
-            Tentang Game
-          </button>
+            {/* PENGATURAN */}
+            <button
+              onClick={() => setSettingsOpen(true)}
+              className="font-title font-bold text-xl md:text-2xl tracking-[0.15em] uppercase text-slate-400 hover:text-amber-300 transition-colors duration-300"
+            >
+              Pengaturan
+            </button>
 
-          {/* Tech Specs / Controls Info (Minimalist Centered) */}
-          <div className="flex flex-wrap justify-center items-center gap-6 text-[10px] md:text-xs font-game text-slate-400 font-bold tracking-[0.2em] uppercase w-full pt-8 border-t border-white/5 mt-6">
-            <span className="flex items-center gap-2"><Cpu className="w-3.5 h-3.5 text-slate-500" /> WASD = JALAN</span>
-            <span className="flex items-center gap-2"><Compass className="w-3.5 h-3.5 text-slate-500" /> SPASI = LOMPAT</span>
-            <span className="flex items-center gap-2"><Shield className="w-3.5 h-3.5 text-amber-500/70" /> P = PENGATURAN</span>
-          </div>
+            {/* TENTANG GAME */}
+            <button
+              onClick={() => setAboutOpen(true)}
+              className="font-title font-bold text-xl md:text-2xl tracking-[0.15em] uppercase text-slate-400 hover:text-amber-300 transition-colors duration-300"
+            >
+              Tentang Game
+            </button>
+          </nav>
+
         </div>
-
-      </div>
       </div>
 
-      {/* 
-        ========================================================================
-        TRANSITION FADE SCREEN (Hides the 3D Glitch / Shader Compilation)
-        ========================================================================
-      */}
+      {/* ===== TRANSITION FADE ===== */}
       {isTransitioning && (
-        <div className="fixed inset-0 z-50 bg-slate-950 flex flex-col items-center justify-center animate-fade-in pointer-events-none">
-          <Sparkles className="w-12 h-12 text-amber-400 animate-spin mb-4" style={{ animationDuration: '3s' }} />
-          <p className="text-amber-500 font-game font-bold tracking-widest uppercase animate-pulse">
+        <div className="fixed inset-0 z-50 bg-slate-950 flex flex-col items-center justify-center pointer-events-none">
+          <Sparkles className="w-10 h-10 text-amber-400 animate-spin mb-4" style={{ animationDuration: '2s' }} />
+          <p className="text-amber-500 font-game font-bold tracking-[0.3em] uppercase animate-pulse text-sm">
             Memasuki Metaverse...
           </p>
         </div>

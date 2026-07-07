@@ -40,9 +40,15 @@ export const useAppStore = create((set, get) => ({
   isAudioMuted: true,
   is3dLoaded: false,
 
+  // Settings & About Modals
+  isSettingsOpen: false,
+  isAboutOpen: false,
+
   // Actions
   set3dLoaded: (loaded) => set({ is3dLoaded: loaded }),
   setNearbyMotif: (motifId) => set({ nearbyMotifId: motifId }),
+  setSettingsOpen: (isOpen) => set({ isSettingsOpen: isOpen }),
+  setAboutOpen: (isOpen) => set({ isAboutOpen: isOpen }),
   
   togglePov: () => set((state) => ({ povMode: state.povMode === '3rd' ? '1st' : '3rd' })),
   setPovMode: (mode) => set({ povMode: mode }),
