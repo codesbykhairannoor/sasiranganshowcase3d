@@ -583,6 +583,7 @@ export default function MuseumGallery() {
           <spotLight position={[0, 0, 0.2]} angle={0.6} penumbra={0.5} intensity={25} distance={5.5} color="#fffbeb" target-position={[0, -4.5, -1.2]} />
         </group>
 
+        {/* Title plaque */}
         <group position={[0, -3.6, 0.5]}>
           <mesh>
             <boxGeometry args={[3.4, 0.65, 0.2]} />
@@ -592,13 +593,11 @@ export default function MuseumGallery() {
             Gigi Haruan (Ketajaman Berpikir)
           </Text>
         </group>
-
-        {/* Double Mannequin Showcase */}
-        {/* Left: Standard T-Shirt */}
-        <ExhibitionMannequin position={[-3.5, -4.4, 1.2]} rotation={[0, Math.PI / 6, 0]} texture={gigiTex} type="tshirt" />
-        {/* Right: Diverse Apparel (Kimono) */}
-        <ExhibitionMannequin position={[3.5, -4.4, 1.2]} rotation={[0, -Math.PI / 6, 0]} texture={gigiTex} type="kimono" />
       </group>
+
+      {/* Showcase 2 Mannequins — in WORLD space (outside rotated group) */}
+      <ExhibitionMannequin position={[-6, 0.1, 3.5]} rotation={[0, Math.PI / 4, 0]} texture={gigiTex} type="tshirt" />
+      <ExhibitionMannequin position={[-6, 0.1, 8.5]} rotation={[0, Math.PI / 4, 0]} texture={gigiTex} type="kimono" />
 
       {/* --- SHOWCASE 3: KAMBANG KACANG (Right Wall, X = 7.5, Z = -6) --- */}
       <group position={[7.5, 4.5, -6]} rotation={[0, -Math.PI / 2, 0]}>
@@ -646,6 +645,7 @@ export default function MuseumGallery() {
           <spotLight position={[0, 0, 0.2]} angle={0.6} penumbra={0.5} intensity={25} distance={5.5} color="#fffbeb" target-position={[0, -4.5, -1.2]} />
         </group>
 
+        {/* Title plaque */}
         <group position={[0, -3.6, 0.5]}>
           <mesh>
             <boxGeometry args={[3.4, 0.65, 0.2]} />
@@ -655,13 +655,11 @@ export default function MuseumGallery() {
             Kambang Kacang (Gotong Royong)
           </Text>
         </group>
-
-        {/* Double Mannequin Showcase */}
-        {/* Left: Standard T-Shirt */}
-        <ExhibitionMannequin position={[-3.5, -4.4, 1.2]} rotation={[0, Math.PI / 6, 0]} texture={kambangTex} type="tshirt" />
-        {/* Right: Diverse Apparel (Selendang / Shawl) */}
-        <ExhibitionMannequin position={[3.5, -4.4, 1.2]} rotation={[0, -Math.PI / 6, 0]} texture={kambangTex} type="selendang" />
       </group>
+
+      {/* Showcase 3 Mannequins — in WORLD space (outside rotated group) */}
+      <ExhibitionMannequin position={[6, 0.1, -3.5]} rotation={[0, -Math.PI / 4, 0]} texture={kambangTex} type="tshirt" />
+      <ExhibitionMannequin position={[6, 0.1, -8.5]} rotation={[0, -Math.PI / 4, 0]} texture={kambangTex} type="selendang" />
 
       {/* --- SHOWCASE 4: KAIN SARIGADING (Left Wall, X = -7.5, Z = -16) --- */}
       <group position={[-7.5, 4.5, -16]} rotation={[0, Math.PI / 2, 0]}>
@@ -709,6 +707,7 @@ export default function MuseumGallery() {
           <spotLight position={[0, 0, 0.2]} angle={0.6} penumbra={0.5} intensity={25} distance={5.5} color="#fffbeb" target-position={[0, -4.5, -1.2]} />
         </group>
 
+        {/* Title plaque */}
         <group position={[0, -3.6, 0.5]}>
           <mesh>
             <boxGeometry args={[3.4, 0.65, 0.2]} />
@@ -718,13 +717,11 @@ export default function MuseumGallery() {
             Kain Sarigading (Warisan Budaya)
           </Text>
         </group>
-
-        {/* Double Mannequin Showcase */}
-        {/* Left: Standard T-Shirt */}
-        <ExhibitionMannequin position={[-3.5, -4.4, 1.2]} rotation={[0, Math.PI / 6, 0]} texture={sarigadingTex} type="tshirt" />
-        {/* Right: Diverse Apparel (Totebag) */}
-        <ExhibitionMannequin position={[3.5, -4.4, 1.2]} rotation={[0, -Math.PI / 6, 0]} texture={sarigadingTex} type="totebag" />
       </group>
+
+      {/* Showcase 4 Mannequins — in WORLD space (outside rotated group) */}
+      <ExhibitionMannequin position={[-6, 0.1, -13.5]} rotation={[0, Math.PI / 4, 0]} texture={sarigadingTex} type="tshirt" />
+      <ExhibitionMannequin position={[-6, 0.1, -18.5]} rotation={[0, Math.PI / 4, 0]} texture={sarigadingTex} type="totebag" />
 
       {/* --- SHOWCASE 5: NAGA BALIMBUR (Right Wall, X = 7.5, Z = -18) --- */}
       <group position={[7.5, 4.5, -18]} rotation={[0, -Math.PI / 2, 0]}>
@@ -772,6 +769,7 @@ export default function MuseumGallery() {
           <spotLight position={[0, 0, 0.2]} angle={0.6} penumbra={0.5} intensity={25} distance={5.5} color="#fffbeb" target-position={[0, -4.5, -1.2]} />
         </group>
 
+        {/* Title plaque */}
         <group position={[0, -3.6, 0.5]}>
           <mesh>
             <boxGeometry args={[3.4, 0.65, 0.2]} />
@@ -781,13 +779,11 @@ export default function MuseumGallery() {
             Naga Balimbur (Pelindung Alam)
           </Text>
         </group>
-
-        {/* Double Mannequin Showcase */}
-        {/* Left: Standard T-Shirt */}
-        <ExhibitionMannequin position={[-3.5, -4.4, 1.2]} rotation={[0, Math.PI / 6, 0]} texture={nagaTex} type="tshirt" />
-        {/* Right: Diverse Apparel (Long Dress) */}
-        <ExhibitionMannequin position={[3.5, -4.4, 1.2]} rotation={[0, -Math.PI / 6, 0]} texture={nagaTex} type="dress" />
       </group>
+
+      {/* Showcase 5 Mannequins — in WORLD space (outside rotated group) */}
+      <ExhibitionMannequin position={[6, 0.1, -15.5]} rotation={[0, -Math.PI / 4, 0]} texture={nagaTex} type="tshirt" />
+      <ExhibitionMannequin position={[6, 0.1, -20.5]} rotation={[0, -Math.PI / 4, 0]} texture={nagaTex} type="dress" />
 
       {/* Glowing Exhibition Banners hanging from Ceiling */}
       <group position={[0, 11, 8]}>
