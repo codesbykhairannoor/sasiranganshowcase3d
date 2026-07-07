@@ -3,8 +3,8 @@
 @layer base {
   :root {
     --font-primary: 'Rajdhani', system-ui, -apple-system, sans-serif;
-    --font-game: 'Chakra Petch', system-ui, sans-serif;
-    --font-title: 'Orbitron', system-ui, sans-serif;
+    --font-game: 'Montserrat', system-ui, sans-serif;
+    --font-title: 'Cinzel', serif;
   }
 
   body {
