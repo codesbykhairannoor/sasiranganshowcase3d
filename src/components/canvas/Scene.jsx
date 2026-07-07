@@ -401,24 +401,22 @@ export default function Scene() {
 
       {/* On-Screen Mobile Joystick & Jump Button (Only visible during RPG Character Control Mode!) */}
       {cameraMode === 'rpg' && (
-        <div className="block lg:hidden pointer-events-auto">
+        <div className="block lg:hidden pointer-events-auto opacity-90 drop-shadow-2xl">
           {/* Movement Joystick (Bottom Left) */}
-          <div className="fixed bottom-8 left-8 sm:bottom-12 sm:left-12 z-50 opacity-90 drop-shadow-2xl scale-75 sm:scale-100 origin-bottom-left">
-            <Joystick 
-              joystickBaseStyle={{ background: 'rgba(15, 23, 42, 0.5)', border: '2px solid rgba(251, 191, 36, 0.8)' }}
-              joystickKnobStyle={{ background: 'rgba(251, 191, 36, 0.9)', boxShadow: '0 0 15px rgba(251, 191, 36, 0.5)' }}
-            />
-          </div>
+          <Joystick 
+            joystickWrapperStyle={{ bottom: '40px', left: '40px' }}
+            joystickBaseStyle={{ background: 'rgba(15, 23, 42, 0.5)', border: '2px solid rgba(251, 191, 36, 0.8)' }}
+            joystickKnobStyle={{ background: 'rgba(251, 191, 36, 0.9)', boxShadow: '0 0 15px rgba(251, 191, 36, 0.5)' }}
+          />
           
           {/* Jump Button (Bottom Right) */}
-          <div className="fixed bottom-12 right-12 sm:bottom-16 sm:right-16 z-50 opacity-90 drop-shadow-2xl scale-[1.2] origin-bottom-right">
-            <VirtualButton 
-              buttonName="jump"
-              buttonStyle={{ width: '60px', height: '60px', background: 'rgba(15, 23, 42, 0.5)', border: '2px solid rgba(6, 182, 212, 0.8)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-            >
-              <span className="text-cyan-400 font-game font-bold text-xs uppercase tracking-wider">Lompat</span>
-            </VirtualButton>
-          </div>
+          <VirtualButton 
+            id="jump"
+            buttonWrapperStyle={{ bottom: '40px', right: '40px' }}
+            buttonCapStyle={{ width: '60px', height: '60px', background: 'rgba(15, 23, 42, 0.5)', border: '2px solid rgba(6, 182, 212, 0.8)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          >
+            <span className="text-cyan-400 font-game font-bold text-xs uppercase tracking-wider pointer-events-none">Lompat</span>
+          </VirtualButton>
         </div>
       )}
 
