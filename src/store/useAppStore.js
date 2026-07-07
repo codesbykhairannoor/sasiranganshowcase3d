@@ -43,6 +43,7 @@ export const useAppStore = create((set, get) => ({
   // Settings & About Modals
   isSettingsOpen: false,
   isAboutOpen: false,
+  isEcoModalOpen: false,
   selectedTrack: 'paris_barantai',
 
   // Actions
@@ -50,6 +51,10 @@ export const useAppStore = create((set, get) => ({
   setNearbyMotif: (motifId) => set({ nearbyMotifId: motifId }),
   setSettingsOpen: (isOpen) => set({ isSettingsOpen: isOpen }),
   setAboutOpen: (isOpen) => set({ isAboutOpen: isOpen }),
+  setEcoModalOpen: (isOpen) => {
+    if (isOpen && document.pointerLockElement) document.exitPointerLock();
+    set({ isEcoModalOpen: isOpen });
+  },
   setSelectedTrack: (track) => set({ selectedTrack: track }),
   
   togglePov: () => set((state) => ({ povMode: state.povMode === '3rd' ? '1st' : '3rd' })),

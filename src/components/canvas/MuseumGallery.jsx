@@ -4,6 +4,7 @@ import { RigidBody, CuboidCollider } from '@react-three/rapier';
 import * as THREE from 'three';
 import { useAppStore } from '../../store/useAppStore';
 import { MOTIFS_DATA } from '../../data/motifsData';
+import EcoDyeStation from './EcoDyeStation';
 
 // SUPER RESEARCH & DEITY-LEVEL AAA MUSEUM ARCHITECTURE:
 // 1. GENIUS COLUMNS & AESTHETIC INTERIOR ("ADA JUGA TUH GAMBAR YG KETUTUPAN TIANG"):
@@ -335,58 +336,10 @@ export default function MuseumGallery() {
       </group>
 
       {/* ==========================================
-          5.5 SDG 12 ALCHEMIST SHOWCASE (NATURAL DYES)
+          5.5 ECO-DYE STATION (NEW SDG 12 & 11.4 SHOWCASE)
           Center of the Room at Z = 0
          ========================================== */}
-      <group position={[0, 1.2, 0]}>
-        <RigidBody type="fixed" colliders="cuboid">
-          {/* Base Pedestal */}
-          <mesh position={[0, -1.0, 0]} castShadow receiveShadow>
-            <boxGeometry args={[1.6, 0.4, 1.6]} />
-            <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.8} />
-          </mesh>
-          <mesh position={[0, -0.75, 0]}>
-            <boxGeometry args={[1.7, 0.1, 1.7]} />
-            <meshStandardMaterial color="#84cc16" roughness={0.2} metalness={0.9} />
-          </mesh>
-
-          {/* Glass Display Case */}
-          <mesh 
-            position={[0, 0.2, 0]} 
-            onClick={() => handleInspect(MOTIFS_DATA[5])} 
-            onPointerOver={(e) => (document.body.style.cursor = 'pointer')} 
-            onPointerOut={(e) => (document.body.style.cursor = 'auto')}
-          >
-            <boxGeometry args={[1.4, 1.8, 1.4]} />
-            <meshStandardMaterial color="#e0f2fe" transparent opacity={0.15} roughness={0.0} metalness={0.9} envMapIntensity={2.0} />
-          </mesh>
-
-          {/* Floating Cloth & Natural Dye Spheres */}
-          <group position={[0, 0.2, 0]}>
-            {/* Floating Fabric Roll */}
-            <mesh position={[0, 0.1, 0]} castShadow>
-              <cylinderGeometry args={[0.25, 0.25, 1.0, 32]} />
-              <meshStandardMaterial map={bayamTex} roughness={0.5} />
-            </mesh>
-            
-            {/* Glowing Natural Dye Extracts (Turmeric & Indigo) */}
-            <mesh position={[-0.4, -0.6, 0.3]}>
-              <sphereGeometry args={[0.12, 32, 32]} />
-              <meshStandardMaterial color="#eab308" emissive="#ca8a04" emissiveIntensity={2.0} />
-            </mesh>
-            <mesh position={[0.4, -0.6, -0.3]}>
-              <sphereGeometry args={[0.12, 32, 32]} />
-              <meshStandardMaterial color="#84cc16" emissive="#65a30d" emissiveIntensity={2.0} />
-            </mesh>
-            
-            <spotLight position={[0, 1.2, 0]} angle={0.8} penumbra={0.5} intensity={15} distance={3} color="#84cc16" />
-          </group>
-        </RigidBody>
-
-        <Text position={[0, 1.5, 0.8]} fontSize={0.2} maxWidth={1.8} textAlign="center" color="#84cc16" anchorX="center" anchorY="middle" fontWeight="bold">
-          [ SDG 12: Pewarnaan Alami ]
-        </Text>
-      </group>
+      <EcoDyeStation position={[0, 0.4, 0]} />
 
       {/* ==========================================
           6. AUTHENTIC WEBP SASIRANGAN SHOWCASE PAINTINGS (5 MASTERPIECES)

@@ -10,6 +10,7 @@ import AudioPlayer from './components/ui/AudioPlayer';
 import MobileLandscapeOverlay from './components/ui/MobileLandscapeOverlay';
 import SettingsModal from './components/ui/SettingsModal';
 import AboutModal from './components/ui/AboutModal';
+import EcoDyeModal from './components/ui/EcoDyeModal';
 import Scene from './components/canvas/Scene';
 
 export default function App() {
@@ -28,6 +29,7 @@ export default function App() {
       <RewardModal />
       <SettingsModal />
       <AboutModal />
+      <EcoDyeModal />
       <AudioPlayer />
 
       {/* 2. WebGL 3D Canvas Layer */}
