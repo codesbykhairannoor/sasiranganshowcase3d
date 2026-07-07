@@ -24,10 +24,7 @@ export default function LoadingScreen() {
 
   useEffect(() => {
     if (progress === 100 || !active) {
-      const timer = setTimeout(() => {
-        set3dLoaded(true);
-      }, 800);
-      return () => clearTimeout(timer);
+      set3dLoaded(true);
     }
   }, [progress, active, set3dLoaded]);
 

@@ -120,14 +120,25 @@ export default function EcoDyeStation({ position, rotation }) {
         />
       </RigidBody>
 
-      {/* Clickable floating info banner */}
+      {/* Clickable info banner WITH SUPPORT POLES */}
       <group
         position={[0, 3.5, 0]}
         onClick={(e) => { e.stopPropagation(); setEcoModalOpen(true); }}
         onPointerOver={(e) => (document.body.style.cursor = 'pointer')}
         onPointerOut={(e) => (document.body.style.cursor = 'auto')}
       >
-        <Float speed={1.5} floatIntensity={0.3}>
+        <Float speed={1.5} floatIntensity={0.1}>
+          
+          {/* --- Support Poles --- */}
+          <mesh position={[-1.5, -1.8, 0]} castShadow>
+            <cylinderGeometry args={[0.04, 0.04, 3.6, 8]} />
+            <meshStandardMaterial color="#1e293b" roughness={0.4} metalness={0.8} />
+          </mesh>
+          <mesh position={[1.5, -1.8, 0]} castShadow>
+            <cylinderGeometry args={[0.04, 0.04, 3.6, 8]} />
+            <meshStandardMaterial color="#1e293b" roughness={0.4} metalness={0.8} />
+          </mesh>
+
           {/* Gold border frame */}
           <mesh>
             <boxGeometry args={[3.4, 0.9, 0.06]} />
@@ -140,22 +151,23 @@ export default function EcoDyeStation({ position, rotation }) {
           </mesh>
           <Text
             position={[0, 0.16, 0.08]}
-            fontSize={0.22}
+            fontSize={0.20}
             color="#fbbf24"
             anchorX="center"
             anchorY="middle"
             fontWeight="bold"
-            outlineWidth={0.005}
+            outlineWidth={0.01}
             outlineColor="#000000"
           >
             PAMERAN KAIN SASIRANGAN
           </Text>
           <Text
             position={[0, -0.18, 0.08]}
-            fontSize={0.13}
+            fontSize={0.10}
             color="#94a3b8"
             anchorX="center"
             anchorY="middle"
+            letterSpacing={0.05}
           >
             [ Klik Untuk Info Pewarna Alam · SDG 11.4 ]
           </Text>

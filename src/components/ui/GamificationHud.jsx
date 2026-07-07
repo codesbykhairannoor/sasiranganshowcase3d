@@ -33,20 +33,20 @@ export default function GamificationHud() {
         {/* Left: Interactive RPG Controls Hint & POV Button */}
         <div className="flex items-center gap-2 md:gap-3 pointer-events-auto w-full md:w-auto justify-between md:justify-start">
           
-          {/* POV Toggle Button */}
+          {/* POV Toggle Button (Hidden on Mobile) */}
           <button
             onClick={togglePov}
-            className="bg-slate-950/90 backdrop-blur-2xl px-4 py-3 rounded-2xl border border-cyan-500/50 hover:border-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.3)] flex items-center gap-2 text-xs font-game font-bold text-white transition-all hover:scale-105 active:scale-95 cursor-pointer group shrink-0 tracking-wide capitalize"
+            className="hidden md:flex bg-slate-950/90 backdrop-blur-2xl px-4 py-3 rounded-2xl border border-cyan-500/50 hover:border-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.3)] items-center gap-2 text-xs font-game font-bold text-white transition-all hover:scale-105 active:scale-95 cursor-pointer group shrink-0 tracking-wide capitalize"
             title="Klik atau tekan tombol V / F5 di keyboard untuk ganti POV!"
           >
             <Eye className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform" />
             <span>POV : <strong className="text-amber-400">{is1stPerson ? '1st (Mata)' : '3rd (Ikuti)'}</strong></span>
           </button>
 
-          {/* Audio Toggle Button */}
+          {/* Audio Toggle Button (Hidden on Mobile) */}
           <button
             onClick={toggleAudio}
-            className="bg-slate-950/90 backdrop-blur-2xl p-3 rounded-2xl border border-white/20 hover:border-amber-500/50 shadow-2xl flex items-center justify-center text-white transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0"
+            className="hidden md:flex bg-slate-950/90 backdrop-blur-2xl p-3 rounded-2xl border border-white/20 hover:border-amber-500/50 shadow-2xl items-center justify-center text-white transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0"
             title={isAudioMuted ? "Putar BGM Tradisional" : "Matikan BGM"}
           >
             {isAudioMuted ? (
@@ -66,8 +66,8 @@ export default function GamificationHud() {
           </button>
         </div>
 
-        {/* Center/Right: Gamification Tracker & Action */}
-        <div className="flex items-center justify-between md:justify-end gap-2.5 pointer-events-auto w-full md:w-auto font-game font-bold">
+        {/* Center/Right: Gamification Tracker & Action (Hidden on Mobile) */}
+        <div className="hidden md:flex items-center justify-between md:justify-end gap-2.5 pointer-events-auto w-full md:w-auto font-game font-bold">
           
           {/* Progress Badge */}
           <div className="bg-slate-950/90 backdrop-blur-2xl px-4 md:px-6 py-3 rounded-2xl border border-white/20 shadow-2xl flex items-center gap-2 md:gap-3 flex-1 md:flex-initial justify-center">

@@ -54,31 +54,43 @@ const ExhibitionMannequin = ({ position, rotation, texture, type = 'tshirt' }) =
       s.lineTo(0.65, -1.2);
       s.lineTo(-0.65, -1.2);
     } else if (type === 'selendang') {
-      // Selendang / Shawl (Draped long fabric)
-      s.moveTo(-0.25, -1.6);
-      s.lineTo(-0.25, 0.8);
-      s.bezierCurveTo(-0.25, 1.1, 0.25, 1.1, 0.25, 0.8); // Top loop over hanger
-      s.lineTo(0.25, -1.4);
-      s.lineTo(0.15, -1.4);
-      s.lineTo(0.15, 0.8);
-      s.bezierCurveTo(0.15, 0.9, -0.15, 0.9, -0.15, 0.8); // Inner loop
-      s.lineTo(-0.15, -1.6);
-      s.lineTo(-0.25, -1.6);
-    } else if (type === 'totebag') {
-      // Totebag Sasirangan
-      s.moveTo(-0.5, -0.6);
-      s.lineTo(-0.6, 0.4); // bag body
-      s.lineTo(-0.3, 0.4);
-      s.lineTo(-0.3, 0.9); // handle up
-      s.lineTo(-0.2, 0.9);
-      s.lineTo(-0.2, 0.4);
-      s.lineTo(0.2, 0.4);
-      s.lineTo(0.2, 0.9); // handle up
-      s.lineTo(0.3, 0.9);
-      s.lineTo(0.3, 0.4);
-      s.lineTo(0.6, 0.4); // bag body
-      s.lineTo(0.5, -0.6);
-      s.lineTo(-0.5, -0.6);
+      // Selendang / Shawl (Draped long fabric) - MORE NATURAL CURVES
+      s.moveTo(-0.2, 0.8);
+      s.lineTo(-0.25, -1.8);
+      s.lineTo(-0.05, -1.8);
+      s.lineTo(0, 0.5); // inside loop
+      s.bezierCurveTo(0, 0.9, 0.2, 0.9, 0.2, 0.5);
+      s.lineTo(0.05, -1.6);
+      s.lineTo(0.25, -1.6);
+      s.lineTo(0.3, 0.8);
+      s.bezierCurveTo(0.3, 1.2, -0.2, 1.2, -0.2, 0.8);
+    } else if (type === 'totebag' || type === 'tas') {
+      // Totebag Sasirangan - LESS BOXY
+      s.moveTo(-0.5, -0.5);
+      s.lineTo(-0.55, 0.3); // bag body
+      s.lineTo(-0.3, 0.3);
+      s.lineTo(-0.25, 0.8); // handle up
+      s.lineTo(-0.15, 0.8);
+      s.lineTo(-0.2, 0.3);
+      s.lineTo(0.2, 0.3);
+      s.lineTo(0.15, 0.8); // handle up
+      s.lineTo(0.25, 0.8);
+      s.lineTo(0.3, 0.3);
+      s.lineTo(0.55, 0.3); // bag body
+      s.lineTo(0.5, -0.5);
+      s.lineTo(-0.5, -0.5);
+    } else if (type === 'celana') {
+      // Celana / Pants
+      s.moveTo(-0.4, 0.9); // waist left
+      s.lineTo(0.4, 0.9); // waist right
+      s.lineTo(0.45, 0.7); // hip right
+      s.lineTo(0.5, -1.2); // leg right outer
+      s.lineTo(0.1, -1.2); // leg right inner
+      s.lineTo(0, 0); // crotch
+      s.lineTo(-0.1, -1.2); // leg left inner
+      s.lineTo(-0.5, -1.2); // leg left outer
+      s.lineTo(-0.45, 0.7); // hip left
+      s.lineTo(-0.4, 0.9);
     } else if (type === 'dress') {
       // Long Dress / Gamis
       s.moveTo(-0.8, -1.6); // wide bottom
@@ -97,11 +109,11 @@ const ExhibitionMannequin = ({ position, rotation, texture, type = 'tshirt' }) =
   // PUFFY FABRIC BEVEL SETTINGS
   // This is the secret to avoiding the "stiff cardboard" look! High bevelSegments creates soft fabric volume.
   const extrudeSettings = {
-    depth: 0.04,
+    depth: type === 'selendang' ? 0.02 : 0.05,
     bevelEnabled: true,
-    bevelSegments: 8,
+    bevelSegments: 16,
     steps: 1,
-    bevelSize: 0.06,
+    bevelSize: 0.08,
     bevelThickness: 0.08
   };
 
@@ -466,9 +478,9 @@ export default function MuseumGallery() {
 
       {/* ==========================================
           5.5 ECO-DYE STATION (NEW SDG 12 & 11.4 SHOWCASE)
-          Moved to Z = 8 to avoid collision with benches at Z = -3
+          Moved to Z = 4 to avoid collision with benches and give more space from monolith
          ========================================== */}
-      <EcoDyeStation position={[0, 0.4, 8]} />
+      <EcoDyeStation position={[0, 0.4, 4]} />
 
       {/* ==========================================
           6. AUTHENTIC WEBP SASIRANGAN SHOWCASE PAINTINGS (5 MASTERPIECES)
@@ -596,7 +608,7 @@ export default function MuseumGallery() {
 
       {/* Showcase 2 Mannequins — in WORLD space, LEFT wall side Z=-6 */}
       <ExhibitionMannequin position={[-6, 0.1, -3.5]} rotation={[0, Math.PI / 4, 0]} texture={gigiTex} type="tshirt" />
-      <ExhibitionMannequin position={[-6, 0.1, -8.5]} rotation={[0, Math.PI / 4, 0]} texture={gigiTex} type="selendang" />
+      <ExhibitionMannequin position={[-6, 0.1, -8.5]} rotation={[0, Math.PI / 4, 0]} texture={gigiTex} type="celana" />
 
       {/* --- SHOWCASE 3: KAMBANG KACANG (Right Wall, X = 7.5, Z = -6) --- */}
       <group position={[7.5, 4.5, -6]} rotation={[0, -Math.PI / 2, 0]}>

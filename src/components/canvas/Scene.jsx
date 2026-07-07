@@ -117,6 +117,59 @@ function RpgSceneController({ setNearbyMotif }) {
     };
   }, [cameraMode]);
 
+  // MINECRAFT MOBILE TOUCH SWIPE LOOK & HEAD TRACKING:
+  useEffect(() => {
+    let lastTouchX = 0;
+    let lastTouchY = 0;
+
+    const handleTouchStart = (e) => {
+      // Find the touch on the right half of the screen
+      for (let i = 0; i < e.touches.length; i++) {
+        if (e.touches[i].clientX > window.innerWidth / 2) {
+          lastTouchX = e.touches[i].clientX;
+          lastTouchY = e.touches[i].clientY;
+          break;
+        }
+      }
+    };
+
+    const handleTouchMove = (e) => {
+      if (cameraControlsRef.current && cameraMode === 'rpg' && isMobile) {
+        let lookTouch = null;
+        for (let i = 0; i < e.touches.length; i++) {
+          if (e.touches[i].clientX > window.innerWidth / 2) {
+            lookTouch = e.touches[i];
+            break;
+          }
+        }
+        
+        if (!lookTouch) return;
+
+        const movementX = lookTouch.clientX - lastTouchX;
+        const movementY = lookTouch.clientY - lastTouchY;
+        
+        cameraControlsRef.current.rotate(-movementX * 0.005, -movementY * 0.005, false);
+
+        if (!window.__mouseLook) window.__mouseLook = { x: 0, y: 0 };
+        window.__mouseLook.x = THREE.MathUtils.clamp(window.__mouseLook.x + movementX * 0.005, -1, 1);
+        window.__mouseLook.y = THREE.MathUtils.clamp(window.__mouseLook.y - movementY * 0.005, -1, 1);
+
+        lastTouchX = lookTouch.clientX;
+        lastTouchY = lookTouch.clientY;
+      }
+    };
+
+    if (isMobile) {
+      window.addEventListener('touchstart', handleTouchStart);
+      window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    }
+
+    return () => {
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, [cameraMode, isMobile]);
+
   // Window-level pointer handler — ONLY fires inspection logic when pointer is LOCKED
   // This runs independently of Three.js mesh clicks so they never conflict!
   useEffect(() => {
@@ -297,6 +350,7 @@ export default function Scene() {
   }, []);
 
   const requestLock = () => {
+    if (isMobile) return;
     if (!document.pointerLockElement) document.body.requestPointerLock();
   };
 
@@ -360,8 +414,8 @@ export default function Scene() {
 
       <Canvas
         shadows={!isMobile}
-        dpr={isMobile ? 1 : [1, 2]}
-        gl={{ antialias: !isMobile, alpha: false, powerPreference: 'high-performance' }}
+        dpr={[1, 2]}
+        gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
         onPointerMissed={requestLock}
       >
         <KeyboardControls map={keyboardMap}>
