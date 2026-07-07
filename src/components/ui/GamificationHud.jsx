@@ -95,8 +95,8 @@ export default function GamificationHud() {
             </span>
           </div>
 
-          {/* Claim Reward Button or Return to Menu */}
-          {isAllDiscovered ? (
+          {/* Claim Reward Button */}
+          {isAllDiscovered && (
             <button
               onClick={openRewardModal}
               className="px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 font-black text-xs tracking-wide capitalize flex items-center gap-1.5 shadow-[0_0_30px_rgba(245,158,11,0.7)] animate-bounce cursor-pointer transition-all hover:scale-105 border border-amber-300 shrink-0"
@@ -104,14 +104,6 @@ export default function GamificationHud() {
               <Award className="w-4 h-4 text-slate-950" />
               <span className="hidden sm:inline">Klaim Sertifikat !</span>
               <span className="sm:hidden">Klaim !</span>
-            </button>
-          ) : (
-            <button
-              onClick={() => setView('hero')}
-              className="bg-slate-950/90 backdrop-blur-2xl px-4 py-3 rounded-2xl text-slate-300 hover:text-white text-xs font-bold border border-white/20 shadow-2xl transition-all flex items-center gap-1.5 cursor-pointer hover:border-amber-500/50 shrink-0 tracking-wide capitalize"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Kembali</span>
             </button>
           )}
 
