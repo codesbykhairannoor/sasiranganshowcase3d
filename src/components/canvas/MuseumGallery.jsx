@@ -17,60 +17,70 @@ import EcoDyeStation from './EcoDyeStation';
 // 4. TITLE CASE TYPOGRAPHY ("CUKUP TIAP HURUF KATA PERTAMA YG BESAR"):
 //    Replaced all ALL CAPS text with elegant Title Case formatting!
 // 5. FIXED INSPECTION CLICK & WALL CLIPPING PROTECTION ("keliatan bagian luarnya & glitch"):
-// --- SLEEK ROUNDED HUMANOID MANNEQUIN ---
+// --- ELEGANT FASHION TAILOR MANNEQUIN (Proper Museum Display Dummy) ---
 const ExhibitionMannequin = ({ position, rotation, texture }) => {
   return (
     <group position={position} rotation={rotation}>
       <RigidBody type="fixed" colliders="hull">
-        {/* 1. Marble Stand Base */}
-        <mesh position={[0, -0.05, 0]} receiveShadow>
-          <cylinderGeometry args={[0.6, 0.6, 0.1, 32]} />
-          <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.8} />
-        </mesh>
 
-        {/* 2. Slate Black Trousers / Legs (Capsules) */}
-        <mesh position={[-0.18, 0.7, 0]} castShadow receiveShadow>
-          <capsuleGeometry args={[0.12, 1.16, 4, 16]} />
-          <meshStandardMaterial color="#1e293b" roughness={0.5} />
+        {/* === PEDESTAL === */}
+        {/* Circular base */}
+        <mesh position={[0, 0.05, 0]} receiveShadow>
+          <cylinderGeometry args={[0.55, 0.6, 0.1, 32]} />
+          <meshStandardMaterial color="#0f172a" roughness={0.15} metalness={0.8} />
         </mesh>
-        <mesh position={[0.18, 0.7, 0]} castShadow receiveShadow>
-          <capsuleGeometry args={[0.12, 1.16, 4, 16]} />
-          <meshStandardMaterial color="#1e293b" roughness={0.5} />
-        </mesh>
-
-        {/* 3. Gold Belt / Waist */}
-        <mesh position={[0, 1.45, 0]} castShadow receiveShadow>
-          <cylinderGeometry args={[0.36, 0.36, 0.12, 32]} />
+        {/* Gold ring accent on base */}
+        <mesh position={[0, 0.11, 0]}>
+          <cylinderGeometry args={[0.56, 0.56, 0.04, 32]} />
           <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.9} />
         </mesh>
+        {/* Pole / stem */}
+        <mesh position={[0, 0.75, 0]} castShadow>
+          <cylinderGeometry args={[0.055, 0.055, 1.3, 16]} />
+          <meshStandardMaterial color="#1e293b" roughness={0.3} metalness={0.9} />
+        </mesh>
 
-        {/* 4. Torso / Shirt wearing Sasirangan Texture (Capsule for rounded body) */}
+        {/* === TORSO (Box-based tailor dummy shape) === */}
+        {/* Lower torso / hips - wider */}
+        <mesh position={[0, 1.55, 0]} castShadow receiveShadow>
+          <boxGeometry args={[0.56, 0.28, 0.28]} />
+          <meshStandardMaterial map={texture} roughness={0.4} />
+        </mesh>
+        {/* Mid torso / waist - narrower */}
+        <mesh position={[0, 1.78, 0]} castShadow receiveShadow>
+          <boxGeometry args={[0.42, 0.2, 0.24]} />
+          <meshStandardMaterial map={texture} roughness={0.4} />
+        </mesh>
+        {/* Gold Belt */}
+        <mesh position={[0, 1.65, 0]}>
+          <boxGeometry args={[0.58, 0.06, 0.30]} />
+          <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.9} />
+        </mesh>
+        {/* Chest / upper torso - wider */}
         <mesh position={[0, 2.05, 0]} castShadow receiveShadow>
-          <capsuleGeometry args={[0.35, 0.4, 4, 32]} />
+          <boxGeometry args={[0.62, 0.4, 0.3]} />
+          <meshStandardMaterial map={texture} roughness={0.4} />
+        </mesh>
+        {/* Shoulder bar */}
+        <mesh position={[0, 2.3, 0]} castShadow>
+          <boxGeometry args={[0.72, 0.1, 0.28]} />
           <meshStandardMaterial map={texture} roughness={0.4} />
         </mesh>
 
-        {/* 5. Sleek Silver Arms (Capsules) */}
-        <mesh position={[-0.48, 1.95, 0]} castShadow receiveShadow rotation={[0, 0, 0.1]}>
-          <capsuleGeometry args={[0.1, 0.9, 4, 16]} />
-          <meshStandardMaterial color="#e2e8f0" roughness={0.3} metalness={0.5} />
-        </mesh>
-        <mesh position={[0.48, 1.95, 0]} castShadow receiveShadow rotation={[0, 0, -0.1]}>
-          <capsuleGeometry args={[0.1, 0.9, 4, 16]} />
+        {/* === NECK stub (no separate arms - fashion mannequin style) === */}
+        <mesh position={[0, 2.48, 0]} castShadow>
+          <cylinderGeometry args={[0.065, 0.08, 0.22, 12]} />
           <meshStandardMaterial color="#e2e8f0" roughness={0.3} metalness={0.5} />
         </mesh>
 
-        {/* 6. Neck */}
-        <mesh position={[0, 2.68, 0]} castShadow receiveShadow>
-          <cylinderGeometry args={[0.08, 0.1, 0.16, 16]} />
-          <meshStandardMaterial color="#e2e8f0" roughness={0.3} metalness={0.5} />
+        {/* === HEAD (smooth oval - classic mannequin egg head) === */}
+        <mesh position={[0, 2.84, 0]} scale={[0.82, 1.1, 0.82]} castShadow receiveShadow>
+          <sphereGeometry args={[0.22, 32, 32]} />
+          <meshStandardMaterial color="#f8fafc" roughness={0.1} metalness={0.65}
+            envMapIntensity={1.5}
+          />
         </mesh>
 
-        {/* 7. Sleek Faceless Silver Head */}
-        <mesh position={[0, 2.98, 0]} scale={[1, 1.25, 1]} castShadow receiveShadow>
-          <sphereGeometry args={[0.2, 32, 32]} />
-          <meshStandardMaterial color="#f8fafc" roughness={0.2} metalness={0.6} />
-        </mesh>
       </RigidBody>
     </group>
   );

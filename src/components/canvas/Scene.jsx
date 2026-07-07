@@ -113,19 +113,8 @@ function RpgSceneController({ setNearbyMotif }) {
     };
   }, [cameraMode]);
 
-  // DIRECT WINDOW CLICK LISTENER FOR CROSSHAIR AIMING ("bisa dipake buat klik inspeksi lukisan"):
-  // Guaranteed to fire reliably during Pointer Lock mode without being swallowed by DOM!
-  useEffect(() => {
-    const handleWindowMouseDown = (e) => {
-      if (cameraMode === 'rpg' && document.pointerLockElement && e.button === 0) {
-        if (nearbyMotifRef.current) {
-          enterPortal(nearbyMotifRef.current.id);
-        }
-      }
-    };
-    window.addEventListener('mousedown', handleWindowMouseDown);
-    return () => window.removeEventListener('mousedown', handleWindowMouseDown);
-  }, [cameraMode, enterPortal]);
+  // CLICK DURING POINTER LOCK is handled at the div level via onPointerDown
+  // (no separate window listener needed)
 
   // Handle camera transitions ONLY when entering portal inspection mode!
   useEffect(() => {
@@ -276,15 +265,16 @@ export default function Scene() {
   const { cameraMode, enterPortal } = useAppStore();
   const [nearbyMotif, setNearbyMotif] = useState(null);
 
-  // MINECRAFT POINTER LOCK ON CLICK:
-  const handleSceneClick = (e) => {
-    if (cameraMode === 'rpg') {
-      if (!document.pointerLockElement) {
-        document.body.requestPointerLock();
-      } else if (e.button === 0 && nearbyMotif) {
-        // Aiming center + crosshair at painting and left-clicking!
-        enterPortal(nearbyMotif.id);
-      }
+  // POINTER LOCK: Use onPointerDown which fires reliably even inside pointer lock mode
+  // onClick is a synthetic event that some browsers swallow during pointer lock!
+  const handleScenePointerDown = (e) => {
+    if (cameraMode !== 'rpg') return;
+    if (!document.pointerLockElement) {
+      // Not locked yet — request lock
+      document.body.requestPointerLock();
+    } else if (e.button === 0 && nearbyMotif) {
+      // Pointer locked, left click, and near a painting → inspect!
+      enterPortal(nearbyMotif.id);
     }
   };
 
@@ -298,7 +288,7 @@ export default function Scene() {
 
   return (
     <div 
-      onClick={handleSceneClick}
+      onPointerDown={handleScenePointerDown}
       className="w-full h-screen fixed inset-0 z-10 bg-[#06080f] cursor-pointer"
     >
       {/* AUTHENTIC MINECRAFT CENTER STUCK CROSSHAIR (+) ("memang harus ttp stuck aja ditengah") */}
