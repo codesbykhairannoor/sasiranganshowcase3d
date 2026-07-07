@@ -537,8 +537,8 @@ export default function MuseumGallery() {
         <ExhibitionMannequin position={[3.5, -4.4, 1.2]} rotation={[0, -Math.PI / 6, 0]} texture={bayamTex} type="tshirt" />
       </group>
 
-      {/* --- SHOWCASE 2: GIGI HARUAN (Left Wall, X = -7.5, Z = 6) --- */}
-      <group position={[-7.5, 4.5, 6]} rotation={[0, Math.PI / 2, 0]}>
+      {/* --- SHOWCASE 2: GIGI HARUAN (Right Wall, X = 7.5, Z = 6) — MOVED from left wall --- */}
+      <group position={[7.5, 4.5, 6]} rotation={[0, -Math.PI / 2, 0]}>
         <RigidBody type="fixed" colliders={false}>
           <CuboidCollider args={[2, 3, 0.5]} />
           <mesh castShadow receiveShadow>
@@ -595,9 +595,9 @@ export default function MuseumGallery() {
         </group>
       </group>
 
-      {/* Showcase 2 Mannequins — in WORLD space (outside rotated group) */}
-      <ExhibitionMannequin position={[-6, 0.1, 3.5]} rotation={[0, Math.PI / 4, 0]} texture={gigiTex} type="tshirt" />
-      <ExhibitionMannequin position={[-6, 0.1, 8.5]} rotation={[0, Math.PI / 4, 0]} texture={gigiTex} type="kimono" />
+      {/* Showcase 2 Mannequins — in WORLD space, RIGHT wall side Z=6 */}
+      <ExhibitionMannequin position={[6, 0.1, 3.5]} rotation={[0, -Math.PI / 4, 0]} texture={gigiTex} type="tshirt" />
+      <ExhibitionMannequin position={[6, 0.1, 8.5]} rotation={[0, -Math.PI / 4, 0]} texture={gigiTex} type="selendang" />
 
       {/* --- SHOWCASE 3: KAMBANG KACANG (Right Wall, X = 7.5, Z = -6) --- */}
       <group position={[7.5, 4.5, -6]} rotation={[0, -Math.PI / 2, 0]}>
