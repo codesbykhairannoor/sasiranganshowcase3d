@@ -8,6 +8,7 @@ import GamificationHud from './components/ui/GamificationHud';
 import RewardModal from './components/ui/RewardModal';
 import AudioPlayer from './components/ui/AudioPlayer';
 import MobileLandscapeOverlay from './components/ui/MobileLandscapeOverlay';
+import SettingsModal from './components/ui/SettingsModal';
 import Scene from './components/canvas/Scene';
 
 export default function App() {
@@ -24,6 +25,8 @@ export default function App() {
       <MotifDetailModal />
       <GamificationHud />
       <RewardModal />
+      <SettingsModal />
+      <AudioPlayer />
 
       {/* 2. WebGL 3D Canvas Layer */}
       <Scene />

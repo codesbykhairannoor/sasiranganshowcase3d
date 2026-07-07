@@ -252,6 +252,7 @@ function RpgSceneController({ setNearbyMotif }) {
       <EcctrlCameraControls
         ref={cameraControlsRef}
         makeDefault
+        enabled={cameraMode !== 'cinematic'}
         smoothTime={0.1}
         minDistance={cameraMode === 'portal' ? 2.0 : (is1stPerson ? 0.01 : 1.0)}
         maxDistance={cameraMode === 'portal' ? 12.0 : (is1stPerson ? 0.01 : 2.0)}

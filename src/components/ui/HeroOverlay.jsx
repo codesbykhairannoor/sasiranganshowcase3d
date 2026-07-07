@@ -27,9 +27,9 @@ export default function HeroOverlay() {
         ========================================================================
       */}
       <div 
-        className={`fixed inset-0 z-40 flex items-center p-6 md:p-16 pointer-events-none font-sans bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent transition-opacity duration-500 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
+        className={`fixed inset-0 z-40 flex flex-col items-center justify-center p-6 md:p-16 pointer-events-none font-sans transition-opacity duration-500 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
       >
-        <div className="max-w-3xl w-full space-y-8 pointer-events-auto animate-fade-in pl-4 md:pl-12">
+        <div className="max-w-4xl w-full flex flex-col items-center text-center space-y-8 pointer-events-auto animate-fade-in mt-12 md:mt-24">
         
         {/* Top Elite Badge */}
         <div className="inline-flex items-center gap-3 px-1 border-b border-amber-500/30 pb-2 mb-4">
@@ -40,66 +40,72 @@ export default function HeroOverlay() {
         </div>
 
         {/* Main Game Screen Title Typography */}
-        <div className="space-y-2 relative z-10">
-          <div className="flex items-center gap-2 text-xs font-game font-medium text-slate-400 tracking-[0.2em] uppercase ml-1">
-            <Terminal className="w-4 h-4 text-cyan-500/70" />
+        <div className="space-y-4 relative z-10 flex flex-col items-center">
+          <div className="flex items-center gap-2 text-xs md:text-sm font-game font-medium text-slate-300 tracking-[0.2em] uppercase bg-slate-950/50 px-4 py-1.5 rounded-full border border-white/5 backdrop-blur-sm">
+            <Terminal className="w-4 h-4 text-cyan-500" />
             <span>Interactive RPG Heritage Simulator</span>
           </div>
 
-          <h1 className="text-6xl md:text-8xl font-title font-medium tracking-normal text-slate-100 uppercase leading-[1.1] drop-shadow-2xl">
+          <h1 className="text-5xl md:text-8xl font-title font-medium tracking-wide text-slate-100 uppercase leading-[1.1] drop-shadow-[0_0_30px_rgba(0,0,0,0.8)]">
             Sasirangan
             <br />
-            <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 drop-shadow-[0_0_20px_rgba(245,158,11,0.3)]">
+            <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 drop-shadow-[0_0_20px_rgba(245,158,11,0.5)]">
               Metaverse
             </span>
           </h1>
           
-          <div className="pt-4 flex items-center gap-3">
-            <div className="h-[1px] w-12 bg-amber-500/50"></div>
-            <p className="text-sm font-game font-medium tracking-[0.2em] text-slate-300 uppercase">
+          <div className="pt-2 flex items-center gap-4">
+            <div className="h-[1px] w-8 md:w-16 bg-gradient-to-r from-transparent to-amber-500/80"></div>
+            <p className="text-xs md:text-sm font-game font-medium tracking-[0.3em] text-slate-300 uppercase drop-shadow-md">
               Culture Verse • Target 11.4
             </p>
+            <div className="h-[1px] w-8 md:w-16 bg-gradient-to-l from-transparent to-amber-500/80"></div>
           </div>
         </div>
           
-        <p className="text-slate-400/90 text-sm md:text-base max-w-lg leading-relaxed relative z-10 font-game font-light tracking-wide mt-6">
+        <p className="text-slate-300 text-xs md:text-base max-w-2xl leading-relaxed relative z-10 font-game font-light tracking-wide mt-6 drop-shadow-md bg-slate-950/40 p-4 rounded-xl backdrop-blur-sm border border-white/5">
           Jelajahi galeri pameran kain adat Kalimantan Selatan dalam format game 3D interaktif. Kontrol karakter lu, temukan rahasia filosofi motif leluhur, dan dukung ekosistem fashion berkelanjutan.
         </p>
 
-        {/* START GAME RPG CTA MENU (VERTICAL ELEGANT) */}
-        <div className="pt-10 flex flex-col gap-4 relative z-10 w-fit">
+        {/* START GAME RPG CTA MENU (CENTERED ELEGANT) */}
+        <div className="pt-8 flex flex-col items-center gap-5 relative z-10 w-full max-w-md mx-auto">
           <button
             onClick={handleStartGame}
             disabled={!is3dLoaded || isTransitioning}
-            className="group relative flex items-center gap-4 text-left font-title font-bold text-2xl md:text-3xl tracking-widest uppercase transition-all duration-500 hover:pl-4 disabled:hover:pl-0"
+            className="group relative flex items-center justify-center gap-4 text-center font-title font-bold text-2xl md:text-3xl tracking-[0.2em] uppercase transition-all duration-500 hover:scale-105 disabled:hover:scale-100"
           >
             {is3dLoaded ? (
               <>
-                <span className="text-slate-100 group-hover:text-amber-400 transition-colors duration-300 drop-shadow-md">
+                <Play className="w-5 h-5 text-amber-500 opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:-translate-x-0 transition-all duration-500" />
+                <span className="text-slate-100 group-hover:text-amber-400 transition-colors duration-300 drop-shadow-[0_0_15px_rgba(245,158,11,0.5)]">
                   Mulai Bermain
                 </span>
-                <Play className="w-5 h-5 text-amber-500 opacity-0 group-hover:opacity-100 transform -translate-x-4 group-hover:translate-x-0 transition-all duration-500" />
+                <Play className="w-5 h-5 text-amber-500 opacity-0 group-hover:opacity-100 transform -translate-x-4 group-hover:translate-x-0 transition-all duration-500 rotate-180" />
               </>
             ) : (
-              <span className="text-slate-600 cursor-not-allowed">
+              <span className="text-slate-500 cursor-not-allowed">
                 Memuat Aset...
               </span>
             )}
           </button>
 
-          {/* Dummy Menu Items for AAA Feel */}
-          <button className="group relative flex items-center text-left font-title font-bold text-xl md:text-2xl tracking-widest uppercase text-slate-500 hover:text-slate-300 transition-all duration-300">
+          {/* Settings Button */}
+          <button 
+            onClick={() => useAppStore.getState().setSettingsOpen(true)}
+            className="group relative text-center font-title font-bold text-lg md:text-xl tracking-[0.2em] uppercase text-slate-400 hover:text-amber-300 transition-all duration-300"
+          >
             Pengaturan
           </button>
-          <button className="group relative flex items-center text-left font-title font-bold text-xl md:text-2xl tracking-widest uppercase text-slate-500 hover:text-slate-300 transition-all duration-300">
+          
+          <button className="group relative text-center font-title font-bold text-lg md:text-xl tracking-[0.2em] uppercase text-slate-400 hover:text-amber-300 transition-all duration-300">
             Tentang Game
           </button>
 
-          {/* Tech Specs / Controls Info (Minimalist) */}
-          <div className="flex flex-col gap-2.5 text-[10px] md:text-xs font-game text-slate-500/80 font-medium tracking-wider uppercase w-fit pt-8">
-            <span className="flex items-center gap-3"><Cpu className="w-3.5 h-3.5 text-slate-600" /> WASD / Arrow Keys Untuk Jalan</span>
-            <span className="flex items-center gap-3"><Compass className="w-3.5 h-3.5 text-slate-600" /> Spasi Untuk Lompat</span>
-            <span className="flex items-center gap-3"><Shield className="w-3.5 h-3.5 text-slate-600" /> 100% Client-Side Engine</span>
+          {/* Tech Specs / Controls Info (Minimalist Centered) */}
+          <div className="flex flex-wrap justify-center items-center gap-4 text-[10px] md:text-xs font-game text-slate-400 font-medium tracking-wider uppercase w-full pt-6 border-t border-white/5 mt-4">
+            <span className="flex items-center gap-2"><Cpu className="w-3 h-3 text-slate-500" /> WASD / Arrows = Jalan</span>
+            <span className="flex items-center gap-2"><Compass className="w-3 h-3 text-slate-500" /> Spasi = Lompat</span>
+            <span className="flex items-center gap-2"><Shield className="w-3 h-3 text-emerald-500/70" /> 100% Client-Side</span>
           </div>
         </div>
 
