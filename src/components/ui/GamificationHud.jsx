@@ -56,18 +56,14 @@ export default function GamificationHud() {
             )}
           </button>
 
-          {/* Controls Hint Box */}
-          <div className="hidden md:flex bg-slate-950/90 backdrop-blur-2xl px-5 py-3 rounded-2xl border border-white/20 shadow-2xl items-center gap-3 text-xs text-slate-200 font-game">
-            <div className="w-8 h-8 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0 border border-cyan-500/40">
-              <Gamepad2 className="w-4 h-4 animate-pulse" />
-            </div>
-            <div>
-              <p className="font-extrabold text-white text-xs tracking-wide capitalize">Kontrol RPG & POV :</p>
-              <p className="text-xs text-slate-300 font-semibold">
-                <strong className="text-amber-400">WASD</strong> Jalan • <strong className="text-cyan-400">Spasi</strong> Lompat • <strong className="text-emerald-400">V / F5</strong> Ganti POV
-              </p>
-            </div>
-          </div>
+          {/* Settings shortcut button */}
+          <button
+            onClick={() => useAppStore.getState().setSettingsOpen(true)}
+            className="bg-slate-950/90 backdrop-blur-2xl px-3 py-3 rounded-2xl border border-white/20 hover:border-amber-500/50 shadow-2xl flex items-center justify-center text-white transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0 text-xs font-game font-bold tracking-widest"
+            title="Pengaturan (P)"
+          >
+            ⚙
+          </button>
         </div>
 
         {/* Center/Right: Gamification Tracker & Action */}

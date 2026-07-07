@@ -43,12 +43,14 @@ export const useAppStore = create((set, get) => ({
   // Settings & About Modals
   isSettingsOpen: false,
   isAboutOpen: false,
+  selectedTrack: 'paris_barantai',
 
   // Actions
   set3dLoaded: (loaded) => set({ is3dLoaded: loaded }),
   setNearbyMotif: (motifId) => set({ nearbyMotifId: motifId }),
   setSettingsOpen: (isOpen) => set({ isSettingsOpen: isOpen }),
   setAboutOpen: (isOpen) => set({ isAboutOpen: isOpen }),
+  setSelectedTrack: (track) => set({ selectedTrack: track }),
   
   togglePov: () => set((state) => ({ povMode: state.povMode === '3rd' ? '1st' : '3rd' })),
   setPovMode: (mode) => set({ povMode: mode }),
