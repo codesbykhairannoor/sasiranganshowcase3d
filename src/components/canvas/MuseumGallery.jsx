@@ -218,6 +218,11 @@ export default function MuseumGallery() {
           <boxGeometry args={[17, 0.2, 0.15]} />
           <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.9} />
         </mesh>
+        {/* Giant BJM Logo on Back Wall */}
+        <mesh position={[0, 2.0, 0.51]} castShadow>
+          <planeGeometry args={[6.5, 6.5]} />
+          <meshStandardMaterial map={logoTex} transparent roughness={0.2} emissive="#ffffff" emissiveIntensity={0.05} />
+        </mesh>
       </RigidBody>
 
       <RigidBody type="fixed" colliders={false} position={[0, 7, 29]}>
@@ -346,56 +351,45 @@ export default function MuseumGallery() {
       ))}
 
       {/* ==========================================
-          5. GRAND ENTRANCE RECEPTION MONUMENT WITH BANJARMASIN LOGO
-          Replaced weird floor blocks ("jujur aneh") with an aesthetic welcome desk!
+          5. BABAD SASIRANGAN CARVED STONE MONOLITH
+          A static entrance stone with physical text embedded directly on it.
          ========================================== */}
-      <group position={[0, 1.8, 16]}>
+      <group position={[0, 1.5, 16]}>
         <RigidBody type="fixed" colliders={false}>
-          <CuboidCollider args={[2.5, 1.8, 0.6]} />
-          {/* Obsidian Marble Monument Pedestal */}
-          <mesh 
-            castShadow receiveShadow
-            onClick={() => handleInspect(MOTIFS_DATA[6])} 
-            onPointerOver={(e) => (document.body.style.cursor = 'pointer')} 
-            onPointerOut={(e) => (document.body.style.cursor = 'auto')}
-          >
-            <boxGeometry args={[5.0, 3.6, 1.2]} />
-            <meshStandardMaterial color="#0f172a" roughness={0.15} metalness={0.7} />
+          <CuboidCollider args={[2.5, 1.5, 0.6]} />
+          
+          {/* Main Stone Base */}
+          <mesh castShadow receiveShadow>
+            <boxGeometry args={[5.0, 3.0, 1.2]} />
+            <meshStandardMaterial color="#0f172a" roughness={0.6} />
           </mesh>
+          
+          {/* Slanted Face for Engraving */}
+          <mesh position={[0, 0.2, 0.4]} rotation={[-Math.PI / 12, 0, 0]} castShadow>
+            <boxGeometry args={[4.6, 2.6, 0.4]} />
+            <meshStandardMaterial color="#1e293b" roughness={0.8} />
+          </mesh>
+          
           {/* Gold Trim Border */}
-          <mesh position={[0, 1.85, 0]}>
+          <mesh position={[0, 1.55, 0]}>
             <boxGeometry args={[5.2, 0.1, 1.4]} />
             <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.9} />
           </mesh>
         </RigidBody>
 
-        {/* Banjarmasin Logo Displayed Prominently on Front */}
-        <mesh 
-          position={[0, 0.4, 0.62]} 
-          castShadow
-          onClick={() => handleInspect(MOTIFS_DATA[6])} 
-          onPointerOver={(e) => (document.body.style.cursor = 'pointer')} 
-          onPointerOut={(e) => (document.body.style.cursor = 'auto')}
-        >
-          <planeGeometry args={[2.2, 2.2]} />
-          <meshStandardMaterial map={logoTex} transparent roughness={0.2} />
-        </mesh>
-
-        {/* Title Case Welcome Typography */}
-        <group 
-          position={[0, -1.1, 0.62]}
-          onClick={() => handleInspect(MOTIFS_DATA[6])} 
-          onPointerOver={(e) => (document.body.style.cursor = 'pointer')} 
-          onPointerOut={(e) => (document.body.style.cursor = 'auto')}
-        >
-          <Text position={[0, 0, 0]} fontSize={0.28} color="#f59e0b" anchorX="center" anchorY="middle" fontWeight="bold">
-            Kota Banjarmasin • Culture Verse
+        {/* Engraved Typography */}
+        <group position={[0, 1.1, 0.72]} rotation={[-Math.PI / 12, 0, 0]}>
+          <Text position={[0, 0, 0]} fontSize={0.22} color="#f59e0b" anchorX="center" anchorY="middle" fontWeight="bold" letterSpacing={0.05}>
+            BABAD SASIRANGAN
           </Text>
-          <Text position={[0, -0.32, 0]} fontSize={0.2} color="#ffffff" anchorX="center" anchorY="middle" fontWeight="medium">
-            Pameran Metaverse Kain Sasirangan
+          <Text position={[0, -0.45, 0]} fontSize={0.13} color="#e2e8f0" anchorX="center" anchorY="middle" maxWidth={3.8} textAlign="center" lineHeight={1.5}>
+            Menurut Hikayat Banjar (Abad ke-12), Sasirangan pertama kali dibuat oleh Patih Lambung Mangkurat sebagai "Kain Pamali" atau kain penyembuhan sakral untuk Putri Junjung Buih.
           </Text>
-          <Text position={[0, -0.6, 0]} fontSize={0.16} color="#38bdf8" anchorX="center" anchorY="middle" fontWeight="bold">
-            [ Klik Untuk Baca Sejarah Babad Sasirangan ]
+          <Text position={[0, -1.1, 0]} fontSize={0.13} color="#cbd5e1" anchorX="center" anchorY="middle" maxWidth={3.8} textAlign="center" lineHeight={1.5}>
+            Berasal dari kata "Sirang" (dijelujur dengan tangan) dan dikerjakan semalaman suntuk sambil melantunkan salawat. Kini, karya ini berevolusi menjadi identitas membanggakan masyarakat Kalimantan Selatan tanpa kehilangan ruh mistisnya.
+          </Text>
+          <Text position={[0, -1.6, 0]} fontSize={0.10} color="#38bdf8" anchorX="center" anchorY="middle" fontWeight="bold">
+            • TITIK NOL GEOGRAFIS BUDAYA BANJAR •
           </Text>
         </group>
       </group>
