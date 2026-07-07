@@ -224,7 +224,7 @@ function RpgSceneController({ setNearbyMotif }) {
         // SDG 12 EcoDye (0, 0), Monolith Babad (0, 16)
         const paintings = [
           { motif: MOTIFS_DATA[0], px: 0,    pz: -27.5 },
-          { motif: MOTIFS_DATA[1], px: 7.5,  pz: 6     },
+          { motif: MOTIFS_DATA[1], px: -7.5, pz: -6    },
           { motif: MOTIFS_DATA[2], px: 7.5,  pz: -6    },
           { motif: MOTIFS_DATA[3], px: -7.5, pz: -16   },
           { motif: MOTIFS_DATA[4], px: 7.5,  pz: -18   },

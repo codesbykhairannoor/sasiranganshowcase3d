@@ -530,15 +530,14 @@ export default function MuseumGallery() {
           </Text>
         </group>
 
-        {/* Double Mannequin Showcase */}
-        {/* Left: Standard T-Shirt */}
-        <ExhibitionMannequin position={[-3.5, -4.4, 1.2]} rotation={[0, Math.PI / 6, 0]} texture={bayamTex} type="tshirt" />
-        {/* Right: Same T-Shirt but slightly different rotation for variety since Bayam Raja is the base */}
-        <ExhibitionMannequin position={[3.5, -4.4, 1.2]} rotation={[0, -Math.PI / 6, 0]} texture={bayamTex} type="tshirt" />
       </group>
 
-      {/* --- SHOWCASE 2: GIGI HARUAN (Right Wall, X = 7.5, Z = 6) — MOVED from left wall --- */}
-      <group position={[7.5, 4.5, 6]} rotation={[0, -Math.PI / 2, 0]}>
+      {/* Showcase 1 Mannequins — in WORLD space (outside group) so they stay at the back */}
+      <ExhibitionMannequin position={[-3.5, 0.1, -26.3]} rotation={[0, Math.PI / 6, 0]} texture={bayamTex} type="tshirt" />
+      <ExhibitionMannequin position={[3.5, 0.1, -26.3]} rotation={[0, -Math.PI / 6, 0]} texture={bayamTex} type="tshirt" />
+
+      {/* --- SHOWCASE 2: GIGI HARUAN (Left Wall, X = -7.5, Z = -6) — Exactly opposite Kambang Kacang --- */}
+      <group position={[-7.5, 4.5, -6]} rotation={[0, Math.PI / 2, 0]}>
         <RigidBody type="fixed" colliders={false}>
           <CuboidCollider args={[2, 3, 0.5]} />
           <mesh castShadow receiveShadow>
@@ -595,9 +594,9 @@ export default function MuseumGallery() {
         </group>
       </group>
 
-      {/* Showcase 2 Mannequins — in WORLD space, RIGHT wall side Z=6 */}
-      <ExhibitionMannequin position={[6, 0.1, 3.5]} rotation={[0, -Math.PI / 4, 0]} texture={gigiTex} type="tshirt" />
-      <ExhibitionMannequin position={[6, 0.1, 8.5]} rotation={[0, -Math.PI / 4, 0]} texture={gigiTex} type="selendang" />
+      {/* Showcase 2 Mannequins — in WORLD space, LEFT wall side Z=-6 */}
+      <ExhibitionMannequin position={[-6, 0.1, -3.5]} rotation={[0, Math.PI / 4, 0]} texture={gigiTex} type="tshirt" />
+      <ExhibitionMannequin position={[-6, 0.1, -8.5]} rotation={[0, Math.PI / 4, 0]} texture={gigiTex} type="selendang" />
 
       {/* --- SHOWCASE 3: KAMBANG KACANG (Right Wall, X = 7.5, Z = -6) --- */}
       <group position={[7.5, 4.5, -6]} rotation={[0, -Math.PI / 2, 0]}>
