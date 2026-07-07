@@ -17,28 +17,82 @@ import EcoDyeStation from './EcoDyeStation';
 // 4. TITLE CASE TYPOGRAPHY ("CUKUP TIAP HURUF KATA PERTAMA YG BESAR"):
 //    Replaced all ALL CAPS text with elegant Title Case formatting!
 // 5. FIXED INSPECTION CLICK & WALL CLIPPING PROTECTION ("keliatan bagian luarnya & glitch"):
-// --- "PRODUK PAS DIPAKE" : 3D T-SHIRT APPAREL DISPLAY ---
-// Displays the Sasirangan texture precisely on a worn T-Shirt shape!
-const ExhibitionMannequin = ({ position, rotation, texture }) => {
-  // Create a realistic T-Shirt 2D Profile Shape
-  const shirtShape = React.useMemo(() => {
-    const shape = new THREE.Shape();
-    shape.moveTo(-0.55, -0.9); // left bottom
-    shape.lineTo(-0.55, 0.35); // left armpit
-    shape.lineTo(-0.95, 0.05); // left sleeve bottom
-    shape.lineTo(-1.1, 0.35);  // left sleeve tip
-    shape.lineTo(-0.65, 0.8);  // left shoulder
-    shape.lineTo(-0.25, 0.95); // left collar
-    // Neck hole dip
-    shape.bezierCurveTo(-0.1, 0.75, 0.1, 0.75, 0.25, 0.95);
-    shape.lineTo(0.65, 0.8);   // right shoulder
-    shape.lineTo(1.1, 0.35);   // right sleeve tip
-    shape.lineTo(0.95, 0.05);  // right sleeve bottom
-    shape.lineTo(0.55, 0.35);  // right armpit
-    shape.lineTo(0.55, -0.9);  // right bottom
-    shape.lineTo(-0.55, -0.9); // back to left bottom
-    return shape;
-  }, []);
+// --- "PRODUK PAS DIPAKE" : 3D APPAREL DISPLAY (Berbagai Macam Produk Sasirangan) ---
+// Displays the Sasirangan texture precisely on worn apparel shapes!
+const ExhibitionMannequin = ({ position, rotation, texture, type = 'tshirt' }) => {
+  // Create a realistic 2D Profile Shape based on apparel type
+  const apparelShape = React.useMemo(() => {
+    const s = new THREE.Shape();
+    if (type === 'tshirt') {
+      s.moveTo(-0.55, -0.9);
+      s.lineTo(-0.55, 0.35);
+      s.lineTo(-0.95, 0.05);
+      s.lineTo(-1.1, 0.35);
+      s.lineTo(-0.65, 0.8);
+      s.lineTo(-0.25, 0.95);
+      s.bezierCurveTo(-0.1, 0.75, 0.1, 0.75, 0.25, 0.95);
+      s.lineTo(0.65, 0.8);
+      s.lineTo(1.1, 0.35);
+      s.lineTo(0.95, 0.05);
+      s.lineTo(0.55, 0.35);
+      s.lineTo(0.55, -0.9);
+      s.lineTo(-0.55, -0.9);
+    } else if (type === 'kimono') {
+      // Kimono / Outer (Wider sleeves, longer body)
+      s.moveTo(-0.65, -1.2);
+      s.lineTo(-0.65, 0.1); 
+      s.lineTo(-1.4, -0.4); // dropping sleeve
+      s.lineTo(-1.5, 0.4);
+      s.lineTo(-0.7, 0.8);
+      s.lineTo(-0.25, 0.95);
+      s.lineTo(0.0, 0.6); // V neck
+      s.lineTo(0.25, 0.95);
+      s.lineTo(0.7, 0.8);
+      s.lineTo(1.5, 0.4);
+      s.lineTo(1.4, -0.4);
+      s.lineTo(0.65, 0.1);
+      s.lineTo(0.65, -1.2);
+      s.lineTo(-0.65, -1.2);
+    } else if (type === 'selendang') {
+      // Selendang / Shawl (Draped long fabric)
+      s.moveTo(-0.25, -1.6);
+      s.lineTo(-0.25, 0.8);
+      s.bezierCurveTo(-0.25, 1.1, 0.25, 1.1, 0.25, 0.8); // Top loop over hanger
+      s.lineTo(0.25, -1.4);
+      s.lineTo(0.15, -1.4);
+      s.lineTo(0.15, 0.8);
+      s.bezierCurveTo(0.15, 0.9, -0.15, 0.9, -0.15, 0.8); // Inner loop
+      s.lineTo(-0.15, -1.6);
+      s.lineTo(-0.25, -1.6);
+    } else if (type === 'totebag') {
+      // Totebag Sasirangan
+      s.moveTo(-0.5, -0.6);
+      s.lineTo(-0.6, 0.4); // bag body
+      s.lineTo(-0.3, 0.4);
+      s.lineTo(-0.3, 0.9); // handle up
+      s.lineTo(-0.2, 0.9);
+      s.lineTo(-0.2, 0.4);
+      s.lineTo(0.2, 0.4);
+      s.lineTo(0.2, 0.9); // handle up
+      s.lineTo(0.3, 0.9);
+      s.lineTo(0.3, 0.4);
+      s.lineTo(0.6, 0.4); // bag body
+      s.lineTo(0.5, -0.6);
+      s.lineTo(-0.5, -0.6);
+    } else if (type === 'dress') {
+      // Long Dress / Gamis
+      s.moveTo(-0.8, -1.6); // wide bottom
+      s.lineTo(-0.4, 0.2); // waist
+      s.lineTo(-0.5, 0.8); // shoulder
+      s.lineTo(-0.2, 0.95); // collar
+      s.lineTo(0.2, 0.95);
+      s.lineTo(0.5, 0.8);
+      s.lineTo(0.4, 0.2);
+      s.lineTo(0.8, -1.6); // wide bottom
+      s.lineTo(-0.8, -1.6);
+    }
+    return s;
+  }, [type]);
 
   const extrudeSettings = {
     depth: 0.15,
@@ -74,11 +128,11 @@ const ExhibitionMannequin = ({ position, rotation, texture }) => {
           <meshStandardMaterial color="#cbd5e1" roughness={0.3} metalness={0.8} />
         </mesh>
 
-        {/* === THE T-SHIRT (Sasirangan Worn Product) === */}
+        {/* === THE APPAREL (Sasirangan Worn Product) === */}
         {/* Extrude geometry centers on Z=0 based on depth. We offset it to hang on the rack */}
         <mesh position={[0, 1.7, 0]} castShadow receiveShadow>
-          <extrudeGeometry args={[shirtShape, extrudeSettings]} />
-          <meshStandardMaterial map={texture} roughness={0.8} />
+          <extrudeGeometry args={[apparelShape, extrudeSettings]} />
+          <meshStandardMaterial map={texture} roughness={type === 'selendang' ? 0.9 : 0.8} />
         </mesh>
 
       </RigidBody>
@@ -347,9 +401,9 @@ export default function MuseumGallery() {
 
       {/* ==========================================
           5.5 ECO-DYE STATION (NEW SDG 12 & 11.4 SHOWCASE)
-          Center of the Room at Z = 0
+          Moved to Z = 8 to avoid collision with benches at Z = -3
          ========================================== */}
-      <EcoDyeStation position={[0, 0.4, 0]} />
+      <EcoDyeStation position={[0, 0.4, 8]} />
 
       {/* ==========================================
           6. AUTHENTIC WEBP SASIRANGAN SHOWCASE PAINTINGS (5 MASTERPIECES)
@@ -411,8 +465,8 @@ export default function MuseumGallery() {
           </Text>
         </group>
 
-        {/* Exhibition Mannequin */}
-        <ExhibitionMannequin position={[-3.5, -4.4, 0.5]} rotation={[0, Math.PI / 6, 0]} texture={bayamTex} />
+        {/* Exhibition Mannequin (T-Shirt) */}
+        <ExhibitionMannequin position={[-3.5, -4.4, 0.5]} rotation={[0, Math.PI / 6, 0]} texture={bayamTex} type="tshirt" />
       </group>
 
       {/* --- SHOWCASE 2: GIGI HARUAN (Left Wall, X = -7.5, Z = 6) --- */}
@@ -471,8 +525,8 @@ export default function MuseumGallery() {
           </Text>
         </group>
 
-        {/* Exhibition Mannequin */}
-        <ExhibitionMannequin position={[-3.5, -4.4, 0.5]} rotation={[0, Math.PI / 6, 0]} texture={gigiTex} />
+        {/* Exhibition Mannequin (Kimono / Outer) */}
+        <ExhibitionMannequin position={[-3.5, -4.4, 0.5]} rotation={[0, Math.PI / 6, 0]} texture={gigiTex} type="kimono" />
       </group>
 
       {/* --- SHOWCASE 3: KAMBANG KACANG (Right Wall, X = 7.5, Z = -6) --- */}
@@ -531,8 +585,8 @@ export default function MuseumGallery() {
           </Text>
         </group>
 
-        {/* Exhibition Mannequin */}
-        <ExhibitionMannequin position={[-3.5, -4.4, 0.5]} rotation={[0, Math.PI / 6, 0]} texture={kambangTex} />
+        {/* Exhibition Mannequin (Selendang / Shawl) */}
+        <ExhibitionMannequin position={[-3.5, -4.4, 0.5]} rotation={[0, Math.PI / 6, 0]} texture={kambangTex} type="selendang" />
       </group>
 
       {/* --- SHOWCASE 4: KAIN SARIGADING (Left Wall, X = -7.5, Z = -16) --- */}
@@ -591,8 +645,8 @@ export default function MuseumGallery() {
           </Text>
         </group>
 
-        {/* Exhibition Mannequin */}
-        <ExhibitionMannequin position={[-3.5, -4.4, 0.5]} rotation={[0, Math.PI / 6, 0]} texture={sarigadingTex} />
+        {/* Exhibition Mannequin (Totebag) */}
+        <ExhibitionMannequin position={[-3.5, -4.4, 0.5]} rotation={[0, Math.PI / 6, 0]} texture={sarigadingTex} type="totebag" />
       </group>
 
       {/* --- SHOWCASE 5: NAGA BALIMBUR (Right Wall, X = 7.5, Z = -18) --- */}
@@ -651,8 +705,8 @@ export default function MuseumGallery() {
           </Text>
         </group>
 
-        {/* Exhibition Mannequin */}
-        <ExhibitionMannequin position={[-3.5, -4.4, 0.5]} rotation={[0, Math.PI / 6, 0]} texture={nagaTex} />
+        {/* Exhibition Mannequin (Long Dress) */}
+        <ExhibitionMannequin position={[-3.5, -4.4, 0.5]} rotation={[0, Math.PI / 6, 0]} texture={nagaTex} type="dress" />
       </group>
 
       {/* Glowing Exhibition Banners hanging from Ceiling */}

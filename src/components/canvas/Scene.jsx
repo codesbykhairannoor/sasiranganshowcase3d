@@ -228,7 +228,7 @@ function RpgSceneController({ setNearbyMotif }) {
           { motif: MOTIFS_DATA[2], px: 7.5,  pz: -6    },
           { motif: MOTIFS_DATA[3], px: -7.5, pz: -16   },
           { motif: MOTIFS_DATA[4], px: 7.5,  pz: -18   },
-          { motif: MOTIFS_DATA[5], px: 0,    pz: 0     }, // EcoDyeStation
+          { motif: MOTIFS_DATA[5], px: 0,    pz: 8     }, // EcoDyeStation (Moved away from benches)
           { motif: MOTIFS_DATA[6], px: 0,    pz: 16    }  // Monolith
         ];
 
