@@ -113,8 +113,20 @@ function RpgSceneController({ setNearbyMotif }) {
     };
   }, [cameraMode]);
 
-  // CLICK DURING POINTER LOCK is handled at the div level via onPointerDown
-  // (no separate window listener needed)
+  // Window-level pointer handler — ONLY fires inspection logic when pointer is LOCKED
+  // This runs independently of Three.js mesh clicks so they never conflict!
+  useEffect(() => {
+    const handleWindowPointerDown = (e) => {
+      if (e.button !== 0) return;
+      // Only handle crosshair-click inspection when pointer is locked AND in rpg mode
+      if (cameraMode !== 'rpg' || !document.pointerLockElement) return;
+      if (nearbyMotifRef.current) {
+        enterPortal(nearbyMotifRef.current.id);
+      }
+    };
+    window.addEventListener('pointerdown', handleWindowPointerDown);
+    return () => window.removeEventListener('pointerdown', handleWindowPointerDown);
+  }, [cameraMode, enterPortal]);
 
   // Handle camera transitions ONLY when entering portal inspection mode!
   useEffect(() => {
@@ -265,17 +277,17 @@ export default function Scene() {
   const { cameraMode, enterPortal } = useAppStore();
   const [nearbyMotif, setNearbyMotif] = useState(null);
 
-  // POINTER LOCK: Use onPointerDown which fires reliably even inside pointer lock mode
-  // onClick is a synthetic event that some browsers swallow during pointer lock!
-  const handleScenePointerDown = (e) => {
-    if (cameraMode !== 'rpg') return;
-    if (!document.pointerLockElement) {
-      // Not locked yet — request lock
-      document.body.requestPointerLock();
-    } else if (e.button === 0 && nearbyMotif) {
-      // Pointer locked, left click, and near a painting → inspect!
-      enterPortal(nearbyMotif.id);
-    }
+  const [isPointerLocked, setIsPointerLocked] = useState(false);
+
+  // Track pointer lock state
+  useEffect(() => {
+    const onLockChange = () => setIsPointerLocked(!!document.pointerLockElement);
+    document.addEventListener('pointerlockchange', onLockChange);
+    return () => document.removeEventListener('pointerlockchange', onLockChange);
+  }, []);
+
+  const requestLock = () => {
+    if (!document.pointerLockElement) document.body.requestPointerLock();
   };
 
   // Mobile Detection for Performance Optimizations
@@ -288,9 +300,23 @@ export default function Scene() {
 
   return (
     <div 
-      onPointerDown={handleScenePointerDown}
-      className="w-full h-screen fixed inset-0 z-10 bg-[#06080f] cursor-pointer"
+      className="w-full h-screen fixed inset-0 z-10 bg-[#06080f]"
     >
+      {/* CLICK TO PLAY overlay - only shown when pointer is NOT locked and we are in RPG mode */}
+      {cameraMode === 'rpg' && !isPointerLocked && (
+        <div 
+          onClick={requestLock}
+          className="fixed inset-0 z-50 flex items-center justify-center cursor-pointer group"
+        >
+          <div className="bg-slate-950/80 backdrop-blur-xl border border-amber-500/50 rounded-2xl px-8 py-5 flex flex-col items-center gap-2 shadow-[0_0_40px_rgba(245,158,11,0.3)] group-hover:scale-105 transition-all">
+            <div className="w-12 h-12 rounded-full bg-amber-500 flex items-center justify-center">
+              <svg className="w-5 h-5 text-slate-950" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+            <p className="text-amber-400 font-game font-black text-base tracking-widest uppercase">Klik Untuk Bermain</p>
+            <p className="text-slate-400 font-game text-xs">Gunakan WASD / Joystick untuk bergerak</p>
+          </div>
+        </div>
+      )}
       {/* AUTHENTIC MINECRAFT CENTER STUCK CROSSHAIR (+) ("memang harus ttp stuck aja ditengah") */}
       {cameraMode === 'rpg' && (
         <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 pointer-events-none select-none flex items-center justify-center">
