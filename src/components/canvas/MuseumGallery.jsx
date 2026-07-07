@@ -549,8 +549,8 @@ export default function MuseumGallery() {
           </Text>
         </group>
 
-        {/* Exhibition Mannequin (Kimono / Outer) */}
-        <ExhibitionMannequin position={[-3.5, -4.4, 0.5]} rotation={[0, Math.PI / 6, 0]} texture={gigiTex} type="kimono" />
+        {/* Exhibition Mannequin (T-Shirt) */}
+        <ExhibitionMannequin position={[-3.5, -4.4, 0.5]} rotation={[0, Math.PI / 6, 0]} texture={gigiTex} type="tshirt" />
       </group>
 
       {/* --- SHOWCASE 3: KAMBANG KACANG (Right Wall, X = 7.5, Z = -6) --- */}
@@ -609,8 +609,8 @@ export default function MuseumGallery() {
           </Text>
         </group>
 
-        {/* Exhibition Mannequin (Selendang / Shawl) */}
-        <ExhibitionMannequin position={[-3.5, -4.4, 0.5]} rotation={[0, Math.PI / 6, 0]} texture={kambangTex} type="selendang" />
+        {/* Exhibition Mannequin (T-Shirt) */}
+        <ExhibitionMannequin position={[-3.5, -4.4, 0.5]} rotation={[0, Math.PI / 6, 0]} texture={kambangTex} type="tshirt" />
       </group>
 
       {/* --- SHOWCASE 4: KAIN SARIGADING (Left Wall, X = -7.5, Z = -16) --- */}
@@ -669,8 +669,8 @@ export default function MuseumGallery() {
           </Text>
         </group>
 
-        {/* Exhibition Mannequin (Totebag) */}
-        <ExhibitionMannequin position={[-3.5, -4.4, 0.5]} rotation={[0, Math.PI / 6, 0]} texture={sarigadingTex} type="totebag" />
+        {/* Exhibition Mannequin (T-Shirt) */}
+        <ExhibitionMannequin position={[-3.5, -4.4, 0.5]} rotation={[0, Math.PI / 6, 0]} texture={sarigadingTex} type="tshirt" />
       </group>
 
       {/* --- SHOWCASE 5: NAGA BALIMBUR (Right Wall, X = 7.5, Z = -18) --- */}
@@ -729,8 +729,8 @@ export default function MuseumGallery() {
           </Text>
         </group>
 
-        {/* Exhibition Mannequin (Long Dress) */}
-        <ExhibitionMannequin position={[-3.5, -4.4, 0.5]} rotation={[0, Math.PI / 6, 0]} texture={nagaTex} type="dress" />
+        {/* Exhibition Mannequin (T-Shirt) */}
+        <ExhibitionMannequin position={[-3.5, -4.4, 0.5]} rotation={[0, Math.PI / 6, 0]} texture={nagaTex} type="tshirt" />
       </group>
 
       {/* Glowing Exhibition Banners hanging from Ceiling */}
