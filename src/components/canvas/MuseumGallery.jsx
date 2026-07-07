@@ -218,11 +218,6 @@ export default function MuseumGallery() {
           <boxGeometry args={[17, 0.2, 0.15]} />
           <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.9} />
         </mesh>
-        {/* Giant BJM Logo on Back Wall */}
-        <mesh position={[0, 2.0, 0.51]} castShadow>
-          <planeGeometry args={[6.5, 6.5]} />
-          <meshStandardMaterial map={logoTex} transparent roughness={0.2} emissive="#ffffff" emissiveIntensity={0.05} />
-        </mesh>
       </RigidBody>
 
       <RigidBody type="fixed" colliders={false} position={[0, 7, 29]}>
@@ -230,6 +225,20 @@ export default function MuseumGallery() {
         <mesh receiveShadow castShadow>
           <boxGeometry args={[17, 14, 1]} />
           <meshStandardMaterial color="#1e293b" roughness={0.5} metalness={0.2} />
+        </mesh>
+        {/* Wall Trim for Spawn Wall */}
+        <mesh position={[0, -6.1, -0.55]}>
+          <boxGeometry args={[17, 1.8, 0.1]} />
+          <meshStandardMaterial color="#0f172a" roughness={0.2} />
+        </mesh>
+        <mesh position={[0, -4.1, -0.55]}>
+          <boxGeometry args={[17, 0.2, 0.15]} />
+          <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.9} />
+        </mesh>
+        {/* Giant BJM Logo on Spawn Wall (facing +Z, meaning looking -Z) */}
+        <mesh position={[0, 2.0, -0.51]} rotation={[0, Math.PI, 0]} castShadow>
+          <planeGeometry args={[6.5, 6.5]} />
+          <meshStandardMaterial map={logoTex} transparent roughness={0.2} emissive="#ffffff" emissiveIntensity={0.05} />
         </mesh>
       </RigidBody>
 
@@ -354,44 +363,46 @@ export default function MuseumGallery() {
           5. BABAD SASIRANGAN CARVED STONE MONOLITH
           A static entrance stone with physical text embedded directly on it.
          ========================================== */}
-      <group position={[0, 1.5, 16]}>
+      <group position={[0, 0, 16]}>
         <RigidBody type="fixed" colliders={false}>
-          <CuboidCollider args={[2.5, 1.5, 0.6]} />
+          <CuboidCollider args={[2.5, 1.5, 0.6]} position={[0, 1.5, 0]} />
           
           {/* Main Stone Base */}
-          <mesh castShadow receiveShadow>
-            <boxGeometry args={[5.0, 3.0, 1.2]} />
+          <mesh position={[0, 1.3, 0]} castShadow receiveShadow>
+            <boxGeometry args={[4.0, 2.6, 1.2]} />
             <meshStandardMaterial color="#0f172a" roughness={0.6} />
           </mesh>
           
-          {/* Slanted Face for Engraving */}
-          <mesh position={[0, 0.2, 0.4]} rotation={[-Math.PI / 12, 0, 0]} castShadow>
-            <boxGeometry args={[4.6, 2.6, 0.4]} />
-            <meshStandardMaterial color="#1e293b" roughness={0.8} />
-          </mesh>
-          
-          {/* Gold Trim Border */}
-          <mesh position={[0, 1.55, 0]}>
-            <boxGeometry args={[5.2, 0.1, 1.4]} />
-            <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.9} />
-          </mesh>
-        </RigidBody>
+          <group position={[0, 3.0, 0.2]} rotation={[-Math.PI / 6, 0, 0]}>
+            {/* Slanted Face for Engraving */}
+            <mesh castShadow>
+              <boxGeometry args={[4.8, 3.2, 0.2]} />
+              <meshStandardMaterial color="#1e293b" roughness={0.8} />
+            </mesh>
+            
+            {/* Gold Trim Border (Slightly larger, placed behind) */}
+            <mesh position={[0, 0, -0.05]}>
+              <boxGeometry args={[5.0, 3.4, 0.15]} />
+              <meshStandardMaterial color="#f59e0b" roughness={0.2} metalness={0.9} />
+            </mesh>
 
-        {/* Engraved Typography */}
-        <group position={[0, 1.1, 0.72]} rotation={[-Math.PI / 12, 0, 0]}>
-          <Text position={[0, 0, 0]} fontSize={0.22} color="#f59e0b" anchorX="center" anchorY="middle" fontWeight="bold" letterSpacing={0.05}>
-            BABAD SASIRANGAN
-          </Text>
-          <Text position={[0, -0.45, 0]} fontSize={0.13} color="#e2e8f0" anchorX="center" anchorY="middle" maxWidth={3.8} textAlign="center" lineHeight={1.5}>
-            Menurut Hikayat Banjar (Abad ke-12), Sasirangan pertama kali dibuat oleh Patih Lambung Mangkurat sebagai "Kain Pamali" atau kain penyembuhan sakral untuk Putri Junjung Buih.
-          </Text>
-          <Text position={[0, -1.1, 0]} fontSize={0.13} color="#cbd5e1" anchorX="center" anchorY="middle" maxWidth={3.8} textAlign="center" lineHeight={1.5}>
-            Berasal dari kata "Sirang" (dijelujur dengan tangan) dan dikerjakan semalaman suntuk sambil melantunkan salawat. Kini, karya ini berevolusi menjadi identitas membanggakan masyarakat Kalimantan Selatan tanpa kehilangan ruh mistisnya.
-          </Text>
-          <Text position={[0, -1.6, 0]} fontSize={0.10} color="#38bdf8" anchorX="center" anchorY="middle" fontWeight="bold">
-            • TITIK NOL GEOGRAFIS BUDAYA BANJAR •
-          </Text>
-        </group>
+            {/* Engraved Typography */}
+            <group position={[0, 0, 0.11]}>
+              <Text position={[0, 1.0, 0]} fontSize={0.24} color="#f59e0b" anchorX="center" anchorY="middle" fontWeight="bold" letterSpacing={0.05}>
+                BABAD SASIRANGAN
+              </Text>
+              <Text position={[0, 0.3, 0]} fontSize={0.14} color="#e2e8f0" anchorX="center" anchorY="middle" maxWidth={4.2} textAlign="center" lineHeight={1.5}>
+                Menurut Hikayat Banjar (Abad ke-12), Sasirangan pertama kali dibuat oleh Patih Lambung Mangkurat sebagai "Kain Pamali" atau kain penyembuhan sakral untuk Putri Junjung Buih.
+              </Text>
+              <Text position={[0, -0.5, 0]} fontSize={0.14} color="#cbd5e1" anchorX="center" anchorY="middle" maxWidth={4.2} textAlign="center" lineHeight={1.5}>
+                Berasal dari kata "Sirang" (dijelujur dengan tangan) dan dikerjakan semalaman suntuk sambil melantunkan salawat. Kini, karya ini berevolusi menjadi identitas membanggakan masyarakat Kalimantan Selatan tanpa kehilangan ruh mistisnya.
+              </Text>
+              <Text position={[0, -1.2, 0]} fontSize={0.11} color="#38bdf8" anchorX="center" anchorY="middle" fontWeight="bold">
+                • TITIK NOL GEOGRAFIS BUDAYA BANJAR •
+              </Text>
+            </group>
+          </group>
+        </RigidBody>
       </group>
 
       {/* ==========================================
