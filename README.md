@@ -1,91 +1,95 @@
-# Sasirangan Showcase 3D — Culture Verse 🏛️✨
-**Virtual 3D Museum & Interactive Showcase | SDGs Creative Web Competition — Bytesfest 2026**
+<div align="center">
+
+# 🏛️ Sasirangan Showcase 3D — Culture Verse ✨
+**Museum Virtual 3D & Eksplorasi Interaktif | SDGs Creative Web Competition — Bytesfest 2026**
+
+[![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
+[![Three.js](https://img.shields.io/badge/Three.js-WebGL-black?style=for-the-badge&logo=three.js&logoColor=white)](https://threejs.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Zustand](https://img.shields.io/badge/Zustand-State_Management-yellow?style=for-the-badge)]()
+[![SDG 11](https://img.shields.io/badge/SDG-11_Culture_Verse-E5243B?style=for-the-badge)]()
+
+<br/>
+
+> *"Membawa kekayaan warisan budaya Sasirangan ke dalam era Metaverse melalui rekayasa WebGL tingkat tinggi."*
+
+<br/>
+
+*(Masukkan link animasi GIF 3D Gameplay Anda di bawah ini)*
+![3D Gameplay Preview](https://raw.githubusercontent.com/codesbykhairannoor/sasiranganshowcase3d/main/public/aset%20sasirangan/preview-placeholder.gif)
+
+</div>
 
 ---
 
-## 🌟 Overview
-**Sasirangan Showcase 3D** is an advanced, high-fidelity **3D Virtual Museum & Interactive RPG Experience** engineered to preserve and promote the cultural heritage of **Batik Sasirangan** from Banjarmasin, South Kalimantan. 
+## 🌟 Tentang Proyek
 
-Built for the **Bytesfest 2026 Creative Web Competition** under the **Culture Verse** theme (**SDG Target 11.4 - Protecting and Safeguarding the World’s Cultural and Natural Heritage**), this project bridges traditional Indonesian craftsmanship with cutting-edge 3D WebGL technologies. The aesthetic fuses a sophisticated, world-class gallery design with modern lighting mechanics to produce an engaging educational experience.
+**Sasirangan Showcase 3D** adalah sebuah mahakarya front-end berupa **Museum Virtual 3D & Pengalaman Eksplorasi Interaktif** yang dirancang khusus untuk melestarikan dan mempromosikan warisan budaya **Kain Sasirangan** dari Banjarmasin, Kalimantan Selatan.
 
----
-
-## 📐 Strict Competition Rule Compliance
-Developed in absolute alignment with the official Guidebook rules:
-*   **100% Client-Side Static Web:** Pure front-end application built with React 18, Three.js, and Tailwind CSS. No external server, database dependency, or backend processing.
-*   **Zero Storage Footprint:** Completely state-driven. It **does not** read or write to `localStorage`, `sessionStorage`, or any client-side database. All state variables are managed in volatile, volatile-only memory (via Zustand).
-*   **Asset & Code Integrity:** Custom 3D structures, interaction zones, high-resolution WebP motifs, and UI layouts built from scratch without templates, page builders, or CMS platforms.
+Dibangun untuk ajang **Bytesfest 2026 Creative Web Competition** di bawah payung tema **Culture Verse**, proyek ini mendukung penuh **SDG Target 11.4** *(Melindungi dan Menjaga Warisan Budaya)* dan **SDG Target 12** *(Produksi Berkelanjutan lewat Edukasi Pewarna Alami)*. Menggabungkan arsitektur galeri premium dengan pencahayaan dramatis layaknya pameran seni murni dunia.
 
 ---
 
-## 🏛️ Key Features & Innovations
+## 🚀 Fitur & Inovasi Utama
 
-### 1. The Grand Exhibition Gallery (60-Meter Corridor)
-*   **World-Class Interior Architecture:** Fully realized virtual gallery featuring dark navy slate floors, velvet runner guides, recessed geometric wall pilasters, point-light source chandeliers with physical decay rates, and custom seating benches.
-*   **Dynamic Global Reflections:** Real-time reflections powered by high-dynamic range environment mapping (`Environment` preset) that highlights material metallic surfaces and textures under physical lighting.
+### 🖼️ 1. Galeri Pameran Megah (Koridor 60 Meter)
+* **Arsitektur Interior Premium:** Galeri virtual dengan lantai batu *slate* gelap yang memantulkan cahaya, pencahayaan *spotlight* sinematik, dan ornamen pameran bergaya kelas atas.
+* **Pencahayaan Fisik & Refleksi (PBR):** Menggunakan *Global Illumination* dan pantulan lingkungan secara *real-time* yang membuat tekstur metalik dan bingkai lukisan terlihat nyata.
 
-### 2. Immersive Navigation & RPG Control
-*   **Multi-Input Controls:** Move around using traditional **WASD / Arrow Keys** on desktop, or a custom **On-Screen Joystick & Jump Button** overlay on mobile screens.
-*   **Pointer Lock System:** Engage cursor lock on canvas click, locking aiming crosshairs in the center for an immersive walkthrough experience. Use standard browser mouse looks, or touch drag gestures to rotate view and tilt the character's head dynamically.
-*   **Dynamic POV Toggle:** Swap instantly between **Close 3rd-Person (Over-the-shoulder)** and **1st-Person POV** views. Free-vertical look enabled up to 171 degrees for high-angle views of ceiling displays.
+### 🕹️ 2. Kontrol Eksplorasi Imersif
+* **Sistem Pointer Lock:** Klik layar untuk mengunci kursor di tengah. Gerakkan *mouse* atau usap layar HP Anda untuk memutar sudut pandang secara mulus 360 derajat.
+* **Transisi Kamera Dinamis:** Beralih instan antara mode **Orang Pertama (1st-Person)** yang intim atau **Orang Ketiga (3rd-Person)** yang memperlihatkan karakter secara utuh.
+* **Responsif Sempurna di Mobile:** Bermain di HP? Nikmati kontrol *On-Screen Joystick* dan layar sentuh responsif dengan adaptasi resolusi otomatis yang dijamin *anti-lag*.
 
-### 3. Customized Sasirangan Wearables (Shirt Customizer)
-*   **Real-time Apparel Dressing:** Customize the 3D character in real-time with **10 authentic, full-coverage Sasirangan textile patterns** loaded dynamically via WebP assets.
-*   **Advanced Texture Mapping:** Cloned and scaled texture sets applied to torso and arm meshes, supporting wrapping repeat rules to avoid layout stretching or distortions on complex 3D geometries.
+### 👕 3. Kustomisasi Baju Karakter Secara Real-Time
+* **Ganti Baju Sasirangan:** Dandani robot karakter Anda secara instan dengan **10 tekstur kain Sasirangan otentik**. 
+* **Teknologi Kloning Tekstur:** Sistem canggih yang memastikan motif di badan dan lengan tidak merenggang (*stretching*), membuat lekukan kain terlihat sangat simetris.
 
-### 4. Interactive Motif Showcases
-*   **5 Classic Interactive Masterpieces:** Featuring detail panels, cultural background, and direct marketplace UMKM links for *Bayam Raja, Gigi Haruan, Kambang Kacang, Kain Sarigading*, and *Naga Balimbur*.
-*   **Eco-Dye Station:** Explorable interactive zone highlighting sustainable natural color dyes (Turmeric, Secang, Mango Leaves) to promote **SDG 12 (Responsible Consumption and Production)**.
-*   **Motif Discovery HUD:** Progress-tracking gamified HUD. Unlocking all 5 motifs awards the **"Culture Verse Ambassador Certificate"**.
-
----
-
-## 🛠️ High-Tech Stack
-*   **Framework & Core:** React 18, Vite, JavaScript (ES6+), Tailwind CSS (curated high-contrast HSL color system).
-*   **3D Core Engine:** Three.js, `@react-three/fiber` (R3F), `@react-three/drei`.
-*   **Physics Engine:** `@react-three/rapier` (WASM-based Rapier Physics Engine).
-*   **Character Controller:** `ecctrl` v2.0 (physics-based character navigation controller).
-*   **State Management:** Zustand (RAM-only store).
-*   **Visual Assets:** High-resolution optimized WebP textures, SVG indicators.
+### 🏆 4. Edukasi & Gamifikasi
+* **Eksplorasi 5 Motif Klasik:** Pelajari sejarah di balik motif *Bayam Raja, Gigi Haruan, Kambang Kacang, Kain Sarigading*, dan *Naga Balimbur*.
+* **Eco-Dye Station:** Zona interaktif khusus yang menyadarkan pengunjung akan pentingnya penggunaan bahan pewarna alami (Kunyit, Secang, Daun Mangga) untuk menjaga lingkungan (Mendukung SDG 12).
+* **Sertifikat Duta Budaya:** Selesaikan eksplorasi semua lukisan untuk membuka penghargaan eksklusif di dalam sistem (tanpa menggunakan memori database!).
 
 ---
 
-## 🚀 Local Installation & Deployment
+## 🛠️ Stack Teknologi (Murni Client-Side)
 
-### 1. Prerequisites
-Ensure you have **Node.js** (v18.x or later recommended) and **npm** installed on your machine.
+Proyek ini sangat mematuhi regulasi lomba (100% Statis, Zero Storage/Database):
 
-### 2. Clone & Install
+*   **Inti Framework:** React 18, Vite, JavaScript (ES6+).
+*   **Mesin 3D:** Three.js, `@react-three/fiber` (R3F), `@react-three/drei`.
+*   **Mesin Fisika:** `@react-three/rapier` (WASM-based Rapier Physics Engine).
+*   **Gaya Antarmuka:** Tailwind CSS dengan implementasi *Glassmorphism*.
+*   **Manajemen Memori:** Zustand (RAM-only store, tanpa cookies atau *local storage*).
+
+---
+
+<div align="center">
+  
+## 💻 Panduan Instalasi Lokal
+
+Ingin mencoba menjalankan dunia 3D ini di komputer Anda? Ikuti langkah mudah berikut:
+
+</div>
+
 ```bash
-# Clone the repository
+# 1. Clone repositori ini
 git clone https://github.com/codesbykhairannoor/sasiranganshowcase3d.git
 
-# Navigate to project directory
+# 2. Masuk ke dalam direktori proyek
 cd sasiranganshowcase3d
 
-# Install dependencies
+# 3. Instal semua dependensi
 npm install
-```
 
-### 3. Run Development Server
-```bash
+# 4. Jalankan server pengembangan lokal
 npm run dev
 ```
-Open **`http://localhost:5173`** in your browser to experience the gallery.
 
-### 4. Build Static Assets
-To generate highly-optimized static web files (Vite compilation bundle in `dist/` directory):
-```bash
-npm run build
-```
-The compiled output in `dist/` can be deployed directly to static hosting services like Vercel, Netlify, Cloudflare Pages, or GitHub Pages.
+Buka **`http://localhost:5173`** di browser Anda dan selamat bereksplorasi!
 
 ---
 
-## 🏆 SDG Impact Framework
-*   **Target 11.4 (Cultural Preservation):** Preserves Banjarmasin's textile history by projecting physical art into a modern digital medium.
-*   **Target 12.2 & 12.4 (Responsible Production):** Spreads awareness of toxic synthetic chemical dyes versus local, biodegradable organic natural dye alternatives.
-*   **SDG 8 & 9 (Creative Economy & Innovation):** Empowers local craftsmen by linking virtual exhibits directly to real-world UMKM marketplaces.
-
----
-*© 2026 Sasirangan Showcase 3D — Culture Verse. Crafted with passion for SDGs Creative Web Competition.*
+<div align="center">
+<i>© 2026 Sasirangan Showcase 3D — Culture Verse.<br/>Diciptakan dengan penuh dedikasi untuk SDGs Creative Web Competition.</i>
+</div>
