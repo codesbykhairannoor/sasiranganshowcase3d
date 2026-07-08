@@ -15,8 +15,9 @@
 
 <br/>
 
-*(Masukkan link animasi GIF 3D Gameplay Anda di bawah ini)*
-![3D Gameplay Preview](https://raw.githubusercontent.com/codesbykhairannoor/sasiranganshowcase3d/main/public/aset%20sasirangan/preview-placeholder.gif)
+<picture>
+  <img src="public/animated-hero.svg" alt="Sasirangan Showcase 3D Animated Banner" width="100%">
+</picture>
 
 </div>
 
