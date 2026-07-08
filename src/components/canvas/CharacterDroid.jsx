@@ -119,9 +119,9 @@ export default function CharacterDroid() {
       <mesh position={[0, 0.9, 0]} castShadow receiveShadow visible={!is1stPerson}>
         <boxGeometry args={[0.55, 0.75, 0.35]} />
         {selectedShirt === 'default' ? (
-          <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.9} />
+          <meshStandardMaterial key="default-shirt" color="#0f172a" roughness={0.2} metalness={0.9} />
         ) : (
-          <meshStandardMaterial map={shirtTextures[selectedShirt]} roughness={0.6} metalness={0.1} />
+          <meshStandardMaterial key={selectedShirt} map={shirtTextures[selectedShirt]} roughness={0.6} metalness={0.1} />
         )}
       </mesh>
 
