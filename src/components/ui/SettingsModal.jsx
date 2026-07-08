@@ -11,14 +11,16 @@ const TRACKS = [
 
 const SHIRTS = [
   { id: 'default',         label: 'Baju Default (Navy Steel)' },
-  { id: 'bayam-raja',      label: 'Sasirangan Bayam Raja' },
-  { id: 'gigi-haruan',     label: 'Sasirangan Gigi Haruan' },
-  { id: 'kambang-kacang',   label: 'Sasirangan Kambang Kacang' },
-  { id: 'kain-sarigading',  label: 'Sasirangan Kain Sarigading' },
-  { id: 'naga-balimbur',   label: 'Sasirangan Naga Balimbur' },
-  { id: 'asset1',          label: 'Sasirangan Modern Blue' },
+  { id: 'asset1',          label: 'Sasirangan Klasik Red' },
   { id: 'asset2',          label: 'Sasirangan Ulin Brown' },
-  { id: 'asset3',          label: 'Sasirangan Ethnic Gold' },
+  { id: 'asset3',          label: 'Sasirangan Tribal Gold' },
+  { id: 'asset4',          label: 'Sasirangan Vintage Indigo' },
+  { id: 'asset5',          label: 'Sasirangan Modern Teal' },
+  { id: 'asset6',          label: 'Sasirangan Kembang Violet' },
+  { id: 'asset7',          label: 'Sasirangan Royal Yellow' },
+  { id: 'asset8',          label: 'Sasirangan Banjar Green' },
+  { id: 'asset9',          label: 'Sasirangan Diamond Blue' },
+  { id: 'asset10',         label: 'Sasirangan Seamless Purple' },
 ];
 
 export default function SettingsModal() {

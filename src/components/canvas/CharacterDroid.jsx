@@ -23,16 +23,18 @@ export default function CharacterDroid() {
 
   const is1stPerson = povMode === '1st';
 
-  // Load customizable shirt textures
+  // Load customizable shirt textures (Using the 10 full-coverage assets from public)
   const shirtTextures = useTexture({
-    'bayam-raja': '/motif bayam raj.webp',
-    'gigi-haruan': '/motif_gigi_haruan.webp',
-    'kambang-kacang': '/motif kembang kacang.webp',
-    'kain-sarigading': '/kain_sarigading.webp',
-    'naga-balimbur': '/naga-balimbur-salah-satu-motif-b.webp',
     'asset1': '/aset sasirangan/1915452023-6993141070_8be042c8f4.webp',
     'asset2': '/aset sasirangan/IMG_1162.webp',
     'asset3': '/aset sasirangan/geometric-ethnic-tribal-vintage.webp',
+    'asset4': '/aset sasirangan/images-1.webp',
+    'asset5': '/aset sasirangan/images-2.webp',
+    'asset6': '/aset sasirangan/images-3.webp',
+    'asset7': '/aset sasirangan/images.webp',
+    'asset8': '/aset sasirangan/kalimantan-sasirangan-motif-back.webp',
+    'asset9': '/aset sasirangan/large-img-2580-c672ad34767909f09.webp',
+    'asset10': '/aset sasirangan/pola-mulus-seni-wallpaper-pola-e.webp',
   });
 
   React.useEffect(() => {
@@ -40,7 +42,7 @@ export default function CharacterDroid() {
       if (tex) {
         tex.wrapS = THREE.RepeatWrapping;
         tex.wrapT = THREE.RepeatWrapping;
-        tex.repeat.set(1.5, 2.0); // Fit the box geometry nicely
+        tex.repeat.set(1.5, 2.0); // Fit the geometry scale
         tex.needsUpdate = true;
       }
     });
@@ -160,7 +162,11 @@ export default function CharacterDroid() {
       <group ref={leftArmRef} position={[-0.38, 1.15, 0]}>
         <mesh position={[0, -0.3, 0]} castShadow>
           <boxGeometry args={[0.18, 0.6, 0.18]} />
-          <meshStandardMaterial color="#334155" roughness={0.3} metalness={0.7} />
+          {selectedShirt === 'default' ? (
+            <meshStandardMaterial key="default-left-arm" color="#334155" roughness={0.3} metalness={0.7} />
+          ) : (
+            <meshStandardMaterial key={selectedShirt} map={shirtTextures[selectedShirt]} roughness={0.6} metalness={0.1} />
+          )}
         </mesh>
         <mesh position={[0, 0.05, 0]}>
           <boxGeometry args={[0.22, 0.15, 0.22]} />
@@ -171,7 +177,11 @@ export default function CharacterDroid() {
       <group ref={rightArmRef} position={[0.38, 1.15, 0]}>
         <mesh position={[0, -0.3, 0]} castShadow>
           <boxGeometry args={[0.18, 0.6, 0.18]} />
-          <meshStandardMaterial color="#334155" roughness={0.3} metalness={0.7} />
+          {selectedShirt === 'default' ? (
+            <meshStandardMaterial key="default-right-arm" color="#334155" roughness={0.3} metalness={0.7} />
+          ) : (
+            <meshStandardMaterial key={selectedShirt} map={shirtTextures[selectedShirt]} roughness={0.6} metalness={0.1} />
+          )}
         </mesh>
         <mesh position={[0, 0.05, 0]}>
           <boxGeometry args={[0.22, 0.15, 0.22]} />
