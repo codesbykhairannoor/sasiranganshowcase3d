@@ -21,7 +21,7 @@ export default function AboutModal() {
         {/* Header */}
         <div className="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
           <h2 className="text-2xl md:text-3xl font-title font-bold text-amber-400 uppercase tracking-widest">
-            Tentang Game
+            Tentang Platform
           </h2>
           <button
             onClick={() => setAboutOpen(false)}
@@ -57,7 +57,7 @@ export default function AboutModal() {
           <div className="flex gap-4">
             <Globe className="w-6 h-6 text-emerald-400 mt-0.5 shrink-0" />
             <div>
-              <h3 className="font-bold text-slate-100 uppercase tracking-wide mb-1">Cara Bermain</h3>
+              <h3 className="font-bold text-slate-100 uppercase tracking-wide mb-1">Cara Navigasi</h3>
               <ul className="text-sm text-slate-400 space-y-1 list-none">
                 <li>▸ <strong className="text-slate-300">WASD</strong> — Jalan &amp; Navigasi</li>
                 <li>▸ <strong className="text-slate-300">SPASI</strong> — Lompat</li>

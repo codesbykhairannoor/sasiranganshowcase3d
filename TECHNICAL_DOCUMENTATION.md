@@ -79,7 +79,7 @@ Sasirangan Showcase 3D berfungsi ganda sebagai:
 Tampilan situs ini mengusung estetika **"Dark & Cyber-Cultural"**:
 - **Lingkungan Galeri:** Berdesain premium dengan lantai *slate* hitam, pencahayaan *low-key lighting*, dan *spotlight* hangat yang menyorot karya seni layaknya pameran seni murni kelas dunia.
 - **Karakter:** Sesosok robot *(Droid)* bergaya futuristik namun dibalut kemeja *Culture Verse* bermotif Sasirangan klasik, melambangkan pelestarian budaya tradisional dalam era metaverse digital.
-- **Desain UI/UX:** Memanfaatkan efek *Glassmorphism* (panel kaca *blur* tembus pandang), tipografi tajam bertemakan antarmuka video game (kombinasi font *Cinzel*, *Rajdhani*, dan *Montserrat*), serta animasi mikro (seperti *bouncing UI*) demi mencapai nuansa AAA-game.
+- **Desain UI/UX:** Memanfaatkan efek *Glassmorphism* (panel kaca *blur* tembus pandang), tipografi tajam bertemakan antarmuka interaktif (kombinasi font *Cinzel*, *Rajdhani*, dan *Montserrat*), serta animasi mikro (seperti *bouncing UI*) demi mencapai nuansa imersif tingkat tinggi.
 
 ---
 

@@ -50,7 +50,7 @@ export default function HeroOverlay() {
 
           {/* ── Menu Items ── */}
           <nav className="flex flex-col items-center gap-2 sm:gap-4">
-            {/* MULAI BERMAIN */}
+            {/* MULAI EKSPLORASI */}
             <button
               onClick={handleStartGame}
               disabled={!is3dLoaded || isTransitioning}
@@ -58,7 +58,7 @@ export default function HeroOverlay() {
             >
               <Play className="w-3 h-3 sm:w-5 sm:h-5 text-amber-400 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all duration-300" />
               <span className={`transition-colors duration-300 ${is3dLoaded ? 'text-white group-hover:text-amber-400' : 'text-slate-500'}`}>
-                {is3dLoaded ? 'Mulai Bermain' : 'Memuat...'}
+                {is3dLoaded ? 'Mulai Eksplorasi' : 'Memuat...'}
               </span>
             </button>
 
@@ -70,12 +70,12 @@ export default function HeroOverlay() {
               Pengaturan
             </button>
 
-            {/* TENTANG GAME */}
+            {/* TENTANG PLATFORM */}
             <button
               onClick={() => setAboutOpen(true)}
               className="font-title font-bold text-xs sm:text-sm md:text-base lg:text-xl tracking-[0.15em] uppercase text-slate-400 hover:text-amber-300 transition-colors duration-300"
             >
-              Tentang Game
+              Tentang Platform
             </button>
           </nav>
 

@@ -365,7 +365,7 @@ export default function Scene() {
       {cameraMode === 'rpg' && !isPointerLocked && !isTouchDevice && (
         <div className="fixed top-24 left-1/2 -translate-x-1/2 z-40 pointer-events-none animate-pulse">
           <div className="bg-amber-500/90 text-slate-950 px-6 py-2 rounded-full font-game font-bold text-sm shadow-[0_0_15px_rgba(245,158,11,0.5)]">
-            Klik di mana saja untuk mengunci kursor & bermain
+            Klik di mana saja untuk mengunci kursor & menjelajah
           </div>
         </div>
       )}

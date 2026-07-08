@@ -63,7 +63,7 @@ export default function SettingsModal() {
 
           {/* Controls Info */}
           <div className="p-4 bg-slate-900/50 rounded-xl border border-white/5 space-y-3">
-            <h3 className="font-title font-bold text-base text-slate-100 uppercase tracking-wide border-b border-white/10 pb-2">Kontrol Game</h3>
+            <h3 className="font-title font-bold text-base text-slate-100 uppercase tracking-wide border-b border-white/10 pb-2">Kontrol Eksplorasi</h3>
             <div className="grid grid-cols-2 gap-2 text-xs font-game text-slate-300">
               <p><strong className="text-amber-400">WASD</strong> : Jalan</p>
               <p><strong className="text-amber-400">SPASI</strong> : Lompat</p>
