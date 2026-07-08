@@ -185,6 +185,22 @@ export default function MuseumGallery() {
     '/LOGO KOTA BANJARMASIN - 328 KB.webp'
   ]);
 
+  const [
+    asset1, asset2, asset3, asset4, asset5,
+    asset6, asset7, asset8, asset9, asset10
+  ] = useTexture([
+    '/aset sasirangan/1915452023-6993141070_8be042c8f4.webp',
+    '/aset sasirangan/IMG_1162.webp',
+    '/aset sasirangan/geometric-ethnic-tribal-vintage.webp',
+    '/aset sasirangan/images-1.webp',
+    '/aset sasirangan/images-2.webp',
+    '/aset sasirangan/images-3.webp',
+    '/aset sasirangan/images.webp',
+    '/aset sasirangan/kalimantan-sasirangan-motif-back.webp',
+    '/aset sasirangan/large-img-2580-c672ad34767909f09.webp',
+    '/aset sasirangan/pola-mulus-seni-wallpaper-pola-e.webp'
+  ]);
+
   const handleInspect = (motif) => {
     enterPortal(motif.id);
   };
@@ -545,8 +561,8 @@ export default function MuseumGallery() {
       </group>
 
       {/* Showcase 1 Mannequins — in WORLD space (outside group) so they stay at the back */}
-      <ExhibitionMannequin position={[-3.5, 0.1, -26.3]} rotation={[0, Math.PI / 6, 0]} texture={bayamTex} type="tshirt" />
-      <ExhibitionMannequin position={[3.5, 0.1, -26.3]} rotation={[0, -Math.PI / 6, 0]} texture={bayamTex} type="tshirt" />
+      <ExhibitionMannequin position={[-3.5, 0.1, -26.3]} rotation={[0, Math.PI / 6, 0]} texture={asset1} type="tshirt" />
+      <ExhibitionMannequin position={[3.5, 0.1, -26.3]} rotation={[0, -Math.PI / 6, 0]} texture={asset2} type="tshirt" />
 
       {/* --- SHOWCASE 2: GIGI HARUAN (Left Wall, X = -7.5, Z = -6) — Exactly opposite Kambang Kacang --- */}
       <group position={[-7.5, 4.5, -6]} rotation={[0, Math.PI / 2, 0]}>
@@ -607,8 +623,8 @@ export default function MuseumGallery() {
       </group>
 
       {/* Showcase 2 Mannequins — in WORLD space, LEFT wall side Z=-6 */}
-      <ExhibitionMannequin position={[-6, 0.1, -3.5]} rotation={[0, Math.PI / 4, 0]} texture={gigiTex} type="tshirt" />
-      <ExhibitionMannequin position={[-6, 0.1, -8.5]} rotation={[0, Math.PI / 4, 0]} texture={gigiTex} type="celana" />
+      <ExhibitionMannequin position={[-6, 0.1, -3.5]} rotation={[0, Math.PI / 4, 0]} texture={asset3} type="tshirt" />
+      <ExhibitionMannequin position={[-6, 0.1, -8.5]} rotation={[0, Math.PI / 4, 0]} texture={asset4} type="celana" />
 
       {/* --- SHOWCASE 3: KAMBANG KACANG (Right Wall, X = 7.5, Z = -6) --- */}
       <group position={[7.5, 4.5, -6]} rotation={[0, -Math.PI / 2, 0]}>
@@ -669,8 +685,8 @@ export default function MuseumGallery() {
       </group>
 
       {/* Showcase 3 Mannequins — in WORLD space (outside rotated group) */}
-      <ExhibitionMannequin position={[6, 0.1, -3.5]} rotation={[0, -Math.PI / 4, 0]} texture={kambangTex} type="tshirt" />
-      <ExhibitionMannequin position={[6, 0.1, -8.5]} rotation={[0, -Math.PI / 4, 0]} texture={kambangTex} type="selendang" />
+      <ExhibitionMannequin position={[6, 0.1, -3.5]} rotation={[0, -Math.PI / 4, 0]} texture={asset5} type="tshirt" />
+      <ExhibitionMannequin position={[6, 0.1, -8.5]} rotation={[0, -Math.PI / 4, 0]} texture={asset6} type="selendang" />
 
       {/* --- SHOWCASE 4: KAIN SARIGADING (Left Wall, X = -7.5, Z = -16) --- */}
       <group position={[-7.5, 4.5, -16]} rotation={[0, Math.PI / 2, 0]}>
@@ -731,8 +747,8 @@ export default function MuseumGallery() {
       </group>
 
       {/* Showcase 4 Mannequins — in WORLD space (outside rotated group) */}
-      <ExhibitionMannequin position={[-6, 0.1, -13.5]} rotation={[0, Math.PI / 4, 0]} texture={sarigadingTex} type="tshirt" />
-      <ExhibitionMannequin position={[-6, 0.1, -18.5]} rotation={[0, Math.PI / 4, 0]} texture={sarigadingTex} type="totebag" />
+      <ExhibitionMannequin position={[-6, 0.1, -13.5]} rotation={[0, Math.PI / 4, 0]} texture={asset7} type="tshirt" />
+      <ExhibitionMannequin position={[-6, 0.1, -18.5]} rotation={[0, Math.PI / 4, 0]} texture={asset8} type="totebag" />
 
       {/* --- SHOWCASE 5: NAGA BALIMBUR (Right Wall, X = 7.5, Z = -18) --- */}
       <group position={[7.5, 4.5, -18]} rotation={[0, -Math.PI / 2, 0]}>
@@ -793,8 +809,8 @@ export default function MuseumGallery() {
       </group>
 
       {/* Showcase 5 Mannequins — in WORLD space (outside rotated group) */}
-      <ExhibitionMannequin position={[6, 0.1, -15.5]} rotation={[0, -Math.PI / 4, 0]} texture={nagaTex} type="tshirt" />
-      <ExhibitionMannequin position={[6, 0.1, -20.5]} rotation={[0, -Math.PI / 4, 0]} texture={nagaTex} type="dress" />
+      <ExhibitionMannequin position={[6, 0.1, -15.5]} rotation={[0, -Math.PI / 4, 0]} texture={asset9} type="tshirt" />
+      <ExhibitionMannequin position={[6, 0.1, -20.5]} rotation={[0, -Math.PI / 4, 0]} texture={asset10} type="dress" />
 
       {/* Glowing Exhibition Banners hanging from Ceiling */}
       <group position={[0, 11, 8]}>

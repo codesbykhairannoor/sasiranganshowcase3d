@@ -386,16 +386,16 @@ export default function Scene() {
 
       {/* MINECRAFT INTERACTIVE PROMPT WHEN NEAR A PAINTING (Title Case Formatting) */}
       {cameraMode === 'rpg' && nearbyMotif && (
-        <div className="fixed bottom-32 left-1/2 -translate-x-1/2 z-50 pointer-events-auto animate-bounce">
+        <div className="fixed bottom-44 sm:bottom-32 left-1/2 -translate-x-1/2 z-50 pointer-events-auto animate-bounce w-max max-w-[90vw]">
           <button
             onClick={(e) => {
               e.stopPropagation();
               enterPortal(nearbyMotif.id);
             }}
-            className="px-6 py-3 bg-slate-900/95 hover:bg-slate-800 text-amber-400 font-bold rounded-xl border-2 border-amber-500/80 shadow-[0_0_25px_rgba(245,158,11,0.5)] flex items-center gap-3 transition-all transform hover:scale-105 cursor-pointer backdrop-blur-md"
+            className="px-3 py-2 sm:px-6 sm:py-3 bg-slate-900/95 hover:bg-slate-800 text-amber-400 font-bold rounded-lg sm:rounded-xl border-2 border-amber-500/80 shadow-[0_0_15px_rgba(245,158,11,0.5)] sm:shadow-[0_0_25px_rgba(245,158,11,0.5)] flex items-center gap-2 sm:gap-3 transition-all transform hover:scale-105 cursor-pointer backdrop-blur-md"
           >
-            <span className="px-2.5 py-1 bg-amber-500 text-slate-950 rounded-lg text-sm font-black shadow-inner">E</span>
-            <span className="text-base tracking-wide">Klik / Tekan E : Inspeksi {nearbyMotif.title}</span>
+            <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 bg-amber-500 text-slate-950 rounded md:rounded-lg text-xs sm:text-sm font-black shadow-inner">E</span>
+            <span className="text-[11px] sm:text-base tracking-wide whitespace-normal text-left leading-tight">Klik/Tekan E : Inspeksi {nearbyMotif.title}</span>
           </button>
         </div>
       )}
@@ -438,11 +438,11 @@ export default function Scene() {
               Replaced flat/blending ambient light with moody, dramatic museum contrast.
               Physical ceiling lamps in MuseumGallery provide rich localized illumination!
           */}
-          <ambientLight intensity={0.4} />
-          <hemisphereLight intensity={0.4} color="#fffbeb" groundColor="#0f172a" />
+          <ambientLight intensity={isTouchDevice ? 1.0 : 0.4} />
+          <hemisphereLight intensity={isTouchDevice ? 1.0 : 0.4} color="#fffbeb" groundColor="#0f172a" />
           <directionalLight 
             position={[15, 35, 15]} 
-            intensity={1.2} 
+            intensity={isTouchDevice ? 1.8 : 1.2} 
             color="#fffbeb"
             castShadow={!isTouchDevice} 
             shadow-mapSize={isTouchDevice ? [512, 512] : [2048, 2048]}
