@@ -45,6 +45,7 @@ export const useAppStore = create((set, get) => ({
   isAboutOpen: false,
   isEcoModalOpen: false,
   selectedTrack: 'paris_barantai',
+  selectedShirt: 'default',
 
   // Actions
   set3dLoaded: (loaded) => set({ is3dLoaded: loaded }),
@@ -56,6 +57,7 @@ export const useAppStore = create((set, get) => ({
     set({ isEcoModalOpen: isOpen });
   },
   setSelectedTrack: (track) => set({ selectedTrack: track }),
+  setSelectedShirt: (shirt) => set({ selectedShirt: shirt }),
   
   togglePov: () => set((state) => ({ povMode: state.povMode === '3rd' ? '1st' : '3rd' })),
   setPovMode: (mode) => set({ povMode: mode }),

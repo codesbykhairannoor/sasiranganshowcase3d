@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Float, useKeyboardControls } from '@react-three/drei';
+import { Float, useKeyboardControls, useTexture } from '@react-three/drei';
 import { useJoystickStore } from 'ecctrl/input';
 import * as THREE from 'three';
 import { useAppStore } from '../../store/useAppStore';
@@ -12,7 +12,7 @@ import { useAppStore } from '../../store/useAppStore';
 // 2. Dynamic Walking & Running Stride Animation (Eliminates stiff walking!)
 // 3. 1st Person POV Support: Automatically hides helmet/torso in 1st Person so camera doesn't clip!
 export default function CharacterDroid() {
-  const { povMode } = useAppStore();
+  const { povMode, selectedShirt } = useAppStore();
   const headRef = useRef();
   const visorRef = useRef();
   const leftArmRef = useRef();
@@ -22,6 +22,29 @@ export default function CharacterDroid() {
   const [, getKeys] = useKeyboardControls();
 
   const is1stPerson = povMode === '1st';
+
+  // Load customizable shirt textures
+  const shirtTextures = useTexture({
+    'bayam-raja': '/motif bayam raj.webp',
+    'gigi-haruan': '/motif_gigi_haruan.webp',
+    'kambang-kacang': '/motif kembang kacang.webp',
+    'kain-sarigading': '/kain_sarigading.webp',
+    'naga-balimbur': '/naga-balimbur-salah-satu-motif-b.webp',
+    'asset1': '/aset sasirangan/1915452023-6993141070_8be042c8f4.webp',
+    'asset2': '/aset sasirangan/IMG_1162.webp',
+    'asset3': '/aset sasirangan/geometric-ethnic-tribal-vintage.webp',
+  });
+
+  React.useEffect(() => {
+    Object.values(shirtTextures).forEach((tex) => {
+      if (tex) {
+        tex.wrapS = THREE.RepeatWrapping;
+        tex.wrapT = THREE.RepeatWrapping;
+        tex.repeat.set(1.5, 2.0); // Fit the box geometry nicely
+        tex.needsUpdate = true;
+      }
+    });
+  }, [shirtTextures]);
 
   // Dynamic animation based on player movement velocity & Minecraft mouse look tracking
   useFrame((state) => {
@@ -95,7 +118,11 @@ export default function CharacterDroid() {
       {/* 1. TORSO / BODY (Hidden in 1st person so camera inside head doesn't clip armor) */}
       <mesh position={[0, 0.9, 0]} castShadow receiveShadow visible={!is1stPerson}>
         <boxGeometry args={[0.55, 0.75, 0.35]} />
-        <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.9} />
+        {selectedShirt === 'default' ? (
+          <meshStandardMaterial color="#0f172a" roughness={0.2} metalness={0.9} />
+        ) : (
+          <meshStandardMaterial map={shirtTextures[selectedShirt]} roughness={0.6} metalness={0.1} />
+        )}
       </mesh>
 
       {/* Gold/Cyan chest reactor core */}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore';
-import { X, Volume2, VolumeX, MonitorPlay, Music } from 'lucide-react';
+import { X, Volume2, VolumeX, MonitorPlay, Music, Shirt } from 'lucide-react';
 
 const TRACKS = [
   { id: 'paris_barantai',    label: 'Paris Barantai',    src: '/audio/paris_barantai.mp3' },
@@ -9,8 +9,20 @@ const TRACKS = [
   { id: 'ampat_si_ampat_lima', label: 'Ampat Si Ampat Lima', src: '/audio/ampat_si_ampat_lima.mp3' },
 ];
 
+const SHIRTS = [
+  { id: 'default',         label: 'Baju Default (Navy Steel)' },
+  { id: 'bayam-raja',      label: 'Sasirangan Bayam Raja' },
+  { id: 'gigi-haruan',     label: 'Sasirangan Gigi Haruan' },
+  { id: 'kambang-kacang',   label: 'Sasirangan Kambang Kacang' },
+  { id: 'kain-sarigading',  label: 'Sasirangan Kain Sarigading' },
+  { id: 'naga-balimbur',   label: 'Sasirangan Naga Balimbur' },
+  { id: 'asset1',          label: 'Sasirangan Modern Blue' },
+  { id: 'asset2',          label: 'Sasirangan Ulin Brown' },
+  { id: 'asset3',          label: 'Sasirangan Ethnic Gold' },
+];
+
 export default function SettingsModal() {
-  const { isSettingsOpen, setSettingsOpen, isAudioMuted, toggleAudio, selectedTrack, setSelectedTrack } = useAppStore();
+  const { isSettingsOpen, setSettingsOpen, isAudioMuted, toggleAudio, selectedTrack, setSelectedTrack, selectedShirt, setSelectedShirt } = useAppStore();
   const [localTrack, setLocalTrack] = useState(selectedTrack || 'paris_barantai');
 
   if (!isSettingsOpen) return null;
@@ -93,7 +105,7 @@ export default function SettingsModal() {
             <div className="grid grid-cols-1 gap-2">
               {TRACKS.map((track) => (
                 <button
-                  key={track.id}
+                   key={track.id}
                   onClick={() => handleTrackChange(track.id)}
                   className={`text-left px-4 py-2.5 rounded-lg font-game text-sm font-bold tracking-wide transition-all ${
                     localTrack === track.id
@@ -103,6 +115,32 @@ export default function SettingsModal() {
                 >
                   {localTrack === track.id && <span className="mr-2">▶</span>}
                   {track.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Shirt Selector */}
+          <div className="p-4 bg-slate-900/50 rounded-xl border border-white/5 space-y-3">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-cyan-500/20 text-cyan-400">
+                <Shirt className="w-5 h-5" />
+              </div>
+              <h3 className="font-title font-bold text-base text-slate-100 uppercase tracking-wide">Baju Karakter (Sasirangan)</h3>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              {SHIRTS.map((shirt) => (
+                <button
+                  key={shirt.id}
+                  onClick={() => setSelectedShirt && setSelectedShirt(shirt.id)}
+                  className={`text-left px-3 py-2 rounded-lg font-game text-[11px] font-bold tracking-wide transition-all ${
+                    selectedShirt === shirt.id
+                      ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/50'
+                      : 'text-slate-400 border border-white/5 hover:border-white/20 hover:text-slate-200 bg-slate-900/50'
+                  }`}
+                >
+                  {selectedShirt === shirt.id && <span className="mr-1">✓</span>}
+                  {shirt.label}
                 </button>
               ))}
             </div>
