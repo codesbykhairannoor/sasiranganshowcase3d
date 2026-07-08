@@ -342,7 +342,7 @@ function RpgSceneController({ setNearbyMotif }) {
 export default function Scene() {
   const { cameraMode, enterPortal } = useAppStore();
   const [nearbyMotif, setNearbyMotif] = useState(null);
-  const [dpr, setDpr] = useState(isTouchDevice ? 1.2 : 1.5);
+  const [dpr, setDpr] = useState(isTouchDevice ? 1.0 : 1.5);
 
   const [isPointerLocked, setIsPointerLocked] = useState(false);
 
@@ -433,7 +433,7 @@ export default function Scene() {
         gl={{ antialias: !isTouchDevice, alpha: false, powerPreference: 'high-performance' }}
         onPointerMissed={requestLock}
       >
-        <PerformanceMonitor onIncline={() => setDpr(isTouchDevice ? 1.2 : 1.5)} onDecline={() => setDpr(isTouchDevice ? 0.75 : 1)} />
+        <PerformanceMonitor onIncline={() => setDpr(isTouchDevice ? 1.2 : 1.5)} onDecline={() => setDpr(isTouchDevice ? 1.0 : 1.2)} />
         <KeyboardControls map={keyboardMap}>
           {/* ROYAL MUSEUM NIGHT BACKGROUND WITH CRYSTAL CLEAR STUDIO DEFINITION! */}
           <color attach="background" args={["#06080f"]} />
