@@ -428,7 +428,7 @@ export default function Scene() {
 
       <Canvas
         shadows={!isTouchDevice}
-        dpr={isTouchDevice ? 1 : 1.5}
+        dpr={isTouchDevice ? 1.3 : 1.5}
         gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
         onPointerMissed={requestLock}
       >
@@ -454,8 +454,8 @@ export default function Scene() {
           />
           <directionalLight position={[-15, 20, -15]} intensity={0.6} color="#38bdf8" />
 
-          {/* BRIGHT STUDIO ENVIRONMENT REFLECTION (Disabled on mobile/touch to boost performance!) */}
-          {!isTouchDevice && <Environment preset="apartment" />}
+          {/* BRIGHT STUDIO ENVIRONMENT REFLECTION (Enabled globally for rich reflections, optimized by disabling shadows) */}
+          <Environment preset="apartment" />
 
           {/* SOFT CONTACT SHADOWS ON POLISHED SLATE FLOOR */}
           <ContactShadows 
