@@ -55,6 +55,42 @@ Proyek ini didesain 100% nir-jejak-penyimpanan (*Zero-Storage Footprint*):
 - Tidak ada data (*progress* pemain, *history* motif, dll.) yang disuntikkan ke dalam `localStorage`, `sessionStorage`, `IndexedDB`, ataupun `Cookies`.
 - Semua data interaksi hidup dan mati bersiklus bersama siklus aplikasi (`volatile RAM-only state` via Zustand). Ketika *browser* di-refresh, galeri kembali ke tahap aslinya. Hal ini menjamin keamanan privasi tingkat tinggi, kepatuhan teknis terhadap aturan web statis lomba *Bytesfest 2026*, serta ketiadaan kerentanan serangan *Cross-Site Scripting* (XSS) persisten.
 
+## 📐 6. Wireframe & Struktur Layout
+Secara garis besar, *wireframe* aplikasi ini terbagi menjadi dua lapisan utama (*layering*):
+1. **Lapisan Canvas WebGL (Z-Index: 0):** Memuat seluruh lingkungan 3D, pencahayaan, robot karakter, galeri pameran, dan mekanisme fisika.
+2. **Lapisan UI Overlay HTML (Z-Index: 10 - 50):** Antarmuka transparan (*glassmorphism*) yang membungkus kanvas 3D, terdiri dari:
+   - *Crosshair* statis di tengah layar untuk *aiming*.
+   - *HUD (Heads-Up Display)* di pojok kiri/kanan atas untuk progres motif dan tombol pengaturan POV.
+   - *Action Tooltips* di bagian bawah (misal: "Tekan E untuk Inspeksi").
+   - *Modal Pop-up* di tengah layar saat melakukan interaksi membaca deskripsi motif atau mengganti baju.
+   - *Mobile Controls* (Joystick dan *Jump Button*) pada perangkat berlayar sentuh.
+
+---
+
+## 🎯 7. Fungsi Website
+Sasirangan Showcase 3D berfungsi ganda sebagai:
+- **Media Edukasi Interaktif:** Mengenalkan 5 motif klasik Sasirangan (Bayam Raja, Gigi Haruan, dll.) beserta filosofinya lewat eksplorasi gamifikasi *(scrollytelling & walking simulator)*.
+- **Katalisator Ekonomi Kreatif:** Menghubungkan pengunjung secara langsung (via tautan UMKM) ke pengrajin lokal yang memproduksi Sasirangan.
+- **Kampanye Ramah Lingkungan:** Memberikan literasi (di bagian *Eco-Dye Station*) tentang urgensi transisi menuju pewarna berbahan dasar alam.
+
+---
+
+## 🖥️ 8. Tampilan Website (Visual Interface)
+Tampilan situs ini mengusung estetika **"Dark & Cyber-Cultural"**:
+- **Lingkungan Galeri:** Berdesain premium dengan lantai *slate* hitam, pencahayaan *low-key lighting*, dan *spotlight* hangat yang menyorot karya seni layaknya pameran seni murni kelas dunia.
+- **Karakter:** Sesosok robot *(Droid)* bergaya futuristik namun dibalut kemeja *Culture Verse* bermotif Sasirangan klasik, melambangkan pelestarian budaya tradisional dalam era metaverse digital.
+- **Desain UI/UX:** Memanfaatkan efek *Glassmorphism* (panel kaca *blur* tembus pandang), tipografi tajam bertemakan antarmuka video game (kombinasi font *Cinzel*, *Rajdhani*, dan *Montserrat*), serta animasi mikro (seperti *bouncing UI*) demi mencapai nuansa AAA-game.
+
+---
+
+## 🔄 9. Alur Kerja Situs (User Workflow)
+Alur interaksi pengguna (*User Journey*) dirancang natural tanpa interupsi layar memuat ulang (*refresh*):
+1. **Landing / Hero:** Pengguna tiba di layar judul sinematik, membaca visi misi SDGs, dan menekan tombol "Mulai Eksplorasi" untuk menjatuhkan karakter ke dalam galeri 3D.
+2. **Eksplorasi:** Pengguna mengontrol karakter (menggunakan *WASD/Joystick*) berjalan menyusuri lorong pameran.
+3. **Inspeksi:** Ketika karakter mendekati bingkai lukisan atau zona *Eco-Dye*, sistem deteksi jarak memunculkan instruksi "Tekan E" (atau tombol sentuh) di tengah layar.
+4. **Learning & Customizing:** Kamera otomatis berpindah mulus *(cinematic tween)* mendekati lukisan. Muncul panel kaca berisi penjelasan sejarah motif. Di tahap ini, pengguna juga dapat membuka menu *Customizer* baju untuk menyamakan pakaian robot dengan motif yang dipelajari.
+5. **Reward & Gamification:** Setiap kali motif baru selesai dipelajari, indikator HUD bertambah (misal 1/5). Jika semua (5/5) mahakarya dieksplorasi, pengguna akan diberikan **Sertifikat Duta Budaya** *(Culture Verse Ambassador)* sebagai bentuk apresiasi penamat (*completionist*).
+
 ---
 **Kesimpulan:**
 Secara komprehensif, Sasirangan Showcase 3D merupakan rekayasa perangkat lunak front-end kelas atas yang memadukan komputasi matematika GPU kompleks dengan estetika UI/UX terkini yang memanjakan mata, membuktikan bahwa media web *browser* mampu menyajikan simulasi *gamification* interaktif berstandar Museum Digital modern.
