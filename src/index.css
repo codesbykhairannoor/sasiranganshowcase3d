@@ -106,3 +106,75 @@
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(245, 158, 11, 0.8);
 }
+
+/* MOBILE LANDSCAPE / SHORT SCREEN COMPATIBILITY */
+@media (max-height: 560px) {
+  /* Only apply to glass-panels and glass-cards (which are our Modals) */
+  .glass-panel, .glass-card {
+    max-height: 92vh !important;
+    padding: 10px 14px !important;
+    border-radius: 12px !important;
+  }
+
+  .glass-panel *, .glass-card * {
+    font-size: 10px !important;
+    line-height: 1.25 !important;
+  }
+
+  .glass-panel h2, .glass-card h2 {
+    font-size: 14px !important;
+    line-height: 1.15 !important;
+    margin-bottom: 6px !important;
+    padding-bottom: 6px !important;
+  }
+
+  .glass-panel h3, .glass-card h3 {
+    font-size: 11px !important;
+  }
+
+  /* Adjust spacing inside modal */
+  .glass-panel .space-y-6 > * + *, .glass-card .space-y-6 > * + *,
+  .glass-panel .space-y-5 > * + *, .glass-card .space-y-5 > * + *,
+  .glass-panel .space-y-4 > * + *, .glass-card .space-y-4 > * + * {
+    margin-top: 6px !important;
+  }
+
+  .glass-panel .p-4, .glass-card .p-4,
+  .glass-panel .p-5, .glass-card .p-5,
+  .glass-panel .p-6, .glass-card .p-6,
+  .glass-panel .p-8, .glass-card .p-8 {
+    padding: 8px !important;
+  }
+
+  .glass-panel .mb-6, .glass-card .mb-6,
+  .glass-panel .mb-4, .glass-card .mb-4 {
+    margin-bottom: 8px !important;
+  }
+
+  .glass-panel .pb-4, .glass-card .pb-4,
+  .glass-panel .pb-3, .glass-card .pb-3 {
+    padding-bottom: 6px !important;
+  }
+
+  .glass-panel .pt-2, .glass-card .pt-2,
+  .glass-panel .pt-4, .glass-card .pt-4 {
+    padding-top: 4px !important;
+  }
+
+  .glass-panel .gap-3, .glass-card .gap-3,
+  .glass-panel .gap-4, .glass-card .gap-4,
+  .glass-panel .gap-6, .glass-card .gap-6 {
+    gap: 6px !important;
+  }
+
+  .glass-panel button, .glass-card button {
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+    height: auto !important;
+  }
+
+  .glass-panel svg, .glass-card svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+}

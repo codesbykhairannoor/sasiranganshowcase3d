@@ -22,7 +22,7 @@ const keyboardMap = [
   { name: 'interact', keys: ['KeyE', 'Enter'] },
 ];
 
-const isTouchDevice = typeof window !== 'undefined' ? ('ontouchstart' in window || navigator.maxTouchPoints > 0) : false;
+const isTouchDevice = typeof window !== 'undefined' ? ('ontouchstart' in window || navigator.maxTouchPoints > 0 || /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) : false;
 
 // AUTHENTIC MINECRAFT POINTER LOCK & STUCK CENTER CROSSHAIR ARCHITECTURE:
 // 1. CENTER STUCK CROSSHAIR (+) ("memang harus ttp stuck aja ditengah"):
@@ -386,7 +386,7 @@ export default function Scene() {
 
       {/* MINECRAFT INTERACTIVE PROMPT WHEN NEAR A PAINTING (Title Case Formatting) */}
       {cameraMode === 'rpg' && nearbyMotif && (
-        <div className="fixed bottom-40 sm:bottom-32 left-1/2 -translate-x-1/2 z-50 pointer-events-auto animate-bounce w-max max-w-[85vw]">
+        <div className="fixed bottom-8 sm:bottom-16 left-1/2 -translate-x-1/2 z-50 pointer-events-auto animate-bounce w-max max-w-[85vw]">
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -396,10 +396,10 @@ export default function Scene() {
                 enterPortal(nearbyMotif.id);
               }
             }}
-            className="px-2 py-1.5 sm:px-6 sm:py-3 bg-slate-900/95 hover:bg-slate-800 text-amber-400 font-bold rounded-lg sm:rounded-xl border sm:border-2 border-amber-500/80 shadow-[0_0_10px_rgba(245,158,11,0.5)] sm:shadow-[0_0_25px_rgba(245,158,11,0.5)] flex items-center gap-1.5 sm:gap-3 transition-all transform hover:scale-105 cursor-pointer backdrop-blur-md"
+            className="px-3 py-1.5 bg-slate-900/95 hover:bg-slate-800 text-amber-400 font-bold rounded-lg border border-amber-500/80 shadow-[0_0_10px_rgba(245,158,11,0.5)] flex items-center gap-2 transition-all transform hover:scale-105 cursor-pointer backdrop-blur-md"
           >
-            <span className="px-1.5 py-0.5 sm:px-2.5 sm:py-1 bg-amber-500 text-slate-950 rounded sm:rounded-lg text-[9px] sm:text-sm font-black shadow-inner">E</span>
-            <span className="text-[9px] sm:text-base tracking-wide whitespace-normal text-left leading-tight">Inspeksi: {nearbyMotif.title}</span>
+            <span className="px-1.5 py-0.5 bg-amber-500 text-slate-950 rounded text-[10px] font-black shadow-inner">E</span>
+            <span className="text-[10px] sm:text-xs tracking-wide whitespace-normal text-left leading-tight">Inspeksi: {nearbyMotif.title}</span>
           </button>
         </div>
       )}
