@@ -240,7 +240,8 @@ function RpgSceneController({ setNearbyMotif }) {
       });
     } else if (cameraMode === 'rpg') {
       const keys = getKeys();
-      const joystick = useJoystickStore.getState().joystick;
+      const joysticks = useJoystickStore.getState().joysticks;
+      const joystick = joysticks ? joysticks['default'] : null;
       
       ecctrlRef.current.setMovement({
         forward: keys.forward,
@@ -404,25 +405,26 @@ export default function Scene() {
         <div className="block lg:hidden fixed inset-0 pointer-events-none z-50">
           {/* Movement Joystick (Bottom Left) */}
           <Joystick 
-            joystickWrapperStyle={{ bottom: '40px', left: '40px', pointerEvents: 'auto' }}
-            joystickBaseStyle={{ background: 'rgba(15, 23, 42, 0.5)', border: '2px solid rgba(251, 191, 36, 0.8)' }}
-            joystickKnobStyle={{ background: 'rgba(251, 191, 36, 0.9)', boxShadow: '0 0 15px rgba(251, 191, 36, 0.5)' }}
+            joystickMaxRadius={30}
+            joystickWrapperStyle={{ bottom: '40px', left: '40px', pointerEvents: 'auto', width: '120px', height: '120px' }}
+            joystickBaseStyle={{ width: '80px', height: '80px', background: 'rgba(15, 23, 42, 0.6)', border: '2px solid rgba(251, 191, 36, 0.8)' }}
+            joystickKnobStyle={{ width: '45px', height: '45px', background: 'rgba(251, 191, 36, 0.9)', boxShadow: '0 0 15px rgba(251, 191, 36, 0.5)' }}
           />
           
           {/* Jump Button (Bottom Right) */}
           <VirtualButton 
             id="jump"
-            buttonWrapperStyle={{ bottom: '40px', right: '40px', pointerEvents: 'auto' }}
-            buttonCapStyle={{ width: '60px', height: '60px', background: 'rgba(15, 23, 42, 0.5)', border: '2px solid rgba(6, 182, 212, 0.8)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            buttonWrapperStyle={{ bottom: '40px', right: '40px', pointerEvents: 'auto', width: '70px', height: '70px' }}
+            buttonCapStyle={{ width: '55px', height: '55px', background: 'rgba(15, 23, 42, 0.6)', border: '2px solid rgba(6, 182, 212, 0.8)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 15px rgba(6, 182, 212, 0.3)' }}
           >
-            <span className="text-cyan-400 font-game font-bold text-xs uppercase tracking-wider pointer-events-none">Lompat</span>
+            <span className="text-cyan-400 font-game font-black text-[10px] uppercase tracking-wider pointer-events-none select-none">LOMPAT</span>
           </VirtualButton>
         </div>
       )}
 
       <Canvas
         shadows={!isTouchDevice}
-        dpr={[1, 2]}
+        dpr={isTouchDevice ? 1 : 1.5}
         gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
         onPointerMissed={requestLock}
       >
@@ -448,8 +450,8 @@ export default function Scene() {
           />
           <directionalLight position={[-15, 20, -15]} intensity={0.6} color="#38bdf8" />
 
-          {/* BRIGHT STUDIO ENVIRONMENT REFLECTION ("pakai env kayak tadi pas mau keluar") */}
-          <Environment preset="apartment" />
+          {/* BRIGHT STUDIO ENVIRONMENT REFLECTION (Disabled on mobile/touch to boost performance!) */}
+          {!isTouchDevice && <Environment preset="apartment" />}
 
           {/* SOFT CONTACT SHADOWS ON POLISHED SLATE FLOOR */}
           <ContactShadows 

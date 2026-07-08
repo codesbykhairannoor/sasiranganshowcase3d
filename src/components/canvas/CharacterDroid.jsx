@@ -26,7 +26,8 @@ export default function CharacterDroid() {
   // Dynamic animation based on player movement velocity & Minecraft mouse look tracking
   useFrame((state) => {
     const keys = getKeys();
-    const joystick = useJoystickStore.getState().joystick;
+    const joysticks = useJoystickStore.getState().joysticks;
+    const joystick = joysticks ? joysticks['default'] : null;
     
     const isMoving = keys.forward || keys.backward || keys.leftward || keys.rightward || (joystick && (Math.abs(joystick.x) > 0.1 || Math.abs(joystick.y) > 0.1));
     const isRunning = keys.run;

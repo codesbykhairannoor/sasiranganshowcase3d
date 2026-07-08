@@ -29,7 +29,7 @@ export default function SettingsModal() {
       />
 
       {/* Settings Panel */}
-      <div className="relative glass-card w-full max-w-md p-6 md:p-8 rounded-2xl animate-fade-in border border-amber-500/30">
+      <div className="relative glass-card w-full max-w-md max-h-[85vh] overflow-y-auto p-5 sm:p-6 md:p-8 rounded-2xl animate-fade-in border border-amber-500/30 scrollbar-thin scrollbar-thumb-slate-800">
         
         {/* Header */}
         <div className="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
