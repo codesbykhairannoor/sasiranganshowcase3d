@@ -24,10 +24,10 @@ const keyboardMap = [
 
 const isTouchDevice = typeof window !== 'undefined' ? ('ontouchstart' in window || navigator.maxTouchPoints > 0 || /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) : false;
 
-// AUTHENTIC MINECRAFT POINTER LOCK & STUCK CENTER CROSSHAIR ARCHITECTURE:
-// 1. CENTER STUCK CROSSHAIR (+) ("memang harus ttp stuck aja ditengah"):
+// PROFESSIONAL IMMERSIVE POINTER LOCK & STUCK CENTER CROSSHAIR ARCHITECTURE:
+// 1. CENTER STUCK CROSSHAIR (+) (Fixed aiming crosshair):
 //    A fixed gaming + crosshair is rendered in the exact center of the screen!
-// 2. POINTER LOCK ON CLICK ("ketika kita mainin mouse pointer nya ttp ngikut dalam keadaan stuck versis kayak minecraft"):
+// 2. POINTER LOCK ON CLICK (Pointer remains lock-centered for full immersion):
 //    Clicking on the game window engages Pointer Lock, trapping the invisible pointer in the center!
 //    Moving your physical mouse smoothly rotates the camera AND turns the character's head!
 // 3. PRESS ESC TO UNLOCK ("kalau mau keluar harus pencet ESC bro"):
@@ -98,7 +98,7 @@ function RpgSceneController({ setNearbyMotif }) {
     }
   }, [povMode]);
 
-  // MINECRAFT POINTER LOCK CAMERA ROTATION & HEAD TRACKING FEED:
+  // IMMERSIVE POINTER LOCK CAMERA ROTATION & HEAD TRACKING FEED:
   useEffect(() => {
     const handleMouseMove = (e) => {
       // ONLY rotate camera and track head when Pointer Lock is ACTIVE ("kalau mau keluar harus pencet ESC bro")!
@@ -119,7 +119,7 @@ function RpgSceneController({ setNearbyMotif }) {
     };
   }, [cameraMode]);
 
-  // MINECRAFT MOBILE TOUCH SWIPE LOOK & HEAD TRACKING:
+  // IMMERSIVE MOBILE TOUCH SWIPE LOOK & HEAD TRACKING:
   useEffect(() => {
     let lastTouchX = 0;
     let lastTouchY = 0;
@@ -370,7 +370,7 @@ export default function Scene() {
         </div>
       )}
 
-      {/* AUTHENTIC MINECRAFT CENTER STUCK CROSSHAIR (+) */}
+      {/* IMMERSIVE CENTER STUCK CROSSHAIR (+) */}
       {cameraMode === 'rpg' && (
         <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 pointer-events-none select-none flex items-center justify-center">
           <div className="relative flex items-center justify-center">
@@ -384,7 +384,7 @@ export default function Scene() {
         </div>
       )}
 
-      {/* MINECRAFT INTERACTIVE PROMPT WHEN NEAR A PAINTING (Title Case Formatting) */}
+      {/* INTERACTIVE PROMPT WHEN NEAR A PAINTING (Title Case Formatting) */}
       {cameraMode === 'rpg' && nearbyMotif && (
         <div className="fixed bottom-8 sm:bottom-16 left-1/2 -translate-x-1/2 z-50 pointer-events-auto animate-bounce w-max max-w-[85vw]">
           <button

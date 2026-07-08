@@ -22,7 +22,7 @@ export const useAppStore = create((set, get) => ({
   currentView: 'hero', // 'hero' | 'museum' | 'sdg-info' | 'reward' | 'portal-inspect'
   cameraMode: 'cinematic', // 'cinematic' (hero overview) | 'rpg' (character walk) | 'portal' (inspecting motif)
   
-  // POV Toggle (1st Person vs 3rd Person like Minecraft!)
+  // POV Toggle (1st Person vs 3rd Person immersive modes)
   povMode: '3rd', // '3rd' | '1st'
   mobileJump: false,
   

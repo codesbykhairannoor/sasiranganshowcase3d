@@ -6,7 +6,7 @@ import * as THREE from 'three';
 import { useAppStore } from '../../store/useAppStore';
 
 // SUPER RESEARCH & DEITY-LEVEL SOFTWARE ENGINEERING:
-// 1. MINECRAFT POINTER LOCK HEAD TRACKING ("pointernya ttp ngikut dalam keadaan stuck versis kayak minecraft"):
+// 1. IMMERSIVE POINTER LOCK HEAD TRACKING (Smooth look-at camera tracking):
 //    When Pointer Lock is active, mouse movements accumulate in window.__mouseLook!
 //    The character's helmet/head smoothly turns left/right and tilts up/down to track where you are looking!
 // 2. Dynamic Walking & Running Stride Animation (Eliminates stiff walking!)
@@ -48,7 +48,23 @@ export default function CharacterDroid() {
     });
   }, [shirtTextures]);
 
-  // Dynamic animation based on player movement velocity & Minecraft mouse look tracking
+  // Clone textures for the arms to prevent stretching (since the arms are narrower than the body)
+  const armTextures = React.useMemo(() => {
+    const clones = {};
+    Object.entries(shirtTextures).forEach(([key, tex]) => {
+      if (tex) {
+        const clone = tex.clone();
+        clone.wrapS = THREE.RepeatWrapping;
+        clone.wrapT = THREE.RepeatWrapping;
+        clone.repeat.set(0.5, 2.0); // Fit the arm's aspect ratio
+        clone.needsUpdate = true;
+        clones[key] = clone;
+      }
+    });
+    return clones;
+  }, [shirtTextures]);
+
+  // Dynamic animation based on player movement velocity & mouse look tracking
   useFrame((state) => {
     const keys = getKeys();
     const joysticks = useJoystickStore.getState().joysticks;
@@ -64,9 +80,9 @@ export default function CharacterDroid() {
       visorRef.current.emissiveIntensity = 1.5 + Math.sin(time * 4) * 0.5;
     }
 
-    // HEAD TRACKING TOWARDS MINECRAFT CAMERA LOOK / MOUSE POINTER:
+    // HEAD TRACKING TOWARDS CAMERA LOOK / MOUSE POINTER:
     if (headRef.current && !is1stPerson) {
-      // In Minecraft Pointer Lock mode, window.__mouseLook stores accumulated mouse movements!
+      // In Pointer Lock mode, window.__mouseLook stores accumulated mouse movements!
       // In free mouse mode, state.pointer stores normalized screen coordinates!
       const lookX = window.__mouseLook ? window.__mouseLook.x : state.pointer.x;
       const lookY = window.__mouseLook ? window.__mouseLook.y : state.pointer.y;
@@ -133,7 +149,7 @@ export default function CharacterDroid() {
         <meshStandardMaterial color="#f59e0b" emissive="#f59e0b" emissiveIntensity={2} />
       </mesh>
 
-      {/* 2. HEAD / HELMET (Rotates & tilts dynamically towards Minecraft mouse look!) */}
+      {/* 2. HEAD / HELMET (Rotates & tilts dynamically towards camera look!) */}
       <group ref={headRef} position={[0, 1.45, 0]} visible={!is1stPerson}>
         {/* Helmet base */}
         <mesh castShadow receiveShadow>
@@ -165,7 +181,7 @@ export default function CharacterDroid() {
           {selectedShirt === 'default' ? (
             <meshStandardMaterial key="default-left-arm" color="#334155" roughness={0.3} metalness={0.7} />
           ) : (
-            <meshStandardMaterial key={selectedShirt} map={shirtTextures[selectedShirt]} roughness={0.6} metalness={0.1} />
+            <meshStandardMaterial key={selectedShirt} map={armTextures[selectedShirt]} roughness={0.6} metalness={0.1} />
           )}
         </mesh>
         <mesh position={[0, 0.05, 0]}>
@@ -180,7 +196,7 @@ export default function CharacterDroid() {
           {selectedShirt === 'default' ? (
             <meshStandardMaterial key="default-right-arm" color="#334155" roughness={0.3} metalness={0.7} />
           ) : (
-            <meshStandardMaterial key={selectedShirt} map={shirtTextures[selectedShirt]} roughness={0.6} metalness={0.1} />
+            <meshStandardMaterial key={selectedShirt} map={armTextures[selectedShirt]} roughness={0.6} metalness={0.1} />
           )}
         </mesh>
         <mesh position={[0, 0.05, 0]}>
