@@ -1,6 +1,6 @@
 import React, { Suspense, useRef, useEffect, useState, useMemo } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Environment, ContactShadows, KeyboardControls, useKeyboardControls } from '@react-three/drei';
+import { Environment, ContactShadows, KeyboardControls, useKeyboardControls, PerformanceMonitor } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
 import { Ecctrl } from 'ecctrl';
 import { Joystick, VirtualButton, useJoystickStore } from 'ecctrl/input';
@@ -342,6 +342,7 @@ function RpgSceneController({ setNearbyMotif }) {
 export default function Scene() {
   const { cameraMode, enterPortal } = useAppStore();
   const [nearbyMotif, setNearbyMotif] = useState(null);
+  const [dpr, setDpr] = useState(isTouchDevice ? 1.2 : 1.5);
 
   const [isPointerLocked, setIsPointerLocked] = useState(false);
 
@@ -428,10 +429,11 @@ export default function Scene() {
 
       <Canvas
         shadows={!isTouchDevice}
-        dpr={isTouchDevice ? 1.3 : 1.5}
-        gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
+        dpr={dpr}
+        gl={{ antialias: !isTouchDevice, alpha: false, powerPreference: 'high-performance' }}
         onPointerMissed={requestLock}
       >
+        <PerformanceMonitor onIncline={() => setDpr(isTouchDevice ? 1.2 : 1.5)} onDecline={() => setDpr(isTouchDevice ? 0.75 : 1)} />
         <KeyboardControls map={keyboardMap}>
           {/* ROYAL MUSEUM NIGHT BACKGROUND WITH CRYSTAL CLEAR STUDIO DEFINITION! */}
           <color attach="background" args={["#06080f"]} />
@@ -466,7 +468,7 @@ export default function Scene() {
             far={6} 
             color="#06080f" 
             frames={1} // MASSIVE PERFORMANCE BOOST: Only render once on load!
-            resolution={isTouchDevice ? 512 : 1024}
+            resolution={isTouchDevice ? 256 : 1024}
           />
 
           {/* RAPIER PHYSICS ENGINE & GRAND GALLERY CORRIDOR */}
