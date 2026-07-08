@@ -14,7 +14,9 @@ export const MOTIFS_DATA = [
       'Secara tradisi diperuntukkan bagi pemimpin atau tokoh masyarakat.',
       'Garis vertikal melambangkan hubungan harmonis manusia dengan Tuhan.',
       'Menjadi motif standar untuk kemitraan diplomatik budaya Kalimantan Selatan.'
-    ]
+    ],
+    shopName: 'Toko Sasirangan Khas Banjar (Shopee)',
+    shopLink: 'https://shopee.co.id/search?keyword=kain%20sasirangan%20banjarmasin'
   },
   {
     id: 'gigi-haruan',
@@ -31,7 +33,9 @@ export const MOTIFS_DATA = [
       'Digunakan oleh bangsawan Banjar pada upacara adat sakral.',
       'Melambangkan perlindungan diri dan keteguhan prinsip.',
       'Proses pembuatan teknik jumputan membutuhkan ketelitian presisi.'
-    ]
+    ],
+    shopName: 'Diyang Kinjut Sasirangan (Instagram)',
+    shopLink: 'https://www.instagram.com/diyangkinjut/'
   },
   {
     id: 'kambang-kacang',
@@ -48,7 +52,9 @@ export const MOTIFS_DATA = [
       'Sering dijadikan hadiah pernikahan sebagai simbol cinta abadi.',
       'Pola sulur lengkung melambangkan kelembutan budi pekerti.',
       'Melambangkan sinergi antar elemen masyarakat dalam membangun peradaban.'
-    ]
+    ],
+    shopName: 'Irma Sasirangan (Shopee)',
+    shopLink: 'https://shopee.co.id/search?keyword=sasirangan%20irma'
   },
   {
     id: 'kain-sarigading',
@@ -65,7 +71,9 @@ export const MOTIFS_DATA = [
       'merupakan warisan budaya tak benda yang bernilai sejarah tinggi.',
       'Dibuat dengan teknik celup rintang warna tradisional khas Banjar.',
       'Memiliki pola geometris harmonis yang menenangkan mata.'
-    ]
+    ],
+    shopName: 'Galuh Sasirangan (Instagram)',
+    shopLink: 'https://www.instagram.com/galuhsasirangan/'
   },
   {
     id: 'naga-balimbur',
@@ -82,7 +90,9 @@ export const MOTIFS_DATA = [
       'Motif ini melambangkan kegembiraan dan penyucian jiwa.',
       'Sering dipakai dalam acara mandi-mandi pengantin adat Banjar.',
       'Menggabungkan unsur flora dan fauna dalam satu kesatuan estetika.'
-    ]
+    ],
+    shopName: 'Nida Sasirangan (Shopee)',
+    shopLink: 'https://shopee.co.id/search?keyword=sasirangan'
   },
   {
     id: 'sdg12-alchemist',

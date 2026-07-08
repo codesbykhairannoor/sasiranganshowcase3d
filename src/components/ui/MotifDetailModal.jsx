@@ -84,14 +84,21 @@ export default function MotifDetailModal() {
 
         {/* Action Buttons */}
         <div className="pt-2 flex flex-col md:flex-row gap-2 md:gap-3">
-          <button
-            onClick={() => window.alert('Mengalihkan ke Marketplace UMKM Banjarmasin...\n\n(Ini adalah Simulasi Solusi Aksi Nyata SDG 8 & 9)')}
-            className="flex-1 py-3 md:py-4 rounded-xl md:rounded-2xl font-game font-bold text-[10px] md:text-sm text-slate-900 shadow-lg transition-all hover:scale-102 active:scale-98 flex items-center justify-center gap-2 cursor-pointer tracking-wide bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400"
+          <a
+            href={selectedMotif.shopLink || '#'}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 py-3 md:py-4 rounded-xl md:rounded-2xl font-game font-bold text-[10px] md:text-sm text-slate-900 shadow-lg transition-all hover:scale-102 active:scale-98 flex flex-col items-center justify-center gap-1 cursor-pointer tracking-wide bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400"
             style={{ boxShadow: `0 0 20px rgba(251, 191, 36, 0.4)` }}
           >
-            <ShoppingCart className="w-3 h-3 md:w-4 md:h-4" />
-            <span>Beli Produk</span>
-          </button>
+            <div className="flex items-center gap-2">
+              <ShoppingCart className="w-3 h-3 md:w-4 md:h-4" />
+              <span>Beli Produk</span>
+            </div>
+            {selectedMotif.shopName && (
+              <span className="text-[8px] md:text-[10px] text-slate-800 font-semibold opacity-80">{selectedMotif.shopName}</span>
+            )}
+          </a>
 
           <button
             onClick={exitPortal}
