@@ -381,21 +381,24 @@ export default function Scene() {
             {/* Center Aim Dot */}
             <div className="w-2 h-2 bg-white rounded-full absolute shadow-[0_0_6px_rgba(245,158,11,1)] animate-pulse" />
           </div>
-        </div>
       )}
 
       {/* MINECRAFT INTERACTIVE PROMPT WHEN NEAR A PAINTING (Title Case Formatting) */}
       {cameraMode === 'rpg' && nearbyMotif && (
-        <div className="fixed bottom-44 sm:bottom-32 left-1/2 -translate-x-1/2 z-50 pointer-events-auto animate-bounce w-max max-w-[90vw]">
+        <div className="fixed bottom-40 sm:bottom-32 left-1/2 -translate-x-1/2 z-50 pointer-events-auto animate-bounce w-max max-w-[85vw]">
           <button
             onClick={(e) => {
               e.stopPropagation();
-              enterPortal(nearbyMotif.id);
+              if (nearbyMotif.id === 'sdg12-alchemist') {
+                useAppStore.getState().setEcoModalOpen(true);
+              } else {
+                enterPortal(nearbyMotif.id);
+              }
             }}
-            className="px-3 py-2 sm:px-6 sm:py-3 bg-slate-900/95 hover:bg-slate-800 text-amber-400 font-bold rounded-lg sm:rounded-xl border-2 border-amber-500/80 shadow-[0_0_15px_rgba(245,158,11,0.5)] sm:shadow-[0_0_25px_rgba(245,158,11,0.5)] flex items-center gap-2 sm:gap-3 transition-all transform hover:scale-105 cursor-pointer backdrop-blur-md"
+            className="px-2 py-1.5 sm:px-6 sm:py-3 bg-slate-900/95 hover:bg-slate-800 text-amber-400 font-bold rounded-lg sm:rounded-xl border sm:border-2 border-amber-500/80 shadow-[0_0_10px_rgba(245,158,11,0.5)] sm:shadow-[0_0_25px_rgba(245,158,11,0.5)] flex items-center gap-1.5 sm:gap-3 transition-all transform hover:scale-105 cursor-pointer backdrop-blur-md"
           >
-            <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 bg-amber-500 text-slate-950 rounded md:rounded-lg text-xs sm:text-sm font-black shadow-inner">E</span>
-            <span className="text-[11px] sm:text-base tracking-wide whitespace-normal text-left leading-tight">Klik/Tekan E : Inspeksi {nearbyMotif.title}</span>
+            <span className="px-1.5 py-0.5 sm:px-2.5 sm:py-1 bg-amber-500 text-slate-950 rounded sm:rounded-lg text-[9px] sm:text-sm font-black shadow-inner">E</span>
+            <span className="text-[9px] sm:text-base tracking-wide whitespace-normal text-left leading-tight">Inspeksi: {nearbyMotif.title}</span>
           </button>
         </div>
       )}
@@ -438,11 +441,11 @@ export default function Scene() {
               Replaced flat/blending ambient light with moody, dramatic museum contrast.
               Physical ceiling lamps in MuseumGallery provide rich localized illumination!
           */}
-          <ambientLight intensity={isTouchDevice ? 1.0 : 0.4} />
-          <hemisphereLight intensity={isTouchDevice ? 1.0 : 0.4} color="#fffbeb" groundColor="#0f172a" />
+          <ambientLight intensity={isTouchDevice ? 2.5 : 0.4} />
+          <hemisphereLight intensity={isTouchDevice ? 2.0 : 0.4} color="#fffbeb" groundColor="#0f172a" />
           <directionalLight 
             position={[15, 35, 15]} 
-            intensity={isTouchDevice ? 1.8 : 1.2} 
+            intensity={isTouchDevice ? 2.5 : 1.2} 
             color="#fffbeb"
             castShadow={!isTouchDevice} 
             shadow-mapSize={isTouchDevice ? [512, 512] : [2048, 2048]}

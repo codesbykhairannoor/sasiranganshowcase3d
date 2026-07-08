@@ -201,6 +201,20 @@ export default function MuseumGallery() {
     '/aset sasirangan/pola-mulus-seni-wallpaper-pola-e.webp'
   ]);
 
+  useEffect(() => {
+    const allAssets = [asset1, asset2, asset3, asset4, asset5, asset6, asset7, asset8, asset9, asset10];
+    allAssets.forEach(tex => {
+      if (tex) {
+        tex.wrapS = THREE.RepeatWrapping;
+        tex.wrapT = THREE.RepeatWrapping;
+        // Scale texture up so it repeats less frequently, and center it
+        tex.repeat.set(0.6, 0.6); 
+        tex.offset.set(0.5, 0.5);
+        tex.needsUpdate = true;
+      }
+    });
+  }, [asset1, asset2, asset3, asset4, asset5, asset6, asset7, asset8, asset9, asset10]);
+
   const handleInspect = (motif) => {
     enterPortal(motif.id);
   };

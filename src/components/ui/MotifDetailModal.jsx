@@ -39,7 +39,7 @@ export default function MotifDetailModal() {
             <span>Warisan Budaya</span>
           </div>
           
-          <h2 className="text-xl md:text-3xl font-title font-black tracking-tight text-white capitalize">
+          <h2 className="text-base sm:text-xl md:text-3xl font-title font-black tracking-tight text-white capitalize leading-none sm:leading-tight">
             {selectedMotif.title}
           </h2>
           <h3 className="text-[10px] md:text-sm font-game font-bold text-slate-300 italic tracking-wide">
