@@ -381,6 +381,7 @@ export default function Scene() {
             {/* Center Aim Dot */}
             <div className="w-2 h-2 bg-white rounded-full absolute shadow-[0_0_6px_rgba(245,158,11,1)] animate-pulse" />
           </div>
+        </div>
       )}
 
       {/* MINECRAFT INTERACTIVE PROMPT WHEN NEAR A PAINTING (Title Case Formatting) */}
